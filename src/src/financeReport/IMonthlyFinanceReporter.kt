@@ -12,4 +12,9 @@ interface IMonthlyFinanceReporter {
 
     fun getMonthNetBalance(year: Int, month: Int): Float
 
+    fun getMonthIncomeByCategory(category: String, year:Int, month:Int): Float
+
+    fun getMonthExpensesByCategory(category: String, year:Int, month:Int): Float
+
+
 }

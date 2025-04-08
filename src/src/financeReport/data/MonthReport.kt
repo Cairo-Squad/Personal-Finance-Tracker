@@ -10,9 +10,9 @@ data class MonthReport(
         return """
     📅 Month Report: $date
 
-    🔹 Income       : $income EGP
-    🔸 Expenses     : $expenses EGP
-    💰 Net Balance  : $netBalance EGP
+    🔹 Income       : $income 
+    🔸 Expenses     : $expenses 
+    💰 Net Balance  : $netBalance 
 """.trimIndent()
 
     }

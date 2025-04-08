@@ -1,15 +1,17 @@
 package src.financeReport
 
 import src.financeReport.data.MonthReport
-class FinanceReporter : IMonthlyFinanceReporter, IMonthlyCategoryReporter {
+class MonthlyFinanceReporter (
+    private val transactions:List<Transaction>
+) : IMonthlyFinanceReporter {
 
     /***
      * This function calculate the total income, total expenses, and net balance for specific month of a year.
      *
      *  * Example:
      * ```
-     *  * val report = financeReporter.getMonthReport(2024, 4)
-     *  * println("Income: ${report.totalIncome}, Expenses: ${report.totalExpenses}, Net Balance: $report.netBalance")
+     *  * val report = monthlyFinanceReporter.getMonthReport(2024, 4)
+     *    println(report.toString)
      * ```
      *
      * @param year The year for which to generate the report. Must be between 2020 and 2025.
