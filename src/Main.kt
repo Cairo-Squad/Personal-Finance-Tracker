@@ -1,3 +1,7 @@
+import src.financeReport.FinanceReporter
+import src.financeReport.data.CategorySummaryReport
+import src.financeReport.data.CategoryType
+
 fun main() {
 
 
@@ -73,45 +77,55 @@ fun main() {
     // 1 -------------------------------Test Report Income By Category--------------------------
     testFunction(
         testDescription = "Given an empty category, When validating, Then throw IllegalArgumentException",
-        actualResult = financeReporter.getIncomeByCategory(""),
+        actualResult = financeReporter.getMonthIncomeByCategory("" , 2020 , 12),
         expectedResult = IllegalArgumentException("Category name cannot be empty or null")
     )
     testFunction(
         testDescription = "Given a not supported category , When validating, Then throw IllegalArgumentException",
-        actualResult = financeReporter.getIncomeByCategory("ABCDEF"),
+        actualResult = financeReporter.getMonthIncomeByCategory("ABCDEF" , 2020 , 12),
         expectedResult =  IllegalArgumentException("Category Not supported.")
     )
     testFunction(
         testDescription = "Given a valid category with no income data for it, When validating, Then throw NoSuchElementException",
-        actualResult = financeReporter.getIncomeByCategory(""),
+        actualResult = financeReporter.getMonthIncomeByCategory("Sport" , 2020 , 12),
         expectedResult = NoSuchElementException("No income found for the category you specified")
     )
     testFunction(
         testDescription = "Given a valid category with income data , When validating, Then return CategoryReport object",
-        actualResult = financeReporter.getIncomeByCategory(""),
+        actualResult = financeReporter.getMonthIncomeByCategory("Rent" , 2020 , 12),
         expectedResult = CategorySummaryReport(CategoryType.Income , category = hashMapOf("Rent" to 200f) , total = 200f)
+    )
+    testFunction(
+        testDescription = "Given a valid category with income data but wrong year/month , When validating, Then Then IllegalArgumentException is thrown",
+        actualResult = financeReporter.getMonthIncomeByCategory("Rent" , -1 , -1),
+        expectedResult = IllegalArgumentException("Invalid date")
     )
 
     // 2 -------------------------------Test Report Expenses By Category-------------------------
     testFunction(
         testDescription = "Given an empty category, When validating, Then throw IllegalArgumentException",
-        actualResult = financeReporter.getExpensesByCategory(""),
+        actualResult = financeReporter.getMonthExpensesByCategory("" , 2021 , 1),
         expectedResult = IllegalArgumentException("Category name cannot be empty or null")
     )
     testFunction(
         testDescription = "Given a not supported category , When validating, Then throw IllegalArgumentException",
-        actualResult = financeReporter.getExpensesByCategory("ABCDEF"),
+        actualResult = financeReporter.getMonthExpensesByCategory("ABCDEF" , 2020 , 1),
         expectedResult =  IllegalArgumentException("Category Not supported.")
     )
     testFunction(
         testDescription = "Given a valid category with no income data for it, When validating, Then throw NoSuchElementException",
-        actualResult = financeReporter.getExpensesByCategory(""),
+        actualResult = financeReporter.getMonthExpensesByCategory("Sport" , 2021 , 1),
         expectedResult = NoSuchElementException("No income found for the category you specified")
     )
     testFunction(
         testDescription = "Given a valid category with income data , When validating, Then return CategoryReport object",
-        actualResult = financeReporter.getExpensesByCategory(""),
+        actualResult = financeReporter.getMonthExpensesByCategory("Rent" , 2021 , 1),
         expectedResult = CategorySummaryReport(CategoryType.Expenses , category = hashMapOf("Rent" to 200f) , total = 200f)
+    )
+    testFunction(
+        testDescription = "Given a valid category with income data and invalid year/month, When validating, Then IllegalArgumentException is thrown",
+        actualResult = financeReporter.getMonthExpensesByCategory("Rent" , 2021 , 1),
+        expectedResult = IllegalArgumentException("Invalid date")
     )
 
 

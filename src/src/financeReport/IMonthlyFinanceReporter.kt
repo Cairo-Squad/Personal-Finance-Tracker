@@ -1,8 +1,10 @@
-import src.FinancialSummaryReport
+package src.financeReport
+
+import src.financeReport.data.MonthReport
 
 interface IMonthlyFinanceReporter {
 
-    fun getMonthReport(year: Int, month: Int): FinancialSummaryReport
+    fun getMonthReport(year: Int, month: Int): MonthReport
 
     fun getMonthTotalIncome(year: Int, month: Int): Float
 

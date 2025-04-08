@@ -1,6 +1,6 @@
-package src
+package src.financeReport.data
 
-data class FinancialSummaryReport(
+data class MonthReport(
     val date: String,
     val income: Float,
     val expenses: Float,

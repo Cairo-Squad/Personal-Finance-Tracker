@@ -1,6 +1,7 @@
-import src.FinancialSummaryReport
+package src.financeReport
 
-class FinanceReporter : IMonthlyFinanceReporter , ICategoryFinanceReporter{
+import src.financeReport.data.MonthReport
+class FinanceReporter : IMonthlyFinanceReporter, IMonthlyCategoryReporter {
 
     /***
      * This function calculate the total income, total expenses, and net balance for specific month of a year.
@@ -14,13 +15,13 @@ class FinanceReporter : IMonthlyFinanceReporter , ICategoryFinanceReporter{
      * @param year The year for which to generate the report. Must be between 2020 and 2025.
      * @param month The month (1-12) for which to generate the report.
      *
-     * @return A [FinancialSummaryReport] which contains income, expenses, and netBalance data for the month.
+     * @return A [MonthReport] which contains income, expenses, and netBalance data for the month.
      *
      * @throws IllegalArgumentException If the year or month is out of the valid range.
      * @throws NoSuchElementException If no financial data exists for the given month and year.
      */
-    override fun getMonthReport(year: Int, month: Int): FinancialSummaryReport {
-        return FinancialSummaryReport(
+    override fun getMonthReport(year: Int, month: Int): MonthReport {
+        return MonthReport(
             date = "$year-$month",
             income = getMonthTotalIncome(year , month),
             expenses = getMonthTotalExpenses(year , month),
@@ -42,11 +43,11 @@ class FinanceReporter : IMonthlyFinanceReporter , ICategoryFinanceReporter{
     }
 
 
-    override fun getIncomeByCategory(category: String): Float {
+    override fun getMonthIncomeByCategory(category: String, year: Int, month: Int): Float {
         TODO("Not yet implemented")
     }
 
-    override fun getExpensesByCategory(category: String): Float {
+    override fun getMonthExpensesByCategory(category: String, year: Int, month: Int): Float {
         TODO("Not yet implemented")
     }
 

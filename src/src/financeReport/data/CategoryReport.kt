@@ -1,8 +1,11 @@
+package src.financeReport.data
+
 data class CategorySummaryReport(
     val type: CategoryType,
     val category: HashMap<String, Float>,
     val total: Float,
 ) {
+
     override fun toString(): String {
         val builder = StringBuilder()
 
