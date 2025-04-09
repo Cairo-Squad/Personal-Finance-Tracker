@@ -20,11 +20,11 @@ class TransactionManager(
     }
 
     fun getTransactionById(transactionId: Int):Transaction?{
-        return null
+        return storage.getTransactionById(transactionId)
     }
 
     fun getAllTransactions(): List<Transaction> {
-        return emptyList()
+        return storage.getAllTransactions()
     }
 
     fun getReportByMonth(month: String): List<Transaction>{
