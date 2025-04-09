@@ -1,10 +1,10 @@
-package src.financeReport.data
+package financeReport.data
 
 data class MonthReport(
     val date: String,
-    val income: Float,
-    val expenses: Float,
-    val netBalance: Float = income - expenses,
+    val income: Double,
+    val expenses: Double,
+    val netBalance: Double = income - expenses,
 ) {
     override fun toString(): String {
         return """
