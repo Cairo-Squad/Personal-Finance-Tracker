@@ -35,7 +35,7 @@ fun main() {
         check(
             name = "Given a list with one transaction, when call getTransactionById() with matching ID it should return the transaction",
             result = storage.getTransactionById(1) ?: "null",
-            expectedResult = 1
+            expectedResult = transaction
         )
     }
 
@@ -96,7 +96,7 @@ fun main() {
         check(
             name = "Given a list with multiple transactions, when call getTransactionById() with matching ID it should return correct transaction",
             result = storage.getTransactionById(2) ?: "null",
-            expectedResult = 2
+            expectedResult = transaction2
         )
     }
 
@@ -146,7 +146,7 @@ fun main() {
     // region getAllTransactions()
     // return an empty list
     run {
-        val emptyList = mutableListOf<Transaction>()
+
         val storage = MemoryStorage()
         check(
             name = "Given an empty list, when call getAllTransaction then should its size equal to zero",
