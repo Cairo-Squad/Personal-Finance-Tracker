@@ -1,16 +1,17 @@
-package feature.cliController
+package feature.cliController.cliDispatcher
 
 import feature.cliController.ioController.IOController
 import feature.transaction.TransactionManager
 
-class CLIDispatcher(
+// TODO: Implement!!
+class CLIDispatcherImpl(
     private val transactionManager: TransactionManager,
-    ioController: IOController
-) {
+    private val ioController: IOController
+) : CLIDispatcher {
 
     private val commands = emptyMap<Int, () -> Unit>()
 
-    fun dispatch(command: Int) {
+    override fun dispatch(command: Int) {
 
     }
 

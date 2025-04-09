@@ -1,11 +1,12 @@
 package feature.cliController
 
+import feature.cliController.cliDispatcher.CLIDispatcher
 import feature.cliController.ioController.IOController
 
 // TODO: Implement!!
 class CLIController(
     private val cliDispatcher: CLIDispatcher,
-    ioController: IOController
+    private val ioController: IOController
 ) {
 
     fun start() {
