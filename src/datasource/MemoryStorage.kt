@@ -19,13 +19,11 @@ class MemoryStorage : Storage {
     }
 
     override fun getTransactionById(transactionId: Int):Transaction? {
-        val transaction = list.find { it.transactionId == transactionId }
-        if (transaction == null) return null
-        return transaction
+        return null
     }
 
     override fun getAllTransactions(): List<Transaction> {
-        return list
+        return emptyList()
     }
 
     override fun getReportByMonth(month: String): List<Transaction> {
