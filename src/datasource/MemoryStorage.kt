@@ -4,7 +4,7 @@ import model.Transaction
 
 class MemoryStorage : Storage {
 
-    private val list = mutableListOf<Transaction>()
+    val list = mutableListOf<Transaction>()
 
     override fun addTransaction(transaction: Transaction) {
         TODO("Not yet implemented")
@@ -19,11 +19,11 @@ class MemoryStorage : Storage {
     }
 
     override fun getTransactionById(transactionId: Int):Transaction? {
-        TODO("Not yet implemented")
+        return null
     }
 
     override fun getAllTransactions(): List<Transaction> {
-        TODO("Not yet implemented")
+        return emptyList()
     }
 
     override fun getReportByMonth(month: String): List<Transaction> {
