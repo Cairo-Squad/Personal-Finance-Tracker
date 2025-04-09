@@ -17,11 +17,13 @@ class FakeMemoryStorage(private val list:MutableList<Transaction>): Storage {
     }
 
     override fun getTransactionById(transactionId: Int): Transaction? {
-        return null
+        val transaction = list.find { it.transactionId == transactionId }
+        if (transaction == null) return null
+        return transaction
     }
 
     override fun getAllTransactions(): List<Transaction> {
-        return emptyList()
+        return list
     }
 
     override fun getReportByMonth(month: String): List<Transaction> {
