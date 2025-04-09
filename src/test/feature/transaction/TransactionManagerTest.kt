@@ -22,24 +22,24 @@ fun main() {
 
     // Storage with one transaction with matching ID
     run {
-        val list = mutableListOf(
-            Transaction(
-                transactionId = 1,
-                transactionDescription = "description",
-                transactionType = TransactionType.INCOME,
-                transactionAmount = 2000.0,
-                transactionDate = 12548,
-                transactionCategory = Category(1,"food")
-            ),
+        val transaction = Transaction(
+            transactionId = 1,
+            transactionDescription = "description",
+            transactionType = TransactionType.INCOME,
+            transactionAmount = 2000.0,
+            transactionDate = 12548,
+            transactionCategory = Category(1,"food")
         )
+
+        val list = mutableListOf(transaction)
 
         val fakeMemoryStorage = FakeMemoryStorage(list)
         val transactionManager = TransactionManager(fakeMemoryStorage)
 
-        test.storage.check(
+        check(
             name = "Given a list with one transaction, when call getTransactionById() with matching ID it should return the transaction",
             result = transactionManager.getTransactionById(1) ?: "null",
-            expectedResult = 1
+            expectedResult = transaction
         )
     }
 
@@ -57,7 +57,6 @@ fun main() {
         )
         val fakeMemoryStorage = FakeMemoryStorage(list)
         val transactionManager = TransactionManager(fakeMemoryStorage)
-
         test.storage.check(
             name = "Given a list with one transaction, when call getTransactionById() with non-matching ID it should return null",
             result = transactionManager.getTransactionById(2) ?: "null",
@@ -101,7 +100,14 @@ fun main() {
         test.storage.check(
             name = "Given a list with multiple transactions, when call getTransactionById() with matching ID it should return correct transaction",
             result = transactionManager.getTransactionById(2) ?: "null",
-            expectedResult = 2
+            expectedResult = Transaction(
+                transactionId = 2,
+                transactionDescription = "description",
+                transactionType = TransactionType.INCOME,
+                transactionAmount = 2000.0,
+                transactionDate = 12548,
+                transactionCategory = Category(1,"food")
+            )
         )
     }
 
