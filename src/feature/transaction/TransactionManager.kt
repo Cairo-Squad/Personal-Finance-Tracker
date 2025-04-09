@@ -20,11 +20,11 @@ class TransactionManager(
     }
 
     fun getTransactionById(transactionId: Int):Transaction?{
-        TODO("Not yet implemented")
+        return null
     }
 
     fun getAllTransactions(): List<Transaction> {
-        TODO("Not yet implemented")
+        return emptyList()
     }
 
     fun getReportByMonth(month: String): List<Transaction>{
