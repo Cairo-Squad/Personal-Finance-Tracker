@@ -1,11 +1,11 @@
 package feature.cliController.cliDispatcher
 
 import feature.cliController.ioController.IOController
-import feature.transaction.TransactionManager
+import feature.transaction.TransactionManagerImpl
 
 // TODO: Implement!!
 class CLIDispatcherImpl(
-    private val transactionManager: TransactionManager,
+    private val transactionManager: TransactionManagerImpl,
     private val ioController: IOController
 ) : CLIDispatcher {
 

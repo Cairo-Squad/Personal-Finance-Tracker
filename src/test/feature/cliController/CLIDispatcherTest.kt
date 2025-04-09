@@ -2,7 +2,7 @@ package test.feature.cliController
 
 import datasource.MemoryStorage
 import feature.cliController.cliDispatcher.CLIDispatcherImpl
-import feature.transaction.TransactionManager
+import feature.transaction.TransactionManagerImpl
 
 fun main() {
     testAddTransactionOption()
@@ -16,7 +16,7 @@ fun main() {
 private fun testAddTransactionOption() {
     val ioController = IOControllerMock(listOf())
     // TODO: Create a mock!!!
-    val transactionManager = TransactionManager(MemoryStorage())
+    val transactionManager = TransactionManagerImpl(MemoryStorage())
     val cliDispatcher = CLIDispatcherImpl(transactionManager, ioController)
     cliDispatcher.dispatch(1)
     println(ioController.getOutputs())
@@ -25,7 +25,7 @@ private fun testAddTransactionOption() {
 private fun testEditTransactionOption() {
     val ioController = IOControllerMock(listOf())
     // TODO: Create a mock!!!
-    val transactionManager = TransactionManager(MemoryStorage())
+    val transactionManager = TransactionManagerImpl(MemoryStorage())
     val cliDispatcher = CLIDispatcherImpl(transactionManager, ioController)
     cliDispatcher.dispatch(2)
     println(ioController.getOutputs())
@@ -34,7 +34,7 @@ private fun testEditTransactionOption() {
 private fun testDeleteTransactionOption() {
     val ioController = IOControllerMock(listOf())
     // TODO: Create a mock!!!
-    val transactionManager = TransactionManager(MemoryStorage())
+    val transactionManager = TransactionManagerImpl(MemoryStorage())
     val cliDispatcher = CLIDispatcherImpl(transactionManager, ioController)
     cliDispatcher.dispatch(3)
     println(ioController.getOutputs())
@@ -43,7 +43,7 @@ private fun testDeleteTransactionOption() {
 private fun testViewTransactionOption() {
     val ioController = IOControllerMock(listOf())
     // TODO: Create a mock!!!
-    val transactionManager = TransactionManager(MemoryStorage())
+    val transactionManager = TransactionManagerImpl(MemoryStorage())
     val cliDispatcher = CLIDispatcherImpl(transactionManager, ioController)
     cliDispatcher.dispatch(4)
     println(ioController.getOutputs())
@@ -52,7 +52,7 @@ private fun testViewTransactionOption() {
 private fun testGetSummaryOption() {
     val ioController = IOControllerMock(listOf())
     // TODO: Create a mock!!!
-    val transactionManager = TransactionManager(MemoryStorage())
+    val transactionManager = TransactionManagerImpl(MemoryStorage())
     val cliDispatcher = CLIDispatcherImpl(transactionManager, ioController)
     cliDispatcher.dispatch(5)
     println(ioController.getOutputs())
@@ -61,7 +61,7 @@ private fun testGetSummaryOption() {
 private fun testInvalidOption() {
     val ioController = IOControllerMock(listOf())
     // TODO: Create a mock!!!
-    val transactionManager = TransactionManager(MemoryStorage())
+    val transactionManager = TransactionManagerImpl(MemoryStorage())
     val cliDispatcher = CLIDispatcherImpl(transactionManager, ioController)
     cliDispatcher.dispatch(100)
     println(ioController.getOutputs())
