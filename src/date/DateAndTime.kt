@@ -1,12 +1,9 @@
 package date
 
-import java.time.LocalDateTime
-
 data class DateAndTime(
     private var date: String,
     private var time: String
 ) {
-
     fun setDate(year: Int, month: Int, day: Int) {
         date = "$day-$month-$year"
     }
