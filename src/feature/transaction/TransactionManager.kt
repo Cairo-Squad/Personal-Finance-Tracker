@@ -19,7 +19,7 @@ class TransactionManager(
         TODO("Not yet implemented")
     }
 
-    fun getTransactionById(transactionId: Int){
+    fun getTransactionById(transactionId: Int):Transaction?{
         TODO("Not yet implemented")
     }
 
