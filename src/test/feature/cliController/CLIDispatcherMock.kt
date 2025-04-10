@@ -5,7 +5,7 @@ import feature.cliController.ioController.IOController
 
 class CLIDispatcherMock(private val ioController: IOController) : CLIDispatcher {
 
-    override fun dispatch(command: Int) {
+    override fun dispatch(userInput: Int) {
         ioController.write("Done")
     }
 }
