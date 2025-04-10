@@ -3,91 +3,85 @@ package util
 import model.Category
 
 object CategoryManager {
-    fun checkCategoryManager(choose:Int,categories: MutableList<Category>){
-        if(choose==1)
-        {
-            println("enter number of category ")
-            val userInput= readln()
-            checkCategorySelection(categories,userInput)
-        }else{
-            println("enter name of category ")
-            val userInput= readln()
-            checkNewCategoryName(categories,userInput)
-        }
 
-    }
-
-
-    fun checkCategorySelection(
+    fun validateCategorySelection(
         categories: MutableList<Category>,
-        userInput: String
+        selectedCategoryId: String
     ): Boolean {
-        if (userInput == "") {
+        if (selectedCategoryId == "") {
             return false
         }
 
         val id: Int?
-        val userInt = userInput.toIntOrNull()
-        if (userInt != null) {
-            id = userInt
+        val selectedCategoryIdInt = selectedCategoryId.toIntOrNull()
+
+        if (selectedCategoryIdInt != null) {
+            id = selectedCategoryIdInt
         } else {
             return false
         }
-        if (0 < id || id < categories.size) {
 
-            for (category in categories) {
-                if (category.categoryId == id) {
-                    return true
-                }
+        for (category in categories) {
+            if (category.categoryId == id) {
+                return true
             }
         }
-
         return false
     }
 
-    fun checkNewCategoryName(
+ fun validateNewCategoryName(
         categories: MutableList<Category>,
-        userInput: String
-    ): Boolean {
-        if (userInput.isEmpty()) {
-            return false
-        }
+        newCategoryName: String
+    ): Int {
 
-        var Found = false
-        val inputName = userInput.lowercase()
+     if (newCategoryName.isEmpty()) {
+         return 0 // Invalid
+     }
 
-        for (category in categories) {
-            val categoryName = category.categoryName.lowercase()
+     val userNG = newCategoryName.lowercase()
+     for (category in categories) {
+         val categoryName= category.categoryName.lowercase()
+         // already exist
+         if (categoryName==userNG){
+             return 1
+         }
+         //  categoryName is match  in list of category
+         if (categoryName.contains(userNG)) {
+             return 2
+         }
 
-            if (categoryName.contains(inputName)) {
-                Found = true
-                println("Found `$inputName` matches `$categoryName`")
-                println("Enter 1 to if you want $categoryName category, or 2 to create a new category$inputName:")
+     }
+     // no found . new category added
+     val newId = categories.size + 1
+     val newCategory = Category(newId, newCategoryName)
+     categories.add(newCategory)
+     return 3
 
-                val userDecision = readlnOrNull()?.toIntOrNull()
+    }
 
-                if (userDecision == 1) {
-                    println("this category already exist")
-                } else if (userDecision == 2) {
+    fun addCategoryDecision(
+        categories: MutableList<Category>,
+        newCategoryName: String,
+        userAddOrNot: Int
+    ):Boolean {
+        when (userAddOrNot) {
+            1 -> {
+               //You have chosen to use an existing category.
+                return true
+            }
+            2 -> {
+                //  add new category
+                if (newCategoryName.isNotEmpty()) {
                     val newId = categories.size + 1
-                    val newCategory = Category(newId, userInput)
-                    categories.add(newCategory) // new
-                    // println(categories)
-                } else {
-                    return false
+                    categories.add(Category(newId, newCategoryName))
                 }
-                break
+                return true
+            }
+            else -> {
+                //println("Invalid choice. Please enter 1 or 2.")
+                return false
             }
         }
-
-        if (!Found) {
-            val newId = categories.size + 1
-            val newCategory = Category(newId, userInput)
-            categories.add(newCategory)
-            // println(categories)
-        }
-
-        return true
     }
 
 }

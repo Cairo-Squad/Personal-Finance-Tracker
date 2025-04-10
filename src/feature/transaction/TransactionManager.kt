@@ -8,7 +8,7 @@ interface TransactionManager {
 
     fun addTransaction(transaction: Transaction)
 
-    fun updateTransaction(transaction: Transaction)
+    fun updateTransaction(transaction: Transaction): Boolean
 
     fun deleteTransaction(transactionId: Int)
 

@@ -10,12 +10,14 @@ class MemoryStorage : Storage {
         list.add(transaction)
     }
 
-    override fun updateTransaction(transaction: Transaction) {
+    override fun updateTransaction(transaction: Transaction): Boolean {
         val index = list.indexOfFirst { it.transactionId == transaction.transactionId }
-        if (index != -1) {
-            list[index] = transaction
-        }
+        if (index == -1) return false
+
+        list[index] = transaction
+        return true
     }
+
     override fun deleteTransaction(transactionId: Int) {
         val index = list.indexOfFirst { it.transactionId == transactionId }
         if (index != -1) {
