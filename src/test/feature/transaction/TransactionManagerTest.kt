@@ -57,7 +57,8 @@ fun main() {
         )
         val fakeMemoryStorage = FakeMemoryStorage(list)
         val transactionManager = TransactionManager(fakeMemoryStorage)
-        test.storage.check(
+
+        check(
             name = "Given a list with one transaction, when call getTransactionById() with non-matching ID it should return null",
             result = transactionManager.getTransactionById(2) ?: "null",
             expectedResult = "null"
@@ -97,7 +98,7 @@ fun main() {
         val fakeMemoryStorage = FakeMemoryStorage(list)
         val transactionManager = TransactionManager(fakeMemoryStorage)
 
-        test.storage.check(
+        check(
             name = "Given a list with multiple transactions, when call getTransactionById() with matching ID it should return correct transaction",
             result = transactionManager.getTransactionById(2) ?: "null",
             expectedResult = Transaction(
@@ -143,7 +144,7 @@ fun main() {
         val fakeMemoryStorage = FakeMemoryStorage(list)
         val transactionManager = TransactionManager(fakeMemoryStorage)
 
-        test.storage.check(
+        check(
             name = "Given a list with multiple transactions, when call getTransactionById() with non-matching ID it should return null",
             result = transactionManager.getTransactionById(4) ?: "null",
             expectedResult = "null"
@@ -198,13 +199,13 @@ fun main() {
         val fakeMemoryStorage = MemoryStorage()
         val transactionManager = TransactionManager(fakeMemoryStorage)
 
-        fakeMemoryStorage.list.add(transaction1)
-        fakeMemoryStorage.list.add(transaction2)
-        fakeMemoryStorage.list.add(transaction3)
+        fakeMemoryStorage.addTransaction(transaction1)
+        fakeMemoryStorage.addTransaction(transaction2)
+        fakeMemoryStorage.addTransaction(transaction3)
         check(
             name = "Given an empty list, when return the list then should return the list",
             result = transactionManager.getAllTransactions(),
-            expectedResult = fakeMemoryStorage.list
+            expectedResult = fakeMemoryStorage.getAllTransactions()
         )
     }
 
