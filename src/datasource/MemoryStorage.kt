@@ -4,37 +4,37 @@ import model.Transaction
 
 class MemoryStorage : Storage {
 
-    private val list = mutableListOf<Transaction>()
+    private val transactionsList = mutableListOf<Transaction>()
 
     override fun addTransaction(transaction: Transaction) {
-        list.add(transaction)
+        transactionsList.add(transaction)
     }
 
     override fun updateTransaction(transaction: Transaction): Boolean {
-        val index = list.indexOfFirst { it.transactionId == transaction.transactionId }
+        val index = transactionsList.indexOfFirst { it.transactionId == transaction.transactionId }
         if (index == -1) return false
 
-        list[index] = transaction
+        transactionsList[index] = transaction
         return true
     }
 
     override fun deleteTransaction(transactionId: Int) {
-        val index = list.indexOfFirst { it.transactionId == transactionId }
+        val index = transactionsList.indexOfFirst { it.transactionId == transactionId }
         if (index != -1) {
-            list.removeAt(index)
+            transactionsList.removeAt(index)
         }
     }
 
     override fun getTransactionById(transactionId: Int):Transaction? {
-        return list.find { it.transactionId == transactionId }
+        return transactionsList.find { it.transactionId == transactionId }
     }
 
     override fun getAllTransactions(): List<Transaction> {
-        return list
+        return transactionsList
     }
 
     override fun getReportByMonth(month: String): List<Transaction> {
-//        val newList=list.filter { transaction ->
+//        val newList=transactionsList.filter { transaction ->
 //            val parts = transaction.transactionDate.split("/") // dd/mm/yy ask them
 //            if (parts.size == 3) {
 //                val transactionMonth = parts[1].toIntOrNull()
@@ -44,7 +44,7 @@ class MemoryStorage : Storage {
 //            }
 //        }
 
-        return list
+        return transactionsList
     }
 
     override fun getNewTransactionId(): Int {
