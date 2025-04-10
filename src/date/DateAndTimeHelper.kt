@@ -12,6 +12,8 @@ const val PM = "PM"
 const val FORMAT = "%02d:%02d %s"
 const val SYSTEM_12_Hours = "hh:mm a"
 const val SYSTEM_24_Hours = "HH:mm"
+const val MAX_YEAR = 2030
+const val MIN_YEAR = 2020
 
 fun showTime12Hours(time: LocalTime?): String? {
     val displayFormatter = DateTimeFormatter.ofPattern(SYSTEM_12_Hours)
