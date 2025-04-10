@@ -1,6 +1,7 @@
 package feature.transaction
 
 import model.Transaction
+import java.time.LocalDateTime
 
 interface TransactionManager {
 
@@ -8,11 +9,11 @@ interface TransactionManager {
 
     fun updateTransaction(transaction: Transaction)
 
-    fun deleteTransaction(transaction: Transaction)
+    fun deleteTransaction(transactionId: Int)
 
-    fun getTransactionById(transactionId: Int)
+    fun getTransactionById(transactionId: Int): Transaction?
 
     fun getAllTransactions(): List<Transaction>
 
-    fun getReportByMonth(month: String): List<Transaction>
+    fun getReportByMonth(dateTime: LocalDateTime): List<Any>
 }
