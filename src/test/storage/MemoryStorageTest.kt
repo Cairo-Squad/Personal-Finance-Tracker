@@ -1,3 +1,4 @@
+import datasource.MemoryStorage
 import datasource.Storage
 import model.Category
 import model.Transaction
@@ -45,10 +46,10 @@ fun main() {
     // Empty storage
     run {
         val storage = MemoryStorage()
-        check(
+        test(
             name = "Given an empty list of transactions, when call getTransactionById() it should return null",
             result = storage.getTransactionById(1) ?: "null",
-            expectedResult = "null"
+            correctResult = "null"
         )
     }
 
@@ -66,10 +67,10 @@ fun main() {
         )
         storage.addTransaction(transaction)
 
-        check(
+        test(
             name = "Given a list with one transaction, when call getTransactionById() with matching ID it should return the transaction",
             result = storage.getTransactionById(1) ?: "null",
-            expectedResult = transaction
+            correctResult = transaction
         )
     }
 
@@ -86,10 +87,10 @@ fun main() {
         )
         storage.addTransaction(transaction)
 
-        check(
+        test(
             name = "Given a list with one transaction, when call getTransactionById() with non-matching ID it should return null",
             result = storage.getTransactionById(2) ?: "null",
-            expectedResult = "null"
+            correctResult = "null"
         )
     }
 
@@ -127,10 +128,10 @@ fun main() {
         storage.addTransaction(transaction2)
         storage.addTransaction(transaction3)
 
-        check(
+        test(
             name = "Given a list with multiple transactions, when call getTransactionById() with matching ID it should return correct transaction",
             result = storage.getTransactionById(2) ?: "null",
-            expectedResult = transaction2
+            correctResult = transaction2
         )
     }
 
@@ -167,10 +168,10 @@ fun main() {
         storage.addTransaction(transaction2)
         storage.addTransaction(transaction3)
 
-        check(
+        test(
             name = "Given a list with multiple transactions, when call getTransactionById() with non-matching ID it should return null",
             result = storage.getTransactionById(4) ?: "null",
-            expectedResult = "null"
+            correctResult = "null"
         )
     }
     //endregion
@@ -182,10 +183,10 @@ fun main() {
     run {
 
         val storage = MemoryStorage()
-        check(
+        test(
             name = "Given an empty list, when call getAllTransaction then should its size equal to zero",
             result = storage.getAllTransactions().size,
-            expectedResult = 0
+            correctResult = 0
         )
     }
 
@@ -222,10 +223,10 @@ fun main() {
         storage.addTransaction(transaction1)
         storage.addTransaction(transaction2)
         storage.addTransaction(transaction3)
-        check(
+        test(
             name = "Given an empty list, when return the list then should return the size of the list",
             result = storage.getAllTransactions().size,
-            expectedResult = 3
+            correctResult = 3
         )
     }
 
