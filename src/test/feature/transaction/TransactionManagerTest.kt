@@ -85,7 +85,31 @@ class TransactionManagerMock(
     }
 
     fun updateTransaction(transaction: Transaction): Boolean {
-        return false
+        if(transaction.transactionId == null) return false
+        if(transaction.transactionAmount == null
+            && transaction.transactionDescription == null
+            && transaction.transactionType == null
+            && transaction.transactionCategory == null
+            && transaction.transactionDate == null
+        ) {
+            return false
+        }
+
+        var counter = 0
+        if(transaction.transactionAmount != null ) counter++
+        if(transaction.transactionDescription != null ) counter++
+        if(transaction.transactionDate != null ) counter++
+        if(transaction.transactionType != null ) counter++
+        if(transaction.transactionCategory != null ) counter++
+
+        if(counter > 1) return false
+
+        when{
+            transaction.transactionAmount != null && transaction.transactionAmount < 0 -> return false
+            transaction.transactionDescription != null && transaction.transactionDescription.isEmpty() -> return false
+        }
+
+        return true
     }
 
     fun deleteTransaction(transaction: Transaction) {
