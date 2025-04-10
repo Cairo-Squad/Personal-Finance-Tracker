@@ -5,7 +5,7 @@ import model.Transaction
 import java.time.LocalDateTime
 
 class TransactionManagerImpl(
-    private val storage: Storage
+    private val storage: Storage,
 ) : TransactionManager {
 
     override fun addTransaction(transaction: Transaction) {
