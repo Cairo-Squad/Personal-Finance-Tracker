@@ -1,10 +1,10 @@
 package test.feature.transaction
 
-import data_source.Storage
+import datasource.Storage
 import model.Category
 import model.Transaction
 import model.TransactionType
-import test.data_source.StorageMock
+import test.storage.StorageMock
 import test.util.test
 import java.time.LocalDateTime
 
