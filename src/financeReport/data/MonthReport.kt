@@ -1,7 +1,9 @@
 package financeReport.data
 
+import java.time.LocalDateTime
+
 data class MonthReport(
-    val date: String,
+    val date: LocalDateTime,
     val income: Double,
     val expenses: Double,
     val netBalance: Double = income - expenses,
