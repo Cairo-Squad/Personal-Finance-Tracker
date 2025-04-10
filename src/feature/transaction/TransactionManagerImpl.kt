@@ -8,9 +8,17 @@ class TransactionManagerImpl(
     private val storage: Storage
 ) : TransactionManager {
 
-    override fun addTransaction(transaction: Transaction) {
+
+    override fun addTransaction(transaction: Transaction):Boolean {
         val newTransaction = transaction.copy(transactionId = storage.getNewTransactionId())
-        storage.addTransaction(newTransaction)
+
+        if (transaction.transactionAmount == null || transaction.transactionAmount <= 0) return false
+        if (transaction.transactionDescription.isNullOrBlank()) return false
+        if (transaction.transactionCategory == null) return false
+        if (transaction.transactionType == null) return false
+        if (transaction.transactionDate == null) return false
+
+       return storage.addTransaction(newTransaction)
     }
 
     override fun updateTransaction(transaction: Transaction) {

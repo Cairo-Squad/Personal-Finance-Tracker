@@ -6,7 +6,7 @@ import java.time.LocalDateTime
 
 interface TransactionManager {
 
-    fun addTransaction(transaction: Transaction)
+    fun addTransaction(transaction: Transaction) : Boolean
 
     fun updateTransaction(transaction: Transaction)
 

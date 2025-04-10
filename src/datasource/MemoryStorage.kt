@@ -6,8 +6,11 @@ class MemoryStorage : Storage {
 
     private val list = mutableListOf<Transaction>()
 
-    override fun addTransaction(transaction: Transaction) {
+
+    override fun addTransaction(transaction: Transaction): Boolean {
+        val size = list.size
         list.add(transaction)
+        return list.size == (1+size)
     }
 
     override fun updateTransaction(transaction: Transaction) {
