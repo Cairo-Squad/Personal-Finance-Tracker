@@ -12,29 +12,31 @@ class MonthlyFinanceReporterImpl(private val transactions: List<Transaction>) : 
     override fun getMonthReport(transactionDate: LocalDateTime): MonthReport {
         return MonthReport(
             date = transactionDate,
-            income = getMonthTotalIncome(
+            income = getMonthIncome(
                 transactionDate
             ) ?: 0.0,
-            expenses = getMonthTotalExpenses(transactionDate) ?: 0.0,
+            expenses = getMonthExpenses(transactionDate) ?: 0.0,
         )
     }
 
-    override fun getMonthTotalIncome(transactionDate: LocalDateTime): Double? {
+    override fun getMonthIncome(transactionDate: LocalDateTime): Double? {
 
         val matchedTransactions = transactions.filter {
             it.transactionType!! == TransactionType.INCOME &&
-                    it.transactionDate == transactionDate
+                    it.transactionDate?.year == transactionDate.year &&
+                    it.transactionDate.month == transactionDate.month
         }
 
         return if (matchedTransactions.isEmpty()) null
         else matchedTransactions.sumOf { it.transactionAmount!! }
     }
 
-    override fun getMonthTotalExpenses(transactionDate: LocalDateTime): Double? {
+    override fun getMonthExpenses(transactionDate: LocalDateTime): Double? {
 
         val matchedTransactions: List<Transaction> = transactions.filter {
             it.transactionType == TransactionType.EXPENSE &&
-                    it.transactionDate == transactionDate
+                    it.transactionDate?.year == transactionDate.year &&
+                    it.transactionDate.month == transactionDate.month
         }
 
         return if (matchedTransactions.isEmpty()) null
@@ -44,7 +46,8 @@ class MonthlyFinanceReporterImpl(private val transactions: List<Transaction>) : 
     override fun getMonthNetBalance(transactionDate: LocalDateTime): Double? {
 
         val matchedTransactions: List<Transaction> = transactions.filter {
-            it.transactionDate == transactionDate
+            it.transactionDate?.year == transactionDate.year &&
+                    it.transactionDate.month == transactionDate.month
         }
 
         return if (matchedTransactions.isEmpty()) null
@@ -63,7 +66,8 @@ class MonthlyFinanceReporterImpl(private val transactions: List<Transaction>) : 
 
         val matchedCategories = transactions.filter {
             it.transactionType == transactionType &&
-                    it.transactionDate == transactionDate
+                    it.transactionDate?.year == transactionDate.year &&
+                    it.transactionDate.month == transactionDate.month
         }
         if (matchedCategories.isEmpty()) return null
 
@@ -80,7 +84,7 @@ class MonthlyFinanceReporterImpl(private val transactions: List<Transaction>) : 
         )
     }
 
-    override fun getMonthReportForASpecificCategory(
+    override fun getMonthReportForCategory(
         transactionType: TransactionType,
         category: Category,
         transactionDate: LocalDateTime

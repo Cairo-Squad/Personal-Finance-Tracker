@@ -10,15 +10,15 @@ interface MonthlyFinanceReporter {
 
     fun getMonthReport(transactionDate: LocalDateTime): MonthReport?
 
-    fun getMonthTotalIncome(transactionDate:LocalDateTime): Double?
+    fun getMonthIncome(transactionDate:LocalDateTime): Double?
 
-    fun getMonthTotalExpenses(transactionDate:LocalDateTime): Double?
+    fun getMonthExpenses(transactionDate:LocalDateTime): Double?
 
     fun getMonthNetBalance(transactionDate:LocalDateTime): Double?
 
     fun getMonthReportOfAllCategories(transactionType: TransactionType, transactionDate:LocalDateTime): CategoryReport?
 
-    fun getMonthReportForASpecificCategory(
+    fun getMonthReportForCategory(
         transactionType: TransactionType,
         category: Category,
         transactionDate:LocalDateTime
