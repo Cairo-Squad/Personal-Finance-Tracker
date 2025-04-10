@@ -1,11 +1,9 @@
-package data_source
+package test.storage
 
+import datasource.Storage
 import model.Transaction
 
-class MemoryStorage : Storage {
-
-    private val transactions = mutableListOf<Transaction>()
-
+class StorageMock: Storage {
     override fun addTransaction(transaction: Transaction) {
         TODO("Not yet implemented")
     }
@@ -18,7 +16,7 @@ class MemoryStorage : Storage {
         TODO("Not yet implemented")
     }
 
-    override fun getTransactionById(transactionId: Int): Transaction {
+    override fun getTransactionById(transactionId: Int): Transaction? {
         TODO("Not yet implemented")
     }
 
@@ -27,6 +25,10 @@ class MemoryStorage : Storage {
     }
 
     override fun getReportByMonth(month: String): List<Transaction> {
+        TODO("Not yet implemented")
+    }
+
+    override fun getNewTransactionId(): Int {
         TODO("Not yet implemented")
     }
 }
