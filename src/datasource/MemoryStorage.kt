@@ -23,12 +23,12 @@ class MemoryStorage : Storage {
         }
     }
 
-    override fun getTransactionById(transactionId: Int): Transaction? {
+    override fun getTransactionById(transactionId: Int):Transaction? {
         return list.find { it.transactionId == transactionId }
     }
 
     override fun getAllTransactions(): List<Transaction> {
-        return list.toList()
+        return list
     }
 
     override fun getReportByMonth(month: String): List<Transaction> {
