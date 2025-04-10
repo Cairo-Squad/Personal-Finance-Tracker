@@ -156,7 +156,7 @@ class TransactionManagerMock(
 
 fun runCheckAddTransaction() {
 
-    check(
+    test(
         "Valid transaction should return true",
         addTransaction(
             "Salary",
@@ -170,7 +170,7 @@ fun runCheckAddTransaction() {
         true
     )
 
-    check(
+    test(
         "Invalid year less than 1900 should return false",
         addTransaction(
             "Freelance",
@@ -184,7 +184,7 @@ fun runCheckAddTransaction() {
         false
     )
 
-    check(
+    test(
         "Invalid year less than 1900 should return false",
         addTransaction(
             "Freelance",
@@ -198,7 +198,7 @@ fun runCheckAddTransaction() {
         false
     )
 
-    check(
+    test(
         "Invalid month should return false",
         addTransaction(
             "Shopping",
@@ -212,7 +212,7 @@ fun runCheckAddTransaction() {
         false
     )
 
-    check(
+    test(
         "Invalid day should return false",
         addTransaction(
             "Rent",
@@ -226,7 +226,7 @@ fun runCheckAddTransaction() {
         false
     )
 
-    check(
+    test(
         "Negative amount should return false",
         addTransaction(
             "Grocery",
@@ -241,7 +241,7 @@ fun runCheckAddTransaction() {
     )
 
 
-    check(
+    test(
         "Empty description should return false",
         addTransaction(
             "",
