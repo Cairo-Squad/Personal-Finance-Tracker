@@ -9,22 +9,8 @@ class TransactionManagerImpl(
 ) : TransactionManager {
 
     override fun addTransaction(transaction: Transaction) {
-        /*val calendar = Calendar.getInstance().apply {
-            set(Calendar.YEAR, year.toInt())
-            set(Calendar.MONTH, month.toInt() - 1)
-            set(Calendar.DAY_OF_MONTH, day.toInt())
-        }
-        val dateInMillis = calendar.timeInMillis
-        val transaction = Transaction(
-            transactionId = storage.getNewTransactionId(),
-            transactionDescription = description,
-            transactionType = transactionType,
-            transactionAmount = amount,
-            transactionDate = dateInMillis,
-            transactionCategory = transactionCategory,
-        )
-
-        storage.addTransaction(transaction)*/
+        val newTransaction = transaction.copy(transactionId = storage.getNewTransactionId())
+        storage.addTransaction(newTransaction)
     }
 
     override fun updateTransaction(transaction: Transaction) {

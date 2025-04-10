@@ -16,6 +16,7 @@ class MemoryStorage : Storage {
             list[index] = transaction
         }
     }
+
     override fun deleteTransaction(transactionId: Int) {
         val index = list.indexOfFirst { it.transactionId == transactionId }
         if (index != -1) {
@@ -23,7 +24,7 @@ class MemoryStorage : Storage {
         }
     }
 
-    override fun getTransactionById(transactionId: Int):Transaction? {
+    override fun getTransactionById(transactionId: Int): Transaction? {
         return list.find { it.transactionId == transactionId }
     }
 
@@ -46,6 +47,6 @@ class MemoryStorage : Storage {
     }
 
     override fun getNewTransactionId(): Int {
-        TODO("Not yet implemented")
+        return (list.lastOrNull()?.transactionId ?: 0) + 1
     }
 }
