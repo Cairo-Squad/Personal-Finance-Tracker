@@ -10,13 +10,14 @@ class TransactionManagerImpl(
 
 
     override fun addTransaction(transaction: Transaction):Boolean {
-        val newTransaction = transaction.copy(transactionId = storage.getNewTransactionId())
 
         if (transaction.transactionAmount == null || transaction.transactionAmount <= 0) return false
         if (transaction.transactionDescription.isNullOrBlank()) return false
         if (transaction.transactionCategory == null) return false
         if (transaction.transactionType == null) return false
         if (transaction.transactionDate == null) return false
+
+        val newTransaction = transaction.copy(transactionId = storage.getNewTransactionId())
 
        return storage.addTransaction(newTransaction)
     }

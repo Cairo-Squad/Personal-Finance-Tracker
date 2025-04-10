@@ -38,7 +38,7 @@ class StorageMock : Storage {
 
     private val transactions = emptyList<Transaction>()
 
-    override fun addTransaction(transaction: Transaction) {
+    override fun addTransaction(transaction: Transaction): Boolean {
         TODO("Not yet implemented")
     }
 
