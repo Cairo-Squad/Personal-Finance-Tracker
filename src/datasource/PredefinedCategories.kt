@@ -1,15 +1,15 @@
-package util
+package datasource
 
 import model.Category
 
 object PredefinedCategories {
-    private val _incomeCategories = mutableListOf(
+   private val _incomeCategories = mutableListOf(
         Category(1, "Salary"),
         Category(2, "Investments"),
         Category(3, "Business"),
         Category(4, "Other")
     )
-    val incomeCategories: List<Category> get() = _incomeCategories
+    val incomeCategories: MutableList<Category> get() = _incomeCategories
 
 
     private val _expenseCategories = mutableListOf(
@@ -21,7 +21,7 @@ object PredefinedCategories {
         Category(6, "Food"),
         Category(7, "Other")
     )
-    val expenseCategories: List<Category> get() = _expenseCategories
+    val expenseCategories: MutableList<Category> get() = _expenseCategories
 
 
     fun addIncomeCategory(category: Category) {
