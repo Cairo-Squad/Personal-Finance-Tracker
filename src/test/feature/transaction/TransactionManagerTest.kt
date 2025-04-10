@@ -6,7 +6,7 @@ import model.Transaction
 import model.TransactionType
 import test.data_source.StorageMock
 import test.util.test
-import java.time.LocalDate
+import java.time.LocalDateTime
 
 fun main() {
 
@@ -18,7 +18,7 @@ fun main() {
         transactionDescription = "old description",
         transactionType = TransactionType.EXPENSE,
         transactionAmount = 20.0,
-        transactionDate = LocalDate.of(2025, 1, 1),
+        transactionDate = LocalDateTime.now(),
         transactionCategory = Category(1, "Food")
     )
 

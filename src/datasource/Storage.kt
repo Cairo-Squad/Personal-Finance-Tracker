@@ -1,19 +1,13 @@
-package feature.transaction
+package datasource
 
 import model.Transaction
-import java.time.LocalDateTime
 
-interface TransactionManager {
-
+interface Storage {
     fun addTransaction(transaction: Transaction)
-
     fun updateTransaction(transaction: Transaction)
-
     fun deleteTransaction(transactionId: Int)
-
-    fun getTransactionById(transactionId: Int): Transaction?
-
+    fun getTransactionById(transactionId: Int):Transaction?
     fun getAllTransactions(): List<Transaction>
-
-    fun getReportByMonth(dateTime: LocalDateTime): List<Any>
+    fun getReportByMonth(month: String): List<Transaction>
 }
+
