@@ -10,7 +10,7 @@ interface TransactionManager {
 
     fun updateTransaction(transaction: Transaction)
 
-    fun deleteTransaction(transactionId: Int)
+    fun deleteTransaction(transactionId: Int):Boolean
 
     fun getTransactionById(transactionId: Int): Transaction?
 

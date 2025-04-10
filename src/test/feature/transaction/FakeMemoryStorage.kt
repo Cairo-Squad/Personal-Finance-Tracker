@@ -13,7 +13,7 @@ class FakeMemoryStorage(private val list:MutableList<Transaction>): Storage {
     }
 
     override fun deleteTransaction(transactionId: Int) {
-        TODO("Not yet implemented")
+        list.removeIf { it.transactionId == transactionId }
     }
 
     override fun getTransactionById(transactionId: Int): Transaction? {
