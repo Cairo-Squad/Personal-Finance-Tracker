@@ -147,8 +147,6 @@ fun main() {
             4
         ), expectedResult = MonthReport("", 3.4, 3.4, 3.4)
     )
-
-
 }
 
 fun testFunction(

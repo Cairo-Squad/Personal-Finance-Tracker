@@ -4,9 +4,7 @@ import financeReport.data.*
 import java.time.Instant
 import java.time.ZoneId
 
-class MonthlyFinanceReporter(
-    private val transactions: List<Transaction>
-) : IMonthlyFinanceReporter {
+class MonthlyFinanceReporter(private val transactions: List<Transaction>) : IMonthlyFinanceReporter {
 
     /***
      * This function calculate the total income, total expenses, and net balance for specific month of a year.
@@ -28,12 +26,12 @@ class MonthlyFinanceReporter(
     override fun getMonthReport(year: Int, month: Int): MonthReport {
         return MonthReport(
             date = "$year-$month",
-            income = getMonthTotalIncome(year, month),
-            expenses = getMonthTotalExpenses(year, month),
+            income = getMonthTotalIncome(year, month) ?: 0.0,
+            expenses = getMonthTotalExpenses(year, month) ?: 0.0,
         )
     }
 
-    override fun getMonthTotalIncome(year: Int, month: Int): Double {
+    override fun getMonthTotalIncome(year: Int, month: Int): Double? {
         validateDate(year, month)
 
         val matchedTransactions = transactions.filter {
@@ -42,11 +40,11 @@ class MonthlyFinanceReporter(
                     it.transactionDate.toLocalMonth() == month
         }
 
-        if (matchedTransactions.isEmpty()) throw NoSuchElementException(NO_DATA_FOUND_FOR_THAT_MONTH)
-        else return matchedTransactions.sumOf { it.transactionAmount }
+        return if (matchedTransactions.isEmpty()) null
+        else matchedTransactions.sumOf { it.transactionAmount }
     }
 
-    override fun getMonthTotalExpenses(year: Int, month: Int): Double {
+    override fun getMonthTotalExpenses(year: Int, month: Int): Double? {
         validateDate(year, month)
 
         val matchedTransactions = transactions.filter {
@@ -55,11 +53,11 @@ class MonthlyFinanceReporter(
                     it.transactionDate.toLocalMonth() == month
         }
 
-        if (matchedTransactions.isEmpty()) throw NoSuchElementException(NO_DATA_FOUND_FOR_THAT_MONTH)
-        else return matchedTransactions.sumOf { it.transactionAmount }
+        return if (matchedTransactions.isEmpty()) null
+        else matchedTransactions.sumOf { it.transactionAmount }
     }
 
-    override fun getMonthNetBalance(year: Int, month: Int): Double {
+    override fun getMonthNetBalance(year: Int, month: Int): Double? {
         validateDate(year, month)
 
         val matchedTransactions: List<Transaction> = transactions.filter {
@@ -67,18 +65,14 @@ class MonthlyFinanceReporter(
                     it.transactionDate.toLocalMonth() == month
         }
 
-        if (matchedTransactions.isEmpty()) throw NoSuchElementException(NO_DATA_FOUND_FOR_THAT_MONTH)
+        return if (matchedTransactions.isEmpty()) null
         else return matchedTransactions.sumOf {
             if (it.transactionType == TransactionType.INCOME) it.transactionAmount else it.transactionAmount * -1
         }
     }
 
 
-    override fun getMonthReportOfAllCategories(
-        transactionType: TransactionType,
-        year: Int,
-        month: Int
-    ): CategoryReport {
+    override fun getMonthReportOfAllCategories(transactionType: TransactionType, year: Int, month: Int): CategoryReport? {
 
         validateDate(year, month)
 
@@ -87,7 +81,7 @@ class MonthlyFinanceReporter(
                     it.transactionDate.toLocalYear() == year &&
                     it.transactionDate.toLocalMonth() == month
         }
-        if (matchedCategories.isEmpty()) throw NoSuchElementException("No ${transactionType.name} found.")
+        if (matchedCategories.isEmpty()) return null
 
         val financeMap = matchedCategories.groupBy { transaction ->
             transaction.transactionCategory.categoryName
@@ -107,18 +101,17 @@ class MonthlyFinanceReporter(
         category: Category,
         year: Int,
         month: Int
-    ): Double {
+    ): Double? {
         validateDate(year, month)
-        val categories: List<Transaction> = transactions.filter {
-            transactionType == it.transactionType && it.transactionCategory == category &&
+        val matchedCategories: List<Transaction> = transactions.filter {
+            transactionType == it.transactionType && it.transactionCategory.categoryName == category.categoryName &&
                     it.transactionDate.toLocalYear() == year &&
                     it.transactionDate.toLocalMonth() == month
         }
-        return if (categories.isEmpty()) throw NoSuchElementException("No ${transactionType.name} found for ${category.categoryName} category") else categories.sumOf { it.transactionAmount }
+        return if (matchedCategories.isEmpty()) null else matchedCategories.sumOf { it.transactionAmount }
     }
 
 
-    // ----------------------------Private Functions---------------------------------
     private fun validateDate(year: Int, month: Int) {
         if (year !in 2020..2025) throw IllegalArgumentException(INVALID_YEAR)
         if (month !in 1..12) throw IllegalArgumentException(INVALID_MONTH)
