@@ -1,7 +1,7 @@
 package test.data_source
 
 
-import data_source.Storage
+import datasource.Storage
 import model.Category
 import model.Transaction
 import model.TransactionType
@@ -42,9 +42,7 @@ class StorageMock : Storage {
         TODO("Not yet implemented")
     }
 
-    override fun updateTransaction(transaction: Transaction): Boolean {
-        return false
-    }
+    override fun updateTransaction(transaction: Transaction){}
 
     override fun deleteTransaction(transactionId: Int) {
         TODO("Not yet implemented")
@@ -59,6 +57,10 @@ class StorageMock : Storage {
     }
 
     override fun getReportByMonth(month: String): List<Transaction> {
+        TODO("Not yet implemented")
+    }
+
+    override fun getNewTransactionId(): Int {
         TODO("Not yet implemented")
     }
 }
