@@ -1,5 +1,5 @@
 package feature.cliController.cliDispatcher
 
 interface CLIDispatcher {
-    fun dispatch(command: Int)
+    fun dispatch(userInput: Int)
 }

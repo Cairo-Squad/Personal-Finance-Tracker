@@ -3,10 +3,14 @@ package feature.cliController.ioController
 class IOControllerImpl : IOController {
 
     override fun read(): String? {
-        TODO("Not yet implemented")
+        return readlnOrNull()
     }
 
     override fun write(message: String) {
-        TODO("Not yet implemented")
+        print(message)
+    }
+
+    override fun writeWithNewLine(message: String) {
+        println(message)
     }
 }
