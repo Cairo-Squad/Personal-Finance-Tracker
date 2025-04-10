@@ -1,5 +1,7 @@
 package financeReport.data
 
+import model.TransactionType
+
 data class CategoryReport(
     val transactionType: TransactionType,
     val categories: Map<String, Double>,

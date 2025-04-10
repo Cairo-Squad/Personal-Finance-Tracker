@@ -1,9 +1,9 @@
 package financeReport
 
-import financeReport.data.Category
 import financeReport.data.CategoryReport
 import financeReport.data.MonthReport
-import financeReport.data.TransactionType
+import model.Category
+import model.TransactionType
 
 interface IMonthlyFinanceReporter {
 

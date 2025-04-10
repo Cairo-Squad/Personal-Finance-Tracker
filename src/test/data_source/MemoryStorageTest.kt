@@ -7,6 +7,7 @@ import model.Transaction
 import model.TransactionType
 import test.util.test
 import java.time.LocalDate
+import java.time.LocalDateTime
 
 fun main() {
 
@@ -14,7 +15,7 @@ fun main() {
     val transaction = Transaction(
         transactionId = 0,
         transactionType = TransactionType.INCOME,
-        transactionDate = LocalDate.now(),
+        transactionDate = LocalDateTime.now(),
         transactionAmount = 0.0,
         transactionCategory = Category(0, ""),
         transactionDescription = ""
