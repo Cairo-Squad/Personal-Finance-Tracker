@@ -22,6 +22,7 @@ fun main() {
     // Storage with one transaction with matching ID
     run {
         val storage = MemoryStorage()
+        val list = mutableListOf<Transaction>()
         val transaction = Transaction(
             transactionId = 1,
             transactionDescription = "description",
@@ -30,7 +31,7 @@ fun main() {
             transactionDate = 12548,
             transactionCategory = Category(1, "food")
         )
-        storage.list.add(transaction)
+        storage.addTransaction(transaction)
 
         check(
             name = "Given a list with one transaction, when call getTransactionById() with matching ID it should return the transaction",
@@ -50,7 +51,7 @@ fun main() {
             transactionDate = 12548,
             transactionCategory = Category(1, "food")
         )
-        storage.list.add(transaction)
+        storage.addTransaction(transaction)
 
         check(
             name = "Given a list with one transaction, when call getTransactionById() with non-matching ID it should return null",
@@ -89,9 +90,9 @@ fun main() {
             transactionDate = 12548,
             transactionCategory = Category(1, "food")
         )
-        storage.list.add(transaction1)
-        storage.list.add(transaction2)
-        storage.list.add(transaction3)
+        storage.addTransaction(transaction1)
+        storage.addTransaction(transaction2)
+        storage.addTransaction(transaction3)
 
         check(
             name = "Given a list with multiple transactions, when call getTransactionById() with matching ID it should return correct transaction",
@@ -129,9 +130,9 @@ fun main() {
             transactionDate = 12548,
             transactionCategory = Category(1, "food")
         )
-        storage.list.add(transaction1)
-        storage.list.add(transaction2)
-        storage.list.add(transaction3)
+        storage.addTransaction(transaction1)
+        storage.addTransaction(transaction2)
+        storage.addTransaction(transaction3)
 
         check(
             name = "Given a list with multiple transactions, when call getTransactionById() with non-matching ID it should return null",
@@ -185,13 +186,13 @@ fun main() {
 
         val storage = MemoryStorage()
 
-        storage.list.add(transaction1)
-        storage.list.add(transaction2)
-        storage.list.add(transaction3)
+        storage.addTransaction(transaction1)
+        storage.addTransaction(transaction2)
+        storage.addTransaction(transaction3)
         check(
-            name = "Given an empty list, when return the list then should return the list",
-            result = storage.getAllTransactions(),
-            expectedResult = storage.list
+            name = "Given an empty list, when return the list then should return the size of the list",
+            result = storage.getAllTransactions().size,
+            expectedResult = 3
         )
     }
 
