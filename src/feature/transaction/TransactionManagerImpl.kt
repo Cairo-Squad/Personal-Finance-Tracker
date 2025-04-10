@@ -28,31 +28,23 @@ class TransactionManagerImpl(
     }
 
     override fun updateTransaction(transaction: Transaction): Boolean {
-        if(transaction.transactionId == null) return false
-        if(transaction.transactionAmount == null
-            && transaction.transactionDescription == null
-            && transaction.transactionType == null
-            && transaction.transactionCategory == null
-            && transaction.transactionDate == null
-        ) {
-            return false
-        }
+        val transactionId = transaction.transactionId ?: return false
 
-        var counter = 0
-        if(transaction.transactionAmount != null ) counter++
-        if(transaction.transactionDescription != null ) counter++
-        if(transaction.transactionDate != null ) counter++
-        if(transaction.transactionType != null ) counter++
-        if(transaction.transactionCategory != null ) counter++
+        val notNullValuesList = listOf(
+            transaction.transactionAmount,
+            transaction.transactionDescription,
+            transaction.transactionCategory,
+            transaction.transactionType,
+            transaction.transactionDate,
+        ).filterNotNull()
 
-        if(counter > 1) return false
+        if(notNullValuesList.isEmpty() || notNullValuesList.size > 1) return false
 
-        when{
-            transaction.transactionAmount != null && transaction.transactionAmount < 0 -> return false
-            transaction.transactionDescription != null && transaction.transactionDescription.isEmpty() -> return false
-        }
+        if(transaction.transactionAmount != null && transaction.transactionAmount < 0 ) return false
 
-        return true
+        if(transaction.transactionDescription != null && transaction.transactionDescription.isEmpty()) return false
+
+        return storage.updateTransaction(transaction)
     }
 
     override fun deleteTransaction(transactionId: Int) {

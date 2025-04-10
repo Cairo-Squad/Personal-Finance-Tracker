@@ -6,7 +6,6 @@ import model.Transaction
 import model.TransactionType
 import test.storage.StorageMock
 import test.util.test
-import java.time.LocalDateTime
 
 fun main() {
 
@@ -50,7 +49,7 @@ fun main() {
         transactionAmount = -500.0
     )
     test(
-        name = "Given a transaction amount with negative number, when validating, then return false",
+        name = "Given a transaction amount with negative number, when validating, then it should return false",
         result = transactionManager.updateTransaction(transaction3),
         correctResult = false
     )
@@ -60,7 +59,7 @@ fun main() {
         transactionDescription = ""
     )
     test(
-        name = "Given a transaction description with empty string, when validating, then return false",
+        name = "Given a transaction description with empty string, when validating, then it should return false",
         result = transactionManager.updateTransaction(transaction4),
         correctResult = false
     )
@@ -70,7 +69,7 @@ fun main() {
         transactionAmount = 500.0
     )
     test(
-        name = "Given a valid transaction input, when validating, then return true",
+        name = "Given a valid transaction input, when validating, then it should return true",
         result = transactionManager.updateTransaction(transaction5),
         correctResult = true
     )
@@ -85,31 +84,7 @@ class TransactionManagerMock(
     }
 
     fun updateTransaction(transaction: Transaction): Boolean {
-        if(transaction.transactionId == null) return false
-        if(transaction.transactionAmount == null
-            && transaction.transactionDescription == null
-            && transaction.transactionType == null
-            && transaction.transactionCategory == null
-            && transaction.transactionDate == null
-        ) {
-            return false
-        }
-
-        var counter = 0
-        if(transaction.transactionAmount != null ) counter++
-        if(transaction.transactionDescription != null ) counter++
-        if(transaction.transactionDate != null ) counter++
-        if(transaction.transactionType != null ) counter++
-        if(transaction.transactionCategory != null ) counter++
-
-        if(counter > 1) return false
-
-        when{
-            transaction.transactionAmount != null && transaction.transactionAmount < 0 -> return false
-            transaction.transactionDescription != null && transaction.transactionDescription.isEmpty() -> return false
-        }
-
-        return true
+        return false
     }
 
     fun deleteTransaction(transaction: Transaction) {
