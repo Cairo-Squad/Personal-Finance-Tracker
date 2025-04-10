@@ -17,9 +17,7 @@ class FakeMemoryStorage(private val list:MutableList<Transaction>): Storage {
     }
 
     override fun getTransactionById(transactionId: Int): Transaction? {
-        val transaction = list.find { it.transactionId == transactionId }
-        if (transaction == null) return null
-        return transaction
+        return list.find { it.transactionId == transactionId }
     }
 
     override fun getAllTransactions(): List<Transaction> {
@@ -27,6 +25,10 @@ class FakeMemoryStorage(private val list:MutableList<Transaction>): Storage {
     }
 
     override fun getReportByMonth(month: String): List<Transaction> {
+        TODO("Not yet implemented")
+    }
+
+    override fun getNewTransactionId(): Int {
         TODO("Not yet implemented")
     }
 }

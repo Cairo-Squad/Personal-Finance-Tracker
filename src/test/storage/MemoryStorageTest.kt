@@ -4,6 +4,7 @@ import datasource.MemoryStorage
 import model.Category
 import model.Transaction
 import model.TransactionType
+import java.time.LocalDateTime
 
 
 fun main() {
@@ -28,7 +29,7 @@ fun main() {
             transactionDescription = "description",
             transactionType = TransactionType.INCOME,
             transactionAmount = 2000.0,
-            transactionDate = 12548,
+            transactionDate = LocalDateTime.now(),
             transactionCategory = Category(1, "food")
         )
         storage.addTransaction(transaction)
@@ -48,7 +49,7 @@ fun main() {
             transactionDescription = "description",
             transactionType = TransactionType.INCOME,
             transactionAmount = 2000.0,
-            transactionDate = 12548,
+            transactionDate = LocalDateTime.now(),
             transactionCategory = Category(1, "food")
         )
         storage.addTransaction(transaction)
@@ -69,7 +70,7 @@ fun main() {
             transactionDescription = "description",
             transactionType = TransactionType.INCOME,
             transactionAmount = 2000.0,
-            transactionDate = 12548,
+            transactionDate = LocalDateTime.now(),
             transactionCategory = Category(1, "food")
         )
 
@@ -78,7 +79,7 @@ fun main() {
             transactionDescription = "description",
             transactionType = TransactionType.INCOME,
             transactionAmount = 2000.0,
-            transactionDate = 12548,
+            transactionDate = LocalDateTime.now(),
             transactionCategory = Category(1, "food")
         )
 
@@ -87,7 +88,7 @@ fun main() {
             transactionDescription = "description",
             transactionType = TransactionType.INCOME,
             transactionAmount = 2000.0,
-            transactionDate = 12548,
+            transactionDate = LocalDateTime.now(),
             transactionCategory = Category(1, "food")
         )
         storage.addTransaction(transaction1)
@@ -109,7 +110,7 @@ fun main() {
             transactionDescription = "description",
             transactionType = TransactionType.INCOME,
             transactionAmount = 2000.0,
-            transactionDate = 12548,
+            transactionDate = LocalDateTime.now(),
             transactionCategory = Category(1, "food")
         )
 
@@ -118,7 +119,7 @@ fun main() {
             transactionDescription = "description",
             transactionType = TransactionType.INCOME,
             transactionAmount = 2000.0,
-            transactionDate = 12548,
+            transactionDate = LocalDateTime.now(),
             transactionCategory = Category(1, "food")
         )
 
@@ -127,7 +128,7 @@ fun main() {
             transactionDescription = "description",
             transactionType = TransactionType.INCOME,
             transactionAmount = 2000.0,
-            transactionDate = 12548,
+            transactionDate = LocalDateTime.now(),
             transactionCategory = Category(1, "food")
         )
         storage.addTransaction(transaction1)
@@ -163,7 +164,7 @@ fun main() {
             transactionDescription = "description",
             transactionType = TransactionType.INCOME,
             transactionAmount = 2000.0,
-            transactionDate = 12548,
+            transactionDate = LocalDateTime.now(),
             transactionCategory = Category(1, "food")
         )
         val transaction2 = Transaction(
@@ -171,7 +172,7 @@ fun main() {
             transactionDescription = "description",
             transactionType = TransactionType.INCOME,
             transactionAmount = 2000.0,
-            transactionDate = 12548,
+            transactionDate = LocalDateTime.now(),
             transactionCategory = Category(1, "food")
         )
         val transaction3 = Transaction(
@@ -179,7 +180,7 @@ fun main() {
             transactionDescription = "description",
             transactionType = TransactionType.INCOME,
             transactionAmount = 2000.0,
-            transactionDate = 12548,
+            transactionDate = LocalDateTime.now(),
             transactionCategory = Category(1, "food")
         )
 
