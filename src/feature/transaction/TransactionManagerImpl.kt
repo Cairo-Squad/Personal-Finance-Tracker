@@ -11,7 +11,22 @@ class TransactionManagerImpl(
 ) : TransactionManager {
 
     override fun addTransaction(transaction: Transaction) {
-        TODO("Not yet implemented")
+        /*val calendar = Calendar.getInstance().apply {
+            set(Calendar.YEAR, year.toInt())
+            set(Calendar.MONTH, month.toInt() - 1)
+            set(Calendar.DAY_OF_MONTH, day.toInt())
+        }
+        val dateInMillis = calendar.timeInMillis
+        val transaction = Transaction(
+            transactionId = storage.getNewTransactionId(),
+            transactionDescription = description,
+            transactionType = transactionType,
+            transactionAmount = amount,
+            transactionDate = dateInMillis,
+            transactionCategory = transactionCategory,
+        )
+
+        storage.addTransaction(transaction)*/
     }
 
     override fun updateTransaction(transaction: Transaction) {
@@ -23,11 +38,11 @@ class TransactionManagerImpl(
     }
 
     override fun getTransactionById(transactionId: Int): Transaction? {
-        TODO("Not yet implemented")
+        return storage.getTransactionById(transactionId)
     }
 
     override fun getAllTransactions(): List<Transaction> {
-        TODO("Not yet implemented")
+        return storage.getAllTransactions()
     }
 
     override fun getReportByMonth(dateTime: LocalDateTime): List<Any> {
