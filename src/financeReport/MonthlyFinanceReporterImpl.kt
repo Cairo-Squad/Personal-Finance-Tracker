@@ -6,48 +6,73 @@ import model.Transaction
 import model.TransactionType
 import java.time.LocalDateTime
 
-class MonthlyFinanceReporterImpl(private val transactions: List<Transaction>) : MonthlyFinanceReporter {
+class MonthlyFinanceReporterImpl : MonthlyFinanceReporter {
 
 
-    override fun getMonthReport(transactionDate: LocalDateTime): MonthReport {
+    /***
+     * Method to get total income, expense and netBalance of a specefic month.
+     *
+     * @param requiredReportDate date of month that the user want a report for.
+     *
+     * @return return Object of type MonthReport that contains the date and total income,expense and netBalance.
+     *
+     */
+    override fun getMonthReport(transactions: List<Transaction>, requiredReportDate: LocalDateTime): MonthReport {
         return MonthReport(
-            date = transactionDate,
+            date = requiredReportDate,
             income = getMonthIncome(
-                transactionDate
+                transactions,
+                requiredReportDate
             ) ?: 0.0,
-            expenses = getMonthExpenses(transactionDate) ?: 0.0,
+            expenses = getMonthExpenses(transactions, requiredReportDate) ?: 0.0,
         )
     }
 
-    override fun getMonthIncome(transactionDate: LocalDateTime): Double? {
-
+    /***
+     * Method to get month total Income.
+     *
+     * @param requiredReportDate required date to search for.
+     *
+     * @return Double value if data exists, if no data found then returns null.
+     */
+    private fun getMonthIncome(transactions: List<Transaction>, requiredReportDate: LocalDateTime): Double? {
         val matchedTransactions = transactions.filter {
-            it.transactionType!! == TransactionType.INCOME &&
-                    it.transactionDate?.year == transactionDate.year &&
-                    it.transactionDate.month == transactionDate.month
+            it.transactionType!! == TransactionType.INCOME && checkDateMatching(it.transactionDate, requiredReportDate)
         }
 
         return if (matchedTransactions.isEmpty()) null
         else matchedTransactions.sumOf { it.transactionAmount!! }
     }
 
-    override fun getMonthExpenses(transactionDate: LocalDateTime): Double? {
+
+    /***
+     * Method to get month total Expense.
+     *
+     * @param requiredReportDate required date to search for.
+     *
+     * @return Double value if data exists, if no data found then returns null.
+     */
+    private fun getMonthExpenses(transactions: List<Transaction>, requiredReportDate: LocalDateTime): Double? {
 
         val matchedTransactions: List<Transaction> = transactions.filter {
-            it.transactionType == TransactionType.EXPENSE &&
-                    it.transactionDate?.year == transactionDate.year &&
-                    it.transactionDate.month == transactionDate.month
+            it.transactionType == TransactionType.EXPENSE && checkDateMatching(it.transactionDate, requiredReportDate)
         }
 
         return if (matchedTransactions.isEmpty()) null
         else matchedTransactions.sumOf { it.transactionAmount ?: 0.0 }
     }
 
-    override fun getMonthNetBalance(transactionDate: LocalDateTime): Double? {
+    /***
+     * Method to get month netBalance (Income - Expense).
+     *
+     * @param requiredReportDate required date to search for.
+     *
+     * @return Double value if data exists, if no data found then returns null.
+     */
+    private fun getMonthNetBalance(transactions: List<Transaction>, requiredReportDate: LocalDateTime): Double? {
 
         val matchedTransactions: List<Transaction> = transactions.filter {
-            it.transactionDate?.year == transactionDate.year &&
-                    it.transactionDate.month == transactionDate.month
+            checkDateMatching(it.transactionDate, requiredReportDate)
         }
 
         return if (matchedTransactions.isEmpty()) null
@@ -59,15 +84,14 @@ class MonthlyFinanceReporterImpl(private val transactions: List<Transaction>) : 
 
 
     override fun getMonthReportOfAllCategories(
+        transactions: List<Transaction>,
         transactionType: TransactionType,
-        transactionDate: LocalDateTime
+        requiredReportDate: LocalDateTime
     ): CategoryReport? {
 
 
         val matchedCategories = transactions.filter {
-            it.transactionType == transactionType &&
-                    it.transactionDate?.year == transactionDate.year &&
-                    it.transactionDate.month == transactionDate.month
+            it.transactionType == transactionType && checkDateMatching(it.transactionDate, requiredReportDate)
         }
         if (matchedCategories.isEmpty()) return null
 
@@ -85,15 +109,22 @@ class MonthlyFinanceReporterImpl(private val transactions: List<Transaction>) : 
     }
 
     override fun getMonthReportForCategory(
+        transactions: List<Transaction>,
         transactionType: TransactionType,
         category: Category,
-        transactionDate: LocalDateTime
+        requiredReportDate: LocalDateTime
     ): Double? {
         val matchedCategories: List<Transaction> = transactions.filter {
             transactionType == it.transactionType && it.transactionCategory?.categoryName == category.categoryName
         }
-        return if (matchedCategories.isEmpty()) null else matchedCategories.sumOf { it.transactionAmount ?: 0.0 }
+        return if (matchedCategories.isEmpty()) null
+        else matchedCategories.sumOf { it.transactionAmount ?: 0.0 }
     }
+
+
+    private fun checkDateMatching(transactionDate: LocalDateTime?, requiredReportDate: LocalDateTime) =
+        transactionDate?.year == requiredReportDate.year &&
+                transactionDate.month == requiredReportDate.month
 
 
 }

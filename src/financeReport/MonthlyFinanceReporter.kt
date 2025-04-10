@@ -3,25 +3,30 @@ package financeReport
 import financeReport.data.CategoryReport
 import financeReport.data.MonthReport
 import model.Category
+import model.Transaction
 import model.TransactionType
 import java.time.LocalDateTime
 
 interface MonthlyFinanceReporter {
 
-    fun getMonthReport(transactionDate: LocalDateTime): MonthReport?
+    fun getMonthReport(transactions: List<Transaction>, requiredReportDate: LocalDateTime): MonthReport
 
-    fun getMonthIncome(transactionDate:LocalDateTime): Double?
+//    fun getMonthIncome(requiredReportDate:LocalDateTime): Double?
+//
+//    fun getMonthExpenses(requiredReportDate:LocalDateTime): Double?
 
-    fun getMonthExpenses(transactionDate:LocalDateTime): Double?
+//    fun getMonthNetBalance(requiredReportDate:LocalDateTime): Double?
 
-    fun getMonthNetBalance(transactionDate:LocalDateTime): Double?
-
-    fun getMonthReportOfAllCategories(transactionType: TransactionType, transactionDate:LocalDateTime): CategoryReport?
+    fun getMonthReportOfAllCategories(
+        transactions: List<Transaction>,
+        transactionType: TransactionType, requiredReportDate: LocalDateTime
+    ): CategoryReport?
 
     fun getMonthReportForCategory(
+        transactions: List<Transaction>,
         transactionType: TransactionType,
         category: Category,
-        transactionDate:LocalDateTime
+        requiredReportDate: LocalDateTime
     ): Double?
 
 

@@ -1,11 +1,13 @@
 package feature.transaction
 
 import datasource.Storage
+import financeReport.MonthlyFinanceReporter
+import financeReport.MonthlyFinanceReporterImpl
 import model.Transaction
 import java.time.LocalDateTime
 
 class TransactionManagerImpl(
-    private val storage: Storage
+    private val storage: Storage,
 ) : TransactionManager {
 
     override fun addTransaction(transaction: Transaction) {
