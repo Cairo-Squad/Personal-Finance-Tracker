@@ -1,14 +1,17 @@
 package test.util
 
-import datasource.PredefinedCategories.incomeCategories
 import model.Category
 import util.CategoryManager.addCategoryDecision
 import util.CategoryManager.validateCategorySelection
 import util.CategoryManager.validateNewCategoryName
 
 fun main(){
-    val categories = incomeCategories
-
+    val categories =  mutableListOf(
+        Category(1, "Salary"),
+        Category(2, "Investments"),
+        Category(3, "Business"),
+        Category(4, "Other")
+    )
     // Test case 1: Valid category ID
     val idValid:Int =1;
     check(
@@ -75,7 +78,7 @@ fun main(){
     // Test case 7: 'other' match(copy) with one list of category
     val isValid4:String ="Business";
     check(
-        name = "given input 'other' and new category  match(copy) with one list of category , when checked, then $isValid4 already exist",
+        name = "given input 'other' and new category  match(copy) with one list of category , when checked, then $isValid4 already exit",
         result = validateNewCategoryName(categories,isValid4) ,
         correctResult = 1
     )
