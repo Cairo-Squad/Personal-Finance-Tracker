@@ -1,118 +1,78 @@
 package test.feature.transaction
 
-import data_source.Storage
+import datasource.Storage
 import model.Category
 import model.Transaction
 import model.TransactionType
-import test.data_source.StorageMock
+import test.storage.StorageMock
 import test.util.test
-import java.time.LocalDateTime
 
 fun main() {
 
     val storageMock: Storage = StorageMock()
     val transactionManager = TransactionManagerMock(storageMock)
 
-    val validTransaction = Transaction(
+    val initialTransaction = Transaction(
+        transactionId = null,
+        transactionDescription = null,
+        transactionType = null,
+        transactionAmount = null,
+        transactionDate = null,
+        transactionCategory = null
+    )
+    test(
+        name = "Given a transaction with all values null, when validating, then it should return false",
+        result = transactionManager.updateTransaction(initialTransaction),
+        correctResult = false
+    )
+
+    val transaction1 = initialTransaction.copy(transactionId = 1)
+    test(
+        name = "Given a transaction with only id is not null, when validating, then it should return false",
+        result = transactionManager.updateTransaction(transaction1),
+        correctResult = false
+    )
+
+    val transaction2 = initialTransaction.copy(
         transactionId = 1,
-        transactionDescription = "old description",
-        transactionType = TransactionType.EXPENSE,
-        transactionAmount = 20.0,
-        transactionDate = LocalDateTime.now(),
-        transactionCategory = Category(1, "Food")
+        transactionAmount = 200.0,
+        transactionDescription = "new description"
     )
-
-    // region transaction not exists
-    val result1 = transactionManager.updateTransaction(
-        transactionId = "1",
-        transactionDescription = "New description",
-        transactionType = "EXPENSE",
-        transactionAmount = "100.0",
-        transactionDate = "2025-04-09",
-        transactionCategory = "Food"
-    )
-
     test(
-        name = "Given a transaction does not exists, when validating, then return false",
-        result = result1,
-        correctResult = false
-    )
-    // endregion
-
-    // region transaction id
-    val result2 = transactionManager.updateTransaction(
-        transactionId = "",
-        transactionDescription = "New description",
-        transactionType = "EXPENSE",
-        transactionAmount = "-100.0",
-        transactionDate = "2025-04-09",
-        transactionCategory = "Food"
-    )
-
-    test(
-        name = "Given an empty id, when validating, then return false",
-        result = result2,
+        name = "Given a transaction with more than one field to edit, when validating, then it should return false",
+        result = transactionManager.updateTransaction(transaction2),
         correctResult = false
     )
 
-    val result3 = transactionManager.updateTransaction(
-        transactionId = "a",
-        transactionDescription = "New description",
-        transactionType = "EXPENSE",
-        transactionAmount = "-100.0",
-        transactionDate = "2025-04-09",
-        transactionCategory = "Food"
+    val transaction3 = initialTransaction.copy(
+        transactionId = 1,
+        transactionAmount = -500.0
     )
-
     test(
-        name = "Given id with non-numeric values, when validating, then return false",
-        result = result3,
+        name = "Given a transaction amount with negative number, when validating, then it should return false",
+        result = transactionManager.updateTransaction(transaction3),
         correctResult = false
     )
-    // endregion
 
-    // region transaction amount
-    val result4 = transactionManager.updateTransaction(
-        transactionId = "1",
-        transactionDescription = "New description",
-        transactionType = "EXPENSE",
-        transactionAmount = "aa",
-        transactionDate = "2025-04-09",
-        transactionCategory = "Food"
+    val transaction4 = initialTransaction.copy(
+        transactionId = 1,
+        transactionDescription = ""
     )
-
     test(
-        name = "Given amount with characters, when validating, then return false",
-        result = result4,
+        name = "Given a transaction description with empty string, when validating, then it should return false",
+        result = transactionManager.updateTransaction(transaction4),
         correctResult = false
     )
-    // endregion
 
-    // region transaction type
-    val result5 = transactionManager.updateTransaction(
-        transactionId = "1",
-        transactionDescription = "Description",
-        transactionType = "Food",
-        transactionAmount = "50.0",
-        transactionDate = "2025-04-09",
-        transactionCategory = "Food"
+    val transaction5 = initialTransaction.copy(
+        transactionId = 1,
+        transactionAmount = 500.0
     )
-
     test(
-        name = "Given an invalid type, when validating, then return false",
-        result = result5,
-        correctResult = false
+        name = "Given a valid transaction input, when validating, then it should return true",
+        result = transactionManager.updateTransaction(transaction5),
+        correctResult = true
     )
-    // endregion
-
-    // region transaction date
-
-    // endregion
-
-    // region transaction Category
-
-    // endregion
-
 }
 
 class TransactionManagerMock(
@@ -123,14 +83,7 @@ class TransactionManagerMock(
 
     }
 
-    fun updateTransaction(
-        transactionId: String,
-        transactionDescription: String,
-        transactionType: String,
-        transactionAmount: String,
-        transactionDate: String,
-        transactionCategory: String
-    ): Boolean {
+    fun updateTransaction(transaction: Transaction): Boolean {
         return false
     }
 
