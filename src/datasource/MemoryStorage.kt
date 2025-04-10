@@ -44,4 +44,8 @@ class MemoryStorage : Storage {
 
         return list
     }
+
+    override fun getNewTransactionId(): Int {
+        TODO("Not yet implemented")
+    }
 }
