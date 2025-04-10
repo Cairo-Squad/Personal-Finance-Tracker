@@ -2,6 +2,7 @@ package feature.transaction
 
 import datasource.Storage
 import model.Transaction
+import java.time.LocalDateTime
 
 class TransactionManagerImpl(
     private val storage: Storage
@@ -15,11 +16,11 @@ class TransactionManagerImpl(
         TODO("Not yet implemented")
     }
 
-    override fun deleteTransaction(transaction: Transaction) {
+    override fun deleteTransaction(transactionId: Int) {
         TODO("Not yet implemented")
     }
 
-    override fun getTransactionById(transactionId: Int) {
+    override fun getTransactionById(transactionId: Int): Transaction? {
         TODO("Not yet implemented")
     }
 
@@ -27,7 +28,8 @@ class TransactionManagerImpl(
         TODO("Not yet implemented")
     }
 
-    override fun getReportByMonth(month: String): List<Transaction> {
+    override fun getReportByMonth(dateTime: LocalDateTime): List<Any> {
         TODO("Not yet implemented")
     }
+
 }
