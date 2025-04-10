@@ -1,7 +1,7 @@
-package financeReport
+package feature.financeReport
 
-import financeReport.data.CategoryReport
-import financeReport.data.MonthReport
+import feature.financeReport.data.CategoryReport
+import feature.financeReport.data.MonthReport
 import model.Category
 import model.Transaction
 import model.TransactionType

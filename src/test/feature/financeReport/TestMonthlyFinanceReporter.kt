@@ -1,6 +1,6 @@
-//package financeReport
+//package feature.financeReport
 //
-//import financeReport.data.*
+//import feature.financeReport.data.*
 //import model.Category
 //import model.Transaction
 //import model.TransactionType

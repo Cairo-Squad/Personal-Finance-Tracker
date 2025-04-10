@@ -1,4 +1,4 @@
-package financeReport.data
+package feature.financeReport.data
 
 import java.time.LocalDateTime
 
@@ -10,7 +10,7 @@ data class MonthReport(
 ) {
     override fun toString(): String {
         return """
-    📅 Month Report: $date
+    📅 Month Report: ${date.year} / ${date.month}
 
     🔹 Income       : $income 
     🔸 Expenses     : $expenses 
