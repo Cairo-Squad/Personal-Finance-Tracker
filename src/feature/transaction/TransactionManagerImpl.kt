@@ -27,7 +27,7 @@ class TransactionManagerImpl(
         storage.addTransaction(transaction)*/
     }
 
-    override fun updateTransaction(transaction: Transaction) {
+    override fun updateTransaction(transaction: Transaction): Boolean {
         TODO("Not yet implemented")
     }
 
