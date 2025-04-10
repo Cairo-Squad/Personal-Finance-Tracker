@@ -1,35 +1,19 @@
 package feature.transaction
 
-import datasource.Storage
 import model.Transaction
+import java.time.LocalDateTime
 
-class TransactionManager(
-    private val storage: Storage
-) {
+interface TransactionManager {
 
-    fun addTransaction(transaction: Transaction) {
-        TODO("Not yet implemented")
-    }
+    fun addTransaction(transaction: Transaction)
 
-    fun updateTransaction(transaction: Transaction) {
-        TODO("Not yet implemented")
-    }
+    fun updateTransaction(transaction: Transaction)
 
-    fun deleteTransaction(transaction: Transaction) {
-        TODO("Not yet implemented")
-    }
+    fun deleteTransaction(transactionId: Int)
 
-    fun getTransactionById(transactionId: Int){
-        TODO("Not yet implemented")
-    }
+    fun getTransactionById(transactionId: Int): Transaction?
 
-    fun getAllTransactions(): List<Transaction> {
-        TODO("Not yet implemented")
-    }
+    fun getAllTransactions(): List<Transaction>
 
-    fun getReportByMonth(month: String): List<Transaction>{
-        TODO("Not yet implemented")
-    }
-
-
+    fun getReportByMonth(dateTime: LocalDateTime): List<Any>
 }
