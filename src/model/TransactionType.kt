@@ -1,6 +1,6 @@
 package model
 
-enum class TransactionType(name: String) {
+enum class TransactionType(val value: String) {
     INCOME("Income"),
     EXPENSE("Expense")
 }

@@ -9,6 +9,8 @@ object Constants {
     const val SEPARATOR = "------------------------------------------------------------"
 
     const val OPTION_INPUT_MESSAGE = "Please enter the number of the option you need >>> "
+    const val TRANSACTION_TYPE_INPUT_MESSAGE = "Please choose your transaction type:"
+    const val ENTER_TRANSACTION_TYPE_INPUT_MESSAGE = "Enter transaction type number >>> "
 
     const val INVALID_OPTION_MESSAGE = "Please enter a valid option number >>> "
     const val INVALID_COMMAND_MESSAGE = "An error happened, please try again."
@@ -16,12 +18,14 @@ object Constants {
 
 
     val USER_MENU = """
+            Available Options:-
             1. Add new transaction
             2. View a transaction details
             3. Edit a transaction data
             4. Delete a transaction
             5. View monthly report
             6. Exit
+            
         """.trimIndent()
 
     // endregion
