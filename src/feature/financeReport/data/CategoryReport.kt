@@ -1,4 +1,4 @@
-package financeReport.data
+package feature.financeReport.data
 
 import model.TransactionType
 
