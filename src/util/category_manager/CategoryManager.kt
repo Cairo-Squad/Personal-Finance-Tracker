@@ -1,4 +1,4 @@
-package util
+package util.category_manager
 
 import model.Category
 
@@ -32,10 +32,10 @@ object CategoryManager {
  fun validateNewCategoryName(
         categories: MutableList<Category>,
         newCategoryName: String
-    ): Int {
+    ): CategoryState {
 
      if (newCategoryName.isEmpty()) {
-         return 0 // Invalid
+         return CategoryState.Empty// Invalid
      }
 
      val userNG = newCategoryName.lowercase()
@@ -43,44 +43,48 @@ object CategoryManager {
          val categoryName= category.categoryName.lowercase()
          // already exist
          if (categoryName==userNG){
-             return 1
+             return CategoryState.FullMatchExists
          }
-         //  categoryName is match  in list of category
-         if (categoryName.contains(userNG)) {
-             return 2
-         }
-
+     }
+     // Find the category with the largest match
+     val maxCategoryMatching = findLargestMatchOfNameCategory(userNG, categories)
+     if (maxCategoryMatching != null) {
+         return CategoryState.PartialMatchExists(maxCategoryMatching.categoryName  , userNG)
      }
      // no found . new category added
      val newId = categories.size + 1
      val newCategory = Category(newId, newCategoryName)
      categories.add(newCategory)
-     return 3
-
+     return CategoryState.NewCategory(userNG)
     }
 
     fun addCategoryDecision(
         categories: MutableList<Category>,
         newCategoryName: String,
-        userAddOrNot: Int
-    ):Boolean {
-        when (userAddOrNot) {
-            1 -> {
-               //You have chosen to use an existing category.
-                return true
+        userDecision: UserDecisionOfNewCategory
+    ): Boolean {
+        when (userDecision) {
+            UserDecisionOfNewCategory.EXISTING_CATEGORY -> {
+                // You have chosen to use an existing category.
+               return true
             }
-            2 -> {
-                //  add new category
+            UserDecisionOfNewCategory.NEW_CATEGORY -> {
+                // Add new category
                 if (newCategoryName.isNotEmpty()) {
                     val newId = categories.size + 1
                     categories.add(Category(newId, newCategoryName))
                 }
-                return true
+               return true
             }
             else -> {
-                //println("Invalid choice. Please enter 1 or 2.")
-                return false
+                // Invalid choice
+               return false
             }
+        }
+    }
+    private fun findLargestMatchOfNameCategory(newNameCategory: String, categories: MutableList<Category>): Category? {
+        return categories.maxByOrNull { category ->
+            category.categoryName.zip(newNameCategory).count { it.first == it.second }>1
         }
     }
 

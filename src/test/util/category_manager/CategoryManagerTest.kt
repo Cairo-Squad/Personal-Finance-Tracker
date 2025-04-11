@@ -1,9 +1,11 @@
-package test.util
+package test.util.category_manager
 
 import model.Category
-import util.CategoryManager.addCategoryDecision
-import util.CategoryManager.validateCategorySelection
-import util.CategoryManager.validateNewCategoryName
+import util.category_manager.CategoryManager.addCategoryDecision
+import util.category_manager.CategoryManager.validateCategorySelection
+import util.category_manager.CategoryManager.validateNewCategoryName
+import util.category_manager.CategoryState
+import util.category_manager.UserDecisionOfNewCategory
 
 fun main(){
     val categories =  mutableListOf(
@@ -51,7 +53,7 @@ fun main(){
         correctResult = false
     )
 
-// i tell abdo he is ask user when choose other
+// i ask abdo he is ask user when choose other
 //    // Test case 5: 'other' with exact match
 //    val invalid2:Int =3;
 //    check(
@@ -63,33 +65,34 @@ fun main(){
     // Test case 6: 'other' with partial match
     val isValid2:String ="Sa";
     check(
-        name = "given input 'other' and new category $isValid2, when checked, then should show what match with it  and he decision",
-        result = addCategoryDecision(categories, isValid2,2),
+        name = "given input 'other' and new category $isValid2, when checked, then should show partial match with it and user decision,user want new category",
+        result = addCategoryDecision(categories, isValid2, UserDecisionOfNewCategory.NEW_CATEGORY),
         correctResult = true
     )
 
     // Test case 7: 'other' with no match
     val isValid3:String ="play";
     check(
-        name = "given input 'other' and new category $isValid3 not match with any list of category , when checked, then should add new category",
-        result = validateNewCategoryName(categories,isValid3) ,
-        correctResult = 3
+        name = "given input 'other' and new category $isValid3 not match with any list of categories, when checked, then should add new category,user decision new category",
+        result = addCategoryDecision(categories, isValid3, UserDecisionOfNewCategory.NEW_CATEGORY),
+        correctResult =true
     )
-    // Test case 7: 'other' match(copy) with one list of category
+
+
+    // Test case 8: 'other' match(copy) with one list of category
     val isValid4:String ="Business";
     check(
-        name = "given input 'other' and new category  match(copy) with one list of category , when checked, then $isValid4 already exit",
-        result = validateNewCategoryName(categories,isValid4) ,
-        correctResult = 1
+        name = "given input 'other' and new category $isValid4 already exists, when checked, then should return full match exists",
+        result = validateNewCategoryName(categories, isValid4),
+        correctResult = CategoryState.FullMatchExists
     )
 
-    // Test case 8: 'other' with empty new category
+    // Test case 9: 'other' with empty new category
     val isValid5:String ="";
-
     check(
-        name = "given input 'other' and empty new category, when checked, then should return false  new category name is empty",
-        result = addCategoryDecision(categories, isValid5,3),
-        correctResult =false
+        name = "given input 'other' and empty new category, when checked, then should return false because new category name is empty",
+        result = validateNewCategoryName(categories, isValid5),
+        correctResult = CategoryState.Empty
     )
 
 }
