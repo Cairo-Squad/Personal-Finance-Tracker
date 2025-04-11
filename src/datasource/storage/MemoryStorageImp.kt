@@ -12,10 +12,18 @@ object MemoryStorageImp : MemoryStorage {
         return true
     }
 
-    override fun updateTransaction(transaction: Transaction) :Boolean{
+    override fun updateTransaction(transaction: Transaction): Boolean {
         val index = transactionList.indexOfFirst { it.transactionId == transaction.transactionId }
         if (index != -1) {
-            transactionList[index] = transaction
+            val oldTransaction = transactionList[index]
+            val updatedTransaction = transaction.copy(
+                transactionDescription = transaction.transactionDescription ?: oldTransaction.transactionDescription,
+                transactionType = transaction.transactionType ?: oldTransaction.transactionType,
+                transactionAmount = transaction.transactionAmount ?: oldTransaction.transactionAmount,
+                transactionDate = transaction.transactionDate ?: oldTransaction.transactionDate,
+                transactionCategory = transaction.transactionCategory ?: oldTransaction.transactionCategory
+            )
+            transactionList[index] = updatedTransaction
             return true
         }
         return false
