@@ -17,6 +17,11 @@ object CLIConstants {
     const val ENTER_ID_MESSAGE = "Enter the ID >>> "
     const val ENTER_VALID_ID_MESSAGE = "Please enter a valid ID >>> "
     const val ENTER_VALID_OPTION_MESSAGE = "Please enter a valid option number >>> "
+    const val SELECT_CATEGORY_MESSAGE = "Select the category you need:"
+    const val ENTER_CATEGORY_NUMBER_MESSAGE = "Enter category number >>> "
+    const val ENTER_VALID_CATEGORY_NUMBER_MESSAGE = "Please enter a valid category number >>> "
+    const val ENTER_NAME_FOR_NEW_CATEGORY_MESSAGE = "Enter name for the new category >>> "
+    const val ENTER_YES_OR_NO_MESSAGE = "Please enter \"Yes\" or \"No\" >>> "
 
     const val COMMON_ERROR_MESSAGE = "An error happened, please try again!"
     const val EMPTY_TRANSACTIONS_LIST_MESSAGE = "You don't have any transactions!"

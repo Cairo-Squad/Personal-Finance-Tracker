@@ -1,11 +1,17 @@
 package feature.cliController.cliDispatcher
 
+import datasource.category.CategoryProvider
+import datasource.category.ExpenseCategoryProviderImp
+import datasource.category.IncomeCategoryProviderImp
 import feature.cliController.ioController.IOController
 import feature.transaction.TransactionManager
 import model.Category
 import model.Transaction
 import model.TransactionType
 import feature.cliController.CLIConstants
+import model.convertToString
+import util.category_manager.CategoryManager
+import util.category_manager.CategoryState
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
@@ -16,7 +22,6 @@ class CLIDispatcherImpl(
     private val ioController: IOController
 ) : CLIDispatcher {
 
-    // TODO: Add option to view all the transactions!!!
     private val commands = mapOf<Int, () -> Unit>(
         CLIConstants.ADD_COMMAND_CODE to ::addTransaction,
         CLIConstants.VIEW_ALL_COMMAND_CODE to ::viewALLTransactions,
@@ -44,7 +49,7 @@ class CLIDispatcherImpl(
         val transactionAmount = getAmountInput()
         val transactionDescription = getDescriptionInput()
         val transactionType = getTransactionTypeInput()
-        val transactionCategory = getCategoryInput()
+        val transactionCategory = getCategoryInput(transactionType)
         val transactionDateTime = getDateTimeInput()
 
         val transaction = Transaction(
@@ -137,17 +142,72 @@ class CLIDispatcherImpl(
         }
     }
 
-    private fun getCategoryInput(): Category {
-        // TODO: Complete!!
-        ioController.writeWithNewLine("Select the category you need:")
-        // display list of categories
-        ioController.write("Enter category number >>> ")
-        val userInput = ioController.read()
-        // validate
-        // if he selects a category, return it directly
-        // if he selects other, take data of new category and return it
-        return Category(1, "")
+    private fun getCategoryInput(transactionType: TransactionType): Category {
+        ioController.writeWithNewLine(CLIConstants.SELECT_CATEGORY_MESSAGE)
+
+        val categoriesProvider = getCategoriesProvider(transactionType)
+        val availableCategories = categoriesProvider.getCategories()
+        ioController.writeWithNewLine(availableCategories.convertToString())
+
+        val selectedCategory = getSelectedCategory(availableCategories)
+
+        return if (selectedCategory.categoryName != "Other") {
+            return selectedCategory
+        } else {
+            handleAddingNewCategory(availableCategories, categoriesProvider)
+        }
     }
+
+    private fun getCategoriesProvider(transactionType: TransactionType): CategoryProvider {
+        return when (transactionType) {
+            TransactionType.INCOME -> IncomeCategoryProviderImp
+            TransactionType.EXPENSE -> ExpenseCategoryProviderImp
+        }
+    }
+
+    private fun getSelectedCategory(availableCategories: List<Category>): Category {
+        ioController.write(CLIConstants.ENTER_CATEGORY_NUMBER_MESSAGE)
+
+        while (true) {
+            val userInput = ioController.read() ?: ""
+            val selectedCategory = CategoryManager.validateCategorySelection(availableCategories, userInput)
+
+            if (selectedCategory == null) {
+                ioController.write(CLIConstants.ENTER_VALID_CATEGORY_NUMBER_MESSAGE)
+            } else {
+                return selectedCategory
+            }
+        }
+    }
+
+    private fun handleAddingNewCategory(
+        availableCategories: List<Category>,
+        categoriesProvider: CategoryProvider
+    ): Category {
+        // TODO: Refactor it more, if you can!!
+        ioController.write(CLIConstants.ENTER_NAME_FOR_NEW_CATEGORY_MESSAGE)
+        while (true) {
+            val newCategoryName = ioController.read() ?: ""
+            val validationState = CategoryManager.validateNewCategoryName(availableCategories, newCategoryName)
+            println(validationState.toString())
+
+            when (validationState) {
+                CategoryState.Empty -> continue
+                is CategoryState.FullMatchExists -> return validationState.existCategory
+                CategoryState.NewCategory -> return categoriesProvider.addCategory(newCategoryName)
+                is CategoryState.PartialMatchExists -> {
+                    val matchedCategory = validationState.existCategory
+                    ioController.write("This name matches ${matchedCategory.categoryName}, do you want to use it? [Yes / No] >>> ")
+                    when (ioController.read()?.lowercase()) {
+                        "yes" -> return matchedCategory
+                        "no" -> return categoriesProvider.addCategory(newCategoryName)
+                        else -> ioController.write(CLIConstants.ENTER_YES_OR_NO_MESSAGE)
+                    }
+                }
+            }
+        }
+    }
+
 
     private fun getAmountInput(): Double {
         ioController.write(CLIConstants.ENTER_AMOUNT_MESSAGE)

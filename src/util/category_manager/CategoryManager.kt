@@ -7,9 +7,9 @@ object CategoryManager {
     fun validateCategorySelection(
         categories:List<Category>,
         selectedCategoryId: String
-    ): Boolean {
+    ): Category? {
         if (selectedCategoryId == "") {
-            return false
+            return null
         }
 
         val id: Int?
@@ -18,15 +18,15 @@ object CategoryManager {
         if (selectedCategoryIdInt != null) {
             id = selectedCategoryIdInt
         } else {
-            return false
+            return null
         }
 
         for (category in categories) {
             if (category.categoryId == id) {
-                return true
+                return category
             }
         }
-        return false
+        return null
     }
 
  fun validateNewCategoryName(
@@ -43,7 +43,7 @@ object CategoryManager {
          val categoryName= category.categoryName.lowercase()
          // already exist
          if (categoryName==userNG){
-             return CategoryState.FullMatchExists
+             return CategoryState.FullMatchExists(category)
          }
      }
      // Find the category with the largest match
