@@ -14,7 +14,7 @@ object CLIConstants {
     const val ENTER_AMOUNT_MESSAGE = "Enter the amount >>> "
     const val ENTER_VALID_AMOUNT_MESSAGE = "Please enter a valid amount >>> "
     const val ENTER_DESCRIPTION_MESSAGE = "Enter the description >>> "
-    const val ENTER_ID_MESSAGE = "Enter the ID >>> "
+    const val ENTER_ID_MESSAGE = "Enter transaction ID >>> "
     const val ENTER_VALID_ID_MESSAGE = "Please enter a valid ID >>> "
     const val ENTER_VALID_OPTION_MESSAGE = "Please enter a valid option number >>> "
     const val SELECT_CATEGORY_MESSAGE = "Select the category you need:"
@@ -22,9 +22,13 @@ object CLIConstants {
     const val ENTER_VALID_CATEGORY_NUMBER_MESSAGE = "Please enter a valid category number >>> "
     const val ENTER_NAME_FOR_NEW_CATEGORY_MESSAGE = "Enter name for the new category >>> "
     const val ENTER_YES_OR_NO_MESSAGE = "Please enter \"Yes\" or \"No\" >>> "
+    const val TRANSACTION_DETAILS_MESSAGE = "Transaction details:"
+    const val ALL_TRANSACTIONS_MESSAGE = "All Transactions:"
+    const val ENTER_EDIT_CHOICE_MESSAGE = "Enter your choice >>> "
 
     const val COMMON_ERROR_MESSAGE = "An error happened, please try again!"
     const val EMPTY_TRANSACTIONS_LIST_MESSAGE = "You don't have any transactions!"
+    const val NO_TRANSACTION_WITH_THIS_ID = "There is no transaction with this ID!"
 
     const val ADD_TRANSACTION_SUCCESS_MESSAGE = "Your transaction is added successfully."
     const val DELETE_TRANSACTION_SUCCESS_MESSAGE = "Your transaction is deleted successfully."
@@ -42,6 +46,15 @@ object CLIConstants {
             
         """.trimIndent()
 
+    val UPDATE_OPTIONS = """
+        Available Options:-
+        1. Amount
+        2. Description
+        3. Type & Category
+        4. Date
+        5. Exit  
+    """.trimIndent()
+
     // endregion
 
     // region Command Codes
@@ -52,6 +65,15 @@ object CLIConstants {
     const val DELETE_COMMAND_CODE = 5
     const val MONTHLY_REPORT_COMMAND_CODE = 6
     const val EXIT_COMMAND_CODE = 7
+
+    // endregion
+
+    // region Edit Options Codes
+    const val EDIT_AMOUNT_CODE = 1
+    const val EDIT_DESCRIPTION_CODE = 2
+    const val EDIT_TYPE_CATEGORY_CODE = 3
+    const val EDIT_DATE_CODE = 4
+    const val EXIT_EDIT_CODE = 5
 
     // endregion
 

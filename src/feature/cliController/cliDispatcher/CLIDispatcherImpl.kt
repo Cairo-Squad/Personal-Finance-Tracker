@@ -31,6 +31,13 @@ class CLIDispatcherImpl(
         CLIConstants.MONTHLY_REPORT_COMMAND_CODE to ::getMonthlyReport
     )
 
+    private val editHandlers = mapOf<Int, () -> Boolean>(
+        CLIConstants.EDIT_AMOUNT_CODE to ::handleEditAmount,
+        CLIConstants.EDIT_DESCRIPTION_CODE to ::handleEditDescription,
+        CLIConstants.EDIT_TYPE_CATEGORY_CODE to ::handleEditTypeAndCategory,
+        CLIConstants.EDIT_DATE_CODE to ::handleEditDate
+    )
+
     override fun dispatch(userInput: Int) {
         val command = commands[userInput]
         if (command != null) {
@@ -72,7 +79,7 @@ class CLIDispatcherImpl(
         val transactionID = getIDInput()
         val transaction = transactionManager.getTransactionById(transactionID)
         if (transaction == null) {
-            ioController.writeWithNewLine(CLIConstants.COMMON_ERROR_MESSAGE)
+            ioController.writeWithNewLine(CLIConstants.NO_TRANSACTION_WITH_THIS_ID)
         } else {
             ioController.writeWithNewLine(transaction.toString())
         }
@@ -85,6 +92,7 @@ class CLIDispatcherImpl(
             return
         }
 
+        ioController.writeWithNewLine(CLIConstants.ALL_TRANSACTIONS_MESSAGE)
         transactions.forEach { transaction ->
             ioController.writeWithNewLine(transaction.toString())
             ioController.write("\n")
@@ -92,16 +100,59 @@ class CLIDispatcherImpl(
     }
 
     private fun updateTransaction() {
-        // Inputs:-
-        // ID
-        // Type
-        // Category
-        // Amount
-        // Description
-        // Date & Time
-        // TODO: Complete!!
-//        transactionManager.updateTransaction(Transaction())
-//        ioController.writeWithNewLine(CLIConstants.EDIT_TRANSACTION_SUCCESS_MESSAGE)
+        val transactionId = getIDInput()
+        val transaction = transactionManager.getTransactionById(transactionId)
+        if (transaction == null) {
+            ioController.writeWithNewLine(CLIConstants.NO_TRANSACTION_WITH_THIS_ID)
+            return
+        }
+
+        ioController.writeWithNewLine(CLIConstants.TRANSACTION_DETAILS_MESSAGE)
+        ioController.writeWithNewLine(transaction.toString())
+
+        while (true) {
+            ioController.writeWithNewLine(CLIConstants.UPDATE_OPTIONS)
+            ioController.write(CLIConstants.ENTER_EDIT_CHOICE_MESSAGE)
+            val editOption = ioController.read()?.toIntOrNull() ?: continue
+
+            if (editOption == CLIConstants.EXIT_EDIT_CODE) break
+
+            val handler = editHandlers[editOption]
+            if (handler != null) {
+                val isUpdated = handler()
+                if (!isUpdated) {
+                    ioController.writeWithNewLine(CLIConstants.COMMON_ERROR_MESSAGE)
+                }
+            }
+        }
+
+        ioController.writeWithNewLine(CLIConstants.EDIT_TRANSACTION_SUCCESS_MESSAGE)
+    }
+
+    private fun handleEditAmount(): Boolean {
+        val newAmount = getAmountInput()
+        return transactionManager.updateTransaction(Transaction(transactionAmount = newAmount))
+    }
+
+    private fun handleEditDescription(): Boolean {
+        val newDescription = getDescriptionInput()
+        return transactionManager.updateTransaction(Transaction(transactionDescription = newDescription))
+    }
+
+    private fun handleEditTypeAndCategory(): Boolean {
+        val newType = getTransactionTypeInput()
+        val newCategory = getCategoryInput(newType)
+        return transactionManager.updateTransaction(
+            Transaction(
+                transactionType = newType,
+                transactionCategory = newCategory
+            )
+        )
+    }
+
+    private fun handleEditDate(): Boolean {
+        val newDate = getDateTimeInput()
+        return transactionManager.updateTransaction(Transaction(transactionDate = newDate))
     }
 
     private fun deleteTransaction() {
@@ -110,7 +161,7 @@ class CLIDispatcherImpl(
         if (isTransactionDeleted) {
             ioController.writeWithNewLine(CLIConstants.DELETE_TRANSACTION_SUCCESS_MESSAGE)
         } else {
-            ioController.writeWithNewLine(CLIConstants.COMMON_ERROR_MESSAGE)
+            ioController.writeWithNewLine(CLIConstants.NO_TRANSACTION_WITH_THIS_ID)
         }
     }
 
@@ -207,7 +258,6 @@ class CLIDispatcherImpl(
             }
         }
     }
-
 
     private fun getAmountInput(): Double {
         ioController.write(CLIConstants.ENTER_AMOUNT_MESSAGE)
