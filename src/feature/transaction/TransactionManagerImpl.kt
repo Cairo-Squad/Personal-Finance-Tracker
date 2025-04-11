@@ -1,11 +1,11 @@
 package feature.transaction
 
-import datasource.MemoryStorage
+import datasource.storage.MemoryStorage
 import model.Transaction
 import java.time.LocalDateTime
 
 class TransactionManagerImpl(
-    private val memoryStorage: MemoryStorage
+    private val storage: MemoryStorage
 ) : TransactionManager {
 
     override fun addTransaction(transaction: Transaction) {
@@ -44,7 +44,7 @@ class TransactionManagerImpl(
 
         if(transaction.transactionDescription != null && transaction.transactionDescription.isEmpty()) return false
 
-        return memoryStorage.updateTransaction(transaction)
+        return storage.updateTransaction(transaction)
     }
 
     override fun deleteTransaction(transactionId: Int) {
@@ -52,11 +52,11 @@ class TransactionManagerImpl(
     }
 
     override fun getTransactionById(transactionId: Int): Transaction? {
-        return memoryStorage.getTransactionById(transactionId)
+        return storage.getTransactionById(transactionId)
     }
 
     override fun getAllTransactions(): List<Transaction> {
-        return memoryStorage.getAllTransactions()
+        return storage.getAllTransactions()
     }
 
     override fun getReportByMonth(dateTime: LocalDateTime): List<Any> {
