@@ -5,7 +5,7 @@ import model.Transaction
 import java.time.LocalDate
 
 class StorageMock(private val transactionList: MutableList<Transaction>): MemoryStorage {
-    override fun addTransaction(transaction: Transaction) {
+    override fun addTransaction(transaction: Transaction): Boolean {
         TODO("Not yet implemented")
     }
 

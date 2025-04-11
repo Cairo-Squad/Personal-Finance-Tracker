@@ -5,11 +5,11 @@ import java.time.LocalDateTime
 
 interface TransactionManager {
 
-    fun addTransaction(transaction: Transaction)
+    fun addTransaction(transaction: Transaction) : Boolean
 
     fun updateTransaction(transaction: Transaction): Boolean
 
-    fun deleteTransaction(transactionId: Int)
+    fun deleteTransaction(transactionId: Int):Boolean
 
     fun getTransactionById(transactionId: Int): Transaction?
 

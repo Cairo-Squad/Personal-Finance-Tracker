@@ -1,7 +1,7 @@
 package datasource.category
 import model.Category
 
-class ExpenseCategoryProviderImp : CategoryProvider {
+object ExpenseCategoryProviderImp : CategoryProvider {
     private val _categories = mutableListOf(
         Category(1, "Groceries"),
         Category(2, "Rent"),
