@@ -29,23 +29,35 @@ class CLIDispatcherImpl(
         if (command != null) {
             command()
         } else {
-            ioController.writeWithNewLine(CLIConstants.INVALID_COMMAND_MESSAGE)
+            ioController.writeWithNewLine(CLIConstants.COMMON_ERROR_MESSAGE)
         }
     }
 
     // region Use Transaction Manager
     // TODO: Call others functions!!
     private fun addTransaction() {
-        // Inputs:-
-        // Type
-        // Category
-        // Amount
-        // Description
-        // Date & Time
-        // TODO: Complete!!
-//        getTransactionTypeInput()
-        val transaction = Transaction()
-        transactionManager.addTransaction(transaction)
+        val transactionAmount = getAmountInput()
+        val transactionDescription = getDescriptionInput()
+        val transactionType = getTransactionTypeInput()
+        val transactionCategory = getCategoryInput()
+        val transactionDateTime = getDateTimeInput()
+
+        val transaction = Transaction(
+            transactionDescription = transactionDescription,
+            transactionType = transactionType,
+            transactionAmount = transactionAmount,
+            transactionDate = transactionDateTime,
+            transactionCategory = transactionCategory
+        )
+
+        // TODO: refactor this after merging the code!!
+//        val isTransactionAdded = transactionManager.addTransaction(transaction)
+        val isTransactionAdded = true
+        if (isTransactionAdded) {
+            ioController.writeWithNewLine("Your transaction is added successfully")
+        } else {
+            ioController.writeWithNewLine(CLIConstants.COMMON_ERROR_MESSAGE)
+        }
     }
 
     private fun viewTransaction() {
