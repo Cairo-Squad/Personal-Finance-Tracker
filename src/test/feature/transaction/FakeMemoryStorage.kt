@@ -8,7 +8,7 @@ class FakeMemoryStorage(private val list:MutableList<Transaction>): Storage {
         TODO("Not yet implemented")
     }
 
-    override fun updateTransaction(transaction: Transaction) {
+    override fun updateTransaction(transaction: Transaction):Boolean {
         TODO("Not yet implemented")
     }
 

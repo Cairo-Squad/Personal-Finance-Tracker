@@ -1,9 +1,11 @@
 package test.storage
 
 import datasource.MemoryStorage
+import datasource.Storage
 import model.Category
 import model.Transaction
 import model.TransactionType
+import test.util.test
 import java.time.LocalDateTime
 
 
@@ -201,15 +203,6 @@ fun main() {
     //endregion
 
 }
-
-import datasource.Storage
-import model.Category
-import model.Transaction
-import model.TransactionType
-import test.storage.StorageMock
-import test.util.test
-import java.time.LocalDateTime
-
 //package test.storage
 //fun main(){
 //    // valid id test
@@ -250,11 +243,6 @@ fun check(name: String, result: Any, expectedResult: Any) {
     }
 }
 
-fun main() {
-
-
-
-}
 
 class TransactionManagerMock(
     private val storage: Storage
