@@ -11,11 +11,13 @@ object MemoryStorageImp : MemoryStorage {
         transactionList.add(transaction)
     }
 
-    override fun updateTransaction(transaction: Transaction) {
+    override fun updateTransaction(transaction: Transaction) :Boolean{
         val index = transactionList.indexOfFirst { it.transactionId == transaction.transactionId }
         if (index != -1) {
             transactionList[index] = transaction
+            return true
         }
+        return false
     }
     override fun deleteTransaction(transactionId: Int) {
         val index = transactionList.indexOfFirst { it.transactionId == transactionId }
