@@ -9,8 +9,7 @@ fun List<Category>.convertToString(): String {
     val listAsString = StringBuilder()
 
     this.forEach { category ->
-        // TODO: Check the space using \t!!
-        listAsString.append("${category.categoryId}. ${category.categoryName}\t")
+        listAsString.append("${category.categoryId}. ${category.categoryName}    ")
     }
 
     return listAsString.toString()
