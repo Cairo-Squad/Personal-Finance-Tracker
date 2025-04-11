@@ -92,10 +92,9 @@ class CLIDispatcherImpl(
     }
 
     private fun getMonthlyReport() {
-        // TODO: Refactor this after merging the code!!
         val reportDate = getReportDateInput()
-//        val monthlyReport = transactionManager.getReportByMonth(reportDate)
-//        ioController.writeWithNewLine(monthlyReport.toString())
+        val monthlyReport = transactionManager.getReportByMonth(reportDate)
+        ioController.writeWithNewLine(monthlyReport.toString())
     }
     // endregion
 
