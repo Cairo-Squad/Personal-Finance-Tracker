@@ -152,7 +152,7 @@
 //
 //
 //    testFunction(
-//        testDescription = "Given a valid date but no data found, when validating, Then null is returned",
+//        testDescription = "Given a valid util.date but no data found, when validating, Then null is returned",
 //        actualResult = financeReporter.getMonthExpenses(LocalDateTime.of(2025, 4, 21, 19, 0)),
 //        expectedResult = MonthReport(LocalDateTime.of(2025, 4, 21, 19, 0),0.0,0.0)
 //    )

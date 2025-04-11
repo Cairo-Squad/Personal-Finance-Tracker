@@ -12,9 +12,9 @@ class MonthlyFinanceReporterImpl : MonthlyFinanceReporter {
     /***
      * Method to get total income, expense and netBalance of a specefic month.
      *
-     * @param requiredReportDate date of month that the user want a report for.
+     * @param requiredReportDate util.date of month that the user want a report for.
      *
-     * @return return Object of type MonthReport that contains the date and total income,expense and netBalance.
+     * @return return Object of type MonthReport that contains the util.date and total income,expense and netBalance.
      *
      */
     override fun getMonthReport(transactions: List<Transaction>, requiredReportDate: LocalDateTime): MonthReport {
@@ -31,7 +31,7 @@ class MonthlyFinanceReporterImpl : MonthlyFinanceReporter {
     /***
      * Method to get month total Income.
      *
-     * @param requiredReportDate required date to search for.
+     * @param requiredReportDate required util.date to search for.
      *
      * @return Double value if data exists, if no data found then returns null.
      */
@@ -48,7 +48,7 @@ class MonthlyFinanceReporterImpl : MonthlyFinanceReporter {
     /***
      * Method to get month total Expense.
      *
-     * @param requiredReportDate required date to search for.
+     * @param requiredReportDate required util.date to search for.
      *
      * @return Double value if data exists, if no data found then returns null.
      */
@@ -65,7 +65,7 @@ class MonthlyFinanceReporterImpl : MonthlyFinanceReporter {
     /***
      * Method to get month netBalance (Income - Expense).
      *
-     * @param requiredReportDate required date to search for.
+     * @param requiredReportDate required util.date to search for.
      *
      * @return Double value if data exists, if no data found then returns null.
      */

@@ -5,7 +5,7 @@ General Guidelines:
 Functional Requirements:
 - The user should be able to add, view, edit, and delete transactions (both income and expenses).
 - Each transaction must be associated with a category, such as Food, Rent, Salary, etc.
-- The system must provide a monthly summary and balance report, based on the date of each transaction (Hint: transactions must include a Date field to support this feature).
+- The system must provide a monthly summary and balance report, based on the util.date of each transaction (Hint: transactions must include a Date field to support this feature).
 
 Technical Requirements:
 - All logic-heavy functionalities must include check functions for unit testing.
