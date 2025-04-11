@@ -24,3 +24,13 @@ data class Transaction(
         """.trimIndent()
     }
 }
+
+fun Transaction.notNullValues(): List<Any> {
+    return listOfNotNull(
+        this.transactionAmount,
+        this.transactionDescription,
+        this.transactionCategory,
+        this.transactionType,
+        this.transactionDate,
+    )
+}

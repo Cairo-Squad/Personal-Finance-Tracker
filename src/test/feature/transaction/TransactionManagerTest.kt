@@ -14,75 +14,7 @@ import java.time.LocalDateTime
 fun main() {
     runCheckDeleteTransaction()
 
-
-    val initialTransaction = Transaction(
-        transactionId = null,
-        transactionDescription = null,
-        transactionType = null,
-        transactionAmount = null,
-        transactionDate = null,
-        transactionCategory = null
-    )
-
-    val list = mutableListOf(initialTransaction)
-    val storageMock: MemoryStorage = StorageMock(list)
-    val transactionManager = TransactionManagerMock(storageMock)
-
-
-    test(
-        name = "Given a transaction with all values null, when validating, then it should return false",
-        result = transactionManager.updateTransaction(initialTransaction),
-        correctResult = false
-    )
-
-    val transaction1 = initialTransaction.copy(transactionId = 1)
-    test(
-        name = "Given a transaction with only id is not null, when validating, then it should return false",
-        result = transactionManager.updateTransaction(transaction1),
-        correctResult = false
-    )
-
-    val transaction2 = initialTransaction.copy(
-        transactionId = 1,
-        transactionAmount = 200.0,
-        transactionDescription = "new description"
-    )
-    test(
-        name = "Given a transaction with more than one field to edit, when validating, then it should return false",
-        result = transactionManager.updateTransaction(transaction2),
-        correctResult = false
-    )
-
-    val transaction3 = initialTransaction.copy(
-        transactionId = 1,
-        transactionAmount = -500.0
-    )
-    test(
-        name = "Given a transaction amount with negative number, when validating, then it should return false",
-        result = transactionManager.updateTransaction(transaction3),
-        correctResult = false
-    )
-
-    val transaction4 = initialTransaction.copy(
-        transactionId = 1,
-        transactionDescription = ""
-    )
-    test(
-        name = "Given a transaction description with empty string, when validating, then it should return false",
-        result = transactionManager.updateTransaction(transaction4),
-        correctResult = false
-    )
-
-    val transaction5 = initialTransaction.copy(
-        transactionId = 1,
-        transactionAmount = 500.0
-    )
-    test(
-        name = "Given a valid transaction input, when validating, then it should return true",
-        result = transactionManager.updateTransaction(transaction5),
-        correctResult = true
-    )
-    // endregion
+    runUpdateTransactionTests()
 
     runCheckGetTransactions()
 
@@ -574,5 +506,76 @@ fun runCheckDeleteTransaction() {
     //endregion
     println("----------------------------------------------------------\n")
 
+}
+
+fun runUpdateTransactionTests(){
+    val initialTransaction = Transaction(
+        transactionId = null,
+        transactionDescription = null,
+        transactionType = null,
+        transactionAmount = null,
+        transactionDate = null,
+        transactionCategory = null
+    )
+
+    val list = mutableListOf(initialTransaction)
+    val storageMock: MemoryStorage = StorageMock(list)
+    val transactionManager = TransactionManagerMock(storageMock)
+
+
+    test(
+        name = "Given a transaction with all values null, when validating, then it should return false",
+        result = transactionManager.updateTransaction(initialTransaction),
+        correctResult = false
+    )
+
+    val transaction1 = initialTransaction.copy(transactionId = 1)
+    test(
+        name = "Given a transaction with only id is not null, when validating, then it should return false",
+        result = transactionManager.updateTransaction(transaction1),
+        correctResult = false
+    )
+
+    val transaction2 = initialTransaction.copy(
+        transactionId = 1,
+        transactionAmount = 200.0,
+        transactionType = TransactionType.INCOME,
+        transactionDescription = "new description"
+    )
+    test(
+        name = "Given a transaction with more than two fields to edit, when validating, then it should return false",
+        result = transactionManager.updateTransaction(transaction2),
+        correctResult = false
+    )
+
+    val transaction3 = initialTransaction.copy(
+        transactionId = 1,
+        transactionAmount = -500.0
+    )
+    test(
+        name = "Given a transaction amount with negative number, when validating, then it should return false",
+        result = transactionManager.updateTransaction(transaction3),
+        correctResult = false
+    )
+
+    val transaction4 = initialTransaction.copy(
+        transactionId = 1,
+        transactionDescription = ""
+    )
+    test(
+        name = "Given a transaction description with empty string, when validating, then it should return false",
+        result = transactionManager.updateTransaction(transaction4),
+        correctResult = false
+    )
+
+    val transaction5 = initialTransaction.copy(
+        transactionId = 1,
+        transactionAmount = 500.0
+    )
+    test(
+        name = "Given a valid transaction input, when validating, then it should return true",
+        result = transactionManager.updateTransaction(transaction5),
+        correctResult = true
+    )
 }
 
