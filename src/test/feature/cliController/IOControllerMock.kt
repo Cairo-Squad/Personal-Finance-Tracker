@@ -15,5 +15,9 @@ class IOControllerMock(private val userInputs: List<String>) : IOController {
         terminalOutputs.add(message)
     }
 
+    override fun writeWithNewLine(message: String) {
+        terminalOutputs.add(message)
+    }
+
     fun getOutputs(): List<String> = terminalOutputs
 }

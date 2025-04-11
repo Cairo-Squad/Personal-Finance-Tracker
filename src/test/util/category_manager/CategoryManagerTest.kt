@@ -4,7 +4,6 @@ import model.Category
 import util.category_manager.CategoryManager.validateCategorySelection
 import util.category_manager.CategoryManager.validateNewCategoryName
 import util.category_manager.CategoryState
-import util.category_manager.UserDecisionOfNewCategory
 
 fun main(){
     val categories =  mutableListOf(
@@ -69,7 +68,7 @@ fun main(){
     check(
         name = "given input 'other' and new category $isValid4 already exists, when checked, then should return full match exists",
         result = validateNewCategoryName(categories, isValid4),
-        correctResult = CategoryState.FullMatchExists
+        correctResult = CategoryState.FullMatchExists(categories[2])
     )
 
     // Test case 9: 'other' with empty new category

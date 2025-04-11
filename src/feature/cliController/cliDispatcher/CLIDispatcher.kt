@@ -1,5 +1,6 @@
 package feature.cliController.cliDispatcher
 
 interface CLIDispatcher {
-    fun dispatch(command: Int)
+    fun dispatch(userInput: Int)
+    fun validateOption(option: Int): Boolean
 }

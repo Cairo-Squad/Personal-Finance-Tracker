@@ -1,4 +1,5 @@
 package datasource.category
+
 import model.Category
 
 object ExpenseCategoryProviderImp : CategoryProvider {
@@ -13,7 +14,12 @@ object ExpenseCategoryProviderImp : CategoryProvider {
     )
 
     override fun getCategories(): List<Category> = _categories
-    override fun addCategory(category: Category) {
-        _categories.add(category)
+
+    override fun addCategory(categoryName: String): Category {
+        val oldOtherId = _categories.last().categoryId
+        _categories.last().categoryId = oldOtherId + 1
+        val newCategory = Category(oldOtherId, categoryName)
+        _categories.add(_categories.lastIndex, newCategory)
+        return newCategory
     }
 }

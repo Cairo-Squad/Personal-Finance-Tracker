@@ -27,7 +27,7 @@ fun getLocalDate(date: String): LocalDate? {
 
 fun getLocalTime(time: String): LocalTime? {
     return try {
-        val formatter = DateTimeFormatter.ofPattern(SYSTEM_24_Hours)
+        val formatter = DateTimeFormatter.ofPattern(SYSTEM_12_Hours)
         LocalTime.parse(time, formatter)
     } catch (e: Exception) {
         return null

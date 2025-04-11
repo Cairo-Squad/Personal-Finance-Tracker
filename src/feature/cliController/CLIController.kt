@@ -3,7 +3,6 @@ package feature.cliController
 import feature.cliController.cliDispatcher.CLIDispatcher
 import feature.cliController.ioController.IOController
 
-// TODO: Implement!!
 class CLIController(
     private val cliDispatcher: CLIDispatcher,
     private val ioController: IOController,
@@ -11,10 +10,40 @@ class CLIController(
 ) {
 
     fun start() {
+        ioController.writeWithNewLine(CLIConstants.WELCOME_MESSAGE)
+        ioController.writeWithNewLine(CLIConstants.SEPARATOR)
 
+        while (true) {
+            showMainMenu()
+
+            val input = takeUserInput()
+            if (input == CLIConstants.EXIT_COMMAND_CODE) {
+                break
+            }
+
+            cliDispatcher.dispatch(input)
+            ioController.writeWithNewLine(CLIConstants.SEPARATOR)
+        }
+
+        ioController.writeWithNewLine(CLIConstants.SEPARATOR)
+        ioController.writeWithNewLine(CLIConstants.EXIT_MESSAGE)
     }
 
     private fun showMainMenu() {
+        ioController.writeWithNewLine(CLIConstants.USER_MENU)
+    }
 
+    private fun takeUserInput(): Int {
+        ioController.write(CLIConstants.OPTION_INPUT_MESSAGE)
+        while (true) {
+            val userInput = ioController.read()
+            val parsedNumber = userInput?.toIntOrNull()
+
+            if (parsedNumber == null || !cliDispatcher.validateOption(parsedNumber)) {
+                ioController.write(CLIConstants.ENTER_VALID_OPTION_MESSAGE)
+            } else {
+                return parsedNumber
+            }
+        }
     }
 }
