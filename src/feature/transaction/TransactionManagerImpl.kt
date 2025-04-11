@@ -1,38 +1,56 @@
 package feature.transaction
 
-import datasource.Storage
+import data_source.MemoryStorage
+import datasource.MemoryStorage
 import model.Transaction
 import java.time.LocalDateTime
 
+
 class TransactionManagerImpl(
-    private val storage: Storage,
+    private val storage: MemoryStorage
 ) : TransactionManager {
 
-    override fun addTransaction(transaction: Transaction) {
-        /*val calendar = Calendar.getInstance().apply {
-            set(Calendar.YEAR, year.toInt())
-            set(Calendar.MONTH, month.toInt() - 1)
-            set(Calendar.DAY_OF_MONTH, day.toInt())
+
+    override fun addTransaction(transaction: Transaction):Boolean {
+
+        if (transaction.transactionAmount == null || transaction.transactionAmount <= 0) return false
+        if (transaction.transactionDescription.isNullOrBlank()) return false
+        if (transaction.transactionCategory == null) return false
+        if (transaction.transactionType == null) return false
+        if (transaction.transactionDate == null) return false
+
+        val newTransaction = transaction.copy(transactionId = storage.getNewTransactionId())
+
+       return storage.addTransaction(newTransaction)
+    }
+
+    override fun updateTransaction(transaction: Transaction): Boolean {
+        val transactionId = transaction.transactionId ?: return false
+
+        val notNullValuesList = listOf(
+            transaction.transactionAmount,
+            transaction.transactionDescription,
+            transaction.transactionCategory,
+            transaction.transactionType,
+            transaction.transactionDate,
+        ).filterNotNull()
+
+        if(notNullValuesList.isEmpty() || notNullValuesList.size > 1) return false
+
+        if(transaction.transactionAmount != null && transaction.transactionAmount < 0 ) return false
+
+        if(transaction.transactionDescription != null && transaction.transactionDescription.isEmpty()) return false
+
+        return storage.updateTransaction(transaction)
+    }
+
+    override fun deleteTransaction(transactionId: Int): Boolean {
+        val deletedTransaction = storage.getTransactionById(transactionId)
+        if (deletedTransaction != null) {
+            storage.deleteTransaction(transactionId)
+            return true
         }
-        val dateInMillis = calendar.timeInMillis
-        val transaction = Transaction(
-            transactionId = storage.getNewTransactionId(),
-            transactionDescription = description,
-            transactionType = transactionType,
-            transactionAmount = amount,
-            transactionDate = dateInMillis,
-            transactionCategory = transactionCategory,
-        )
-
-        storage.addTransaction(transaction)*/
-    }
-
-    override fun updateTransaction(transaction: Transaction) {
-        TODO("Not yet implemented")
-    }
-
-    override fun deleteTransaction(transactionId: Int) {
-        TODO("Not yet implemented")
+        return false
     }
 
     override fun getTransactionById(transactionId: Int): Transaction? {
