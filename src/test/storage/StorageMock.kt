@@ -1,14 +1,15 @@
 package test.storage
 
-import datasource.Storage
+import datasource.storage.MemoryStorage
 import model.Transaction
+import java.time.LocalDate
 
-class StorageMock: Storage {
-    override fun addTransaction(transaction: Transaction) {
+class StorageMock(private val transactionList: MutableList<Transaction>): MemoryStorage {
+    override fun addTransaction(transaction: Transaction): Boolean {
         TODO("Not yet implemented")
     }
 
-    override fun updateTransaction(transaction: Transaction): Boolean {
+    override fun updateTransaction(transaction: Transaction):Boolean {
         TODO("Not yet implemented")
     }
 
@@ -17,14 +18,14 @@ class StorageMock: Storage {
     }
 
     override fun getTransactionById(transactionId: Int): Transaction? {
-        TODO("Not yet implemented")
+        return transactionList.find { it.transactionId == transactionId }
     }
 
     override fun getAllTransactions(): List<Transaction> {
-        TODO("Not yet implemented")
+        return transactionList
     }
 
-    override fun getReportByMonth(month: String): List<Transaction> {
+    override fun getReportByMonth(localDate : LocalDate): List<Transaction> {
         TODO("Not yet implemented")
     }
 
