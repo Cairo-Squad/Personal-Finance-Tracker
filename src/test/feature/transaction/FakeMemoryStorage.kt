@@ -1,9 +1,10 @@
 package test.feature.transaction
 
-import datasource.Storage
+import datasource.storage.MemoryStorage
 import model.Transaction
+import java.time.LocalDate
 
-class FakeMemoryStorage(private val list:MutableList<Transaction>): Storage {
+class FakeMemoryStorage(private val list:MutableList<Transaction>): MemoryStorage {
     override fun addTransaction(transaction: Transaction) {
         TODO("Not yet implemented")
     }
@@ -24,7 +25,7 @@ class FakeMemoryStorage(private val list:MutableList<Transaction>): Storage {
         return list
     }
 
-    override fun getReportByMonth(month: String): List<Transaction> {
+    override fun getReportByMonth(localDate : LocalDate): List<Transaction> {
         TODO("Not yet implemented")
     }
 

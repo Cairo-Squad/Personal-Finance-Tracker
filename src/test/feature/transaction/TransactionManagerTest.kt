@@ -1,18 +1,19 @@
 package test.feature.transaction
 
-import data_source.Storage
-import datasource.MemoryStorage
+
+import datasource.storage.MemoryStorage
+import datasource.storage.MemoryStorageImp
 import feature.transaction.TransactionManagerImpl
 import model.Category
 import model.Transaction
 import model.TransactionType
-import test.data_source.StorageMock
 import test.util.test
+
 import java.time.LocalDateTime
 
 fun main() {
 
-    val storageMock: Storage = StorageMock()
+    val storageMock: MemoryStorage = StorageMock()
     val transactionManager = TransactionManagerMock(storageMock)
 
     val validTransaction = Transaction(
@@ -345,7 +346,7 @@ fun runCheckGetTransactions(){
         )
 
 
-        val fakeMemoryStorage = MemoryStorage()
+        val fakeMemoryStorage = MemoryStorageImp()
         val transactionManager = TransactionManagerImpl(fakeMemoryStorage)
 
         fakeMemoryStorage.addTransaction(transaction1)
