@@ -83,9 +83,7 @@ class CLIDispatcherImpl(
 
     private fun deleteTransaction() {
         val transactionID = getIDInput()
-        // TODO: Refactor this after merging the code!!
-//        val isTransactionDeleted = transactionManager.deleteTransaction(transactionID)
-        val isTransactionDeleted = true
+        val isTransactionDeleted = transactionManager.deleteTransaction(transactionID)
         if (isTransactionDeleted) {
             ioController.writeWithNewLine(CLIConstants.DELETE_TRANSACTION_SUCCESS_MESSAGE)
         } else {
