@@ -1,6 +1,8 @@
 package test.feature.transaction
 
-import datasource.Storage
+
+import datasource.storage.MemoryStorage
+import datasource.storage.MemoryStorageImp
 import feature.transaction.TransactionManagerImpl
 import model.Category
 import model.Transaction
@@ -10,110 +12,567 @@ import test.util.test
 import java.time.LocalDateTime
 
 fun main() {
+    runCheckDeleteTransaction()
 
-    val storageMock: Storage = StorageMock()
+    runUpdateTransactionTests()
+
+    runCheckGetTransactions()
+
+}
+
+class TransactionManagerMock(
+    private val storage: MemoryStorage
+) {
+
+    fun addTransaction(transaction: Transaction) {
+
+    }
+
+    fun updateTransaction(transaction: Transaction): Boolean {
+        return false
+    }
+
+    fun deleteTransaction(transaction: Transaction) {
+
+    }
+
+    fun getTransactionById(transactionId: Int): Transaction? {
+        return storage.getAllTransactions().find { it.transactionId == transactionId }
+    }
+
+    fun getAllTransactions(): List<Transaction> {
+        return storage.getAllTransactions()
+    }
+
+    fun getReportByMonth(month: String): List<Transaction> {
+        return emptyList()
+    }
+
+}
+
+fun runCheckGetTransactions(){
+    // region getTransactionById()
+    run {
+        val emptyList = mutableListOf<Transaction>()
+        val fakeMemoryStorage = StorageMock(emptyList)
+        val transactionManager = TransactionManagerImpl(fakeMemoryStorage)
+        test(
+            name = "Given an empty list of transactions, when call getTransactionById() it should return null",
+            result = transactionManager.getTransactionById(1) ?: "null",
+            correctResult = "null"
+        )
+    }
+
+    // Storage with one transaction with matching ID
+    run {
+        val transaction = Transaction(
+            transactionId = 1,
+            transactionDescription = "description",
+            transactionType = TransactionType.INCOME,
+            transactionAmount = 2000.0,
+            transactionDate = LocalDateTime.now(),
+            transactionCategory = Category(1,"food")
+        )
+
+        val list = mutableListOf(transaction)
+
+        val fakeMemoryStorage = StorageMock(list)
+        val transactionManager = TransactionManagerImpl(fakeMemoryStorage)
+
+        test(
+            name = "Given a list with one transaction, when call getTransactionById() with matching ID it should return the transaction",
+            result = transactionManager.getTransactionById(1) ?: "null",
+            correctResult = transaction
+        )
+    }
+
+    // Storage with one transaction with non-matching ID
+    run {
+        val list = mutableListOf(
+            Transaction(
+                transactionId = 1,
+                transactionDescription = "description",
+                transactionType = TransactionType.INCOME,
+                transactionAmount = 2000.0,
+                transactionDate = LocalDateTime.now(),
+                transactionCategory = Category(1,"food")
+            ),
+        )
+        val fakeMemoryStorage = StorageMock(list)
+        val transactionManager = TransactionManagerImpl(fakeMemoryStorage)
+
+        test(
+            name = "Given a list with one transaction, when call getTransactionById() with non-matching ID it should return null",
+            result = transactionManager.getTransactionById(2) ?: "null",
+            correctResult = "null"
+        )
+    }
+
+
+    // Storage with multiple transactions, one matching
+    run {
+        val list = mutableListOf(
+            Transaction(
+                transactionId = 1,
+                transactionDescription = "description",
+                transactionType = TransactionType.INCOME,
+                transactionAmount = 2000.0,
+                transactionDate = LocalDateTime.now(),
+                transactionCategory = Category(1,"food")
+            ),
+            Transaction(
+                transactionId = 2,
+                transactionDescription = "description",
+                transactionType = TransactionType.INCOME,
+                transactionAmount = 2000.0,
+                transactionDate = LocalDateTime.now(),
+                transactionCategory = Category(1,"food")
+            ),
+            Transaction(
+                transactionId = 3,
+                transactionDescription = "description",
+                transactionType = TransactionType.INCOME,
+                transactionAmount = 2000.0,
+                transactionDate = LocalDateTime.now(),
+                transactionCategory = Category(1,"food")
+            )
+        )
+
+        val fakeMemoryStorage = StorageMock(list)
+        val transactionManager = TransactionManagerImpl(fakeMemoryStorage)
+
+        test(
+            name = "Given a list with multiple transactions, when call getTransactionById() with matching ID it should return correct transaction",
+            result = transactionManager.getTransactionById(2) ?: "null",
+            correctResult = Transaction(
+                transactionId = 2,
+                transactionDescription = "description",
+                transactionType = TransactionType.INCOME,
+                transactionAmount = 2000.0,
+                transactionDate = LocalDateTime.now(),
+                transactionCategory = Category(1,"food")
+            )
+        )
+    }
+
+    // Storage with multiple transactions, none matching
+    run {
+        val list = mutableListOf(
+            Transaction(
+                transactionId = 1,
+                transactionDescription = "description",
+                transactionType = TransactionType.INCOME,
+                transactionAmount = 2000.0,
+                transactionDate = LocalDateTime.now(),
+                transactionCategory = Category(1,"food")
+            ),
+            Transaction(
+                transactionId = 2,
+                transactionDescription = "description",
+                transactionType = TransactionType.INCOME,
+                transactionAmount = 2000.0,
+                transactionDate = LocalDateTime.now(),
+                transactionCategory = Category(1,"food")
+            ),
+            Transaction(
+                transactionId = 3,
+                transactionDescription = "description",
+                transactionType = TransactionType.INCOME,
+                transactionAmount = 2000.0,
+                transactionDate = LocalDateTime.now(),
+                transactionCategory = Category(1,"food")
+            )
+        )
+
+        val fakeMemoryStorage = StorageMock(list)
+        val transactionManager = TransactionManagerImpl(fakeMemoryStorage)
+
+        test(
+            name = "Given a list with multiple transactions, when call getTransactionById() with non-matching ID it should return null",
+            result = transactionManager.getTransactionById(4) ?: "null",
+            correctResult = "null"
+        )
+    }
+    //endregion
+
+    println("----------------------------------------------------------")
+
+    // region getAllTransactions()
+    // return an empty list
+    run {
+        val emptyList = mutableListOf<Transaction>()
+        val fakeMemoryStorage = StorageMock(emptyList)
+        val transactionManager = TransactionManagerImpl(fakeMemoryStorage)
+        test(
+            name = "Given an empty list, when call getAllTransaction then should its size equal to zero",
+            result = transactionManager.getAllTransactions().size,
+            correctResult = 0
+        )
+    }
+
+
+    // return non-empty list
+    run {
+
+
+        val transaction1 = Transaction(
+            transactionId = 1,
+            transactionDescription = "description",
+            transactionType = TransactionType.INCOME,
+            transactionAmount = 2000.0,
+            transactionDate = LocalDateTime.now(),
+            transactionCategory = Category(1, "food")
+        )
+        val transaction2 = Transaction(
+            transactionId = 2,
+            transactionDescription = "description",
+            transactionType = TransactionType.INCOME,
+            transactionAmount = 2000.0,
+            transactionDate = LocalDateTime.now(),
+            transactionCategory = Category(1, "food")
+        )
+        val transaction3 = Transaction(
+            transactionId = 3,
+            transactionDescription = "description",
+            transactionType = TransactionType.INCOME,
+            transactionAmount = 2000.0,
+            transactionDate = LocalDateTime.now(),
+            transactionCategory = Category(1, "food")
+        )
+
+        val list = mutableListOf(transaction1, transaction2, transaction3)
+
+        val fakeMemoryStorage = StorageMock(list)
+        val transactionManager = TransactionManagerImpl(fakeMemoryStorage)
+
+        list.add(transaction1)
+        list.add(transaction2)
+        list.add(transaction3)
+        test(
+            name = "Given an empty list, when return the list then should return the list",
+            result = transactionManager.getAllTransactions(),
+            correctResult = fakeMemoryStorage.getAllTransactions()
+        )
+    }
+
+    //return a non-empty list
+    //endregion
+}
+
+
+
+fun runCheckAddTransaction() {
+    val storageMock: MemoryStorage = MemoryStorageImp
+    val transactionManager = TransactionManagerImpl(storageMock)
+
+
+    test(
+        "Amount is null should return false",
+        transactionManager.addTransaction(
+            Transaction(
+                null,
+                "Bonus",
+                TransactionType.INCOME,
+                null,
+                LocalDateTime.now(),
+                Category(1, "Salary")
+            )
+        ),
+        false
+    )
+    test(
+        "Valid transaction → should return true",
+        transactionManager.addTransaction(
+            Transaction(
+                transactionId = null,
+                transactionDescription = "Salary",
+                transactionType = TransactionType.INCOME,
+                transactionAmount = 3000.0,
+                transactionDate = LocalDateTime.of(2025, 4, 10, 0, 0),
+                transactionCategory = Category(1, "Income")
+            )
+        ),
+        true
+    )
+
+    test(
+        "Amount is null → should return false",
+        transactionManager.addTransaction(
+            Transaction(
+                transactionId = null,
+                transactionDescription = "Bonus",
+                transactionType = TransactionType.INCOME,
+                transactionAmount = null,
+                transactionDate = LocalDateTime.of(2025, 4, 10, 0, 0),
+                transactionCategory = Category(1, "Salary")
+            )
+        ),
+        false
+    )
+
+    test(
+        "Amount is zero → should return false",
+        transactionManager.addTransaction(
+            Transaction(
+                transactionId = null,
+                transactionDescription = "Refund",
+                transactionType = TransactionType.EXPENSE,
+                transactionAmount = 0.0,
+                transactionDate = LocalDateTime.of(2025, 4, 10, 0, 0),
+                transactionCategory = Category(2, "Other")
+            )
+        ),
+        false
+    )
+
+    test(
+        "Amount is negative → should return false",
+        transactionManager.addTransaction(
+            Transaction(
+                transactionId = null,
+                transactionDescription = "Fine",
+                transactionType = TransactionType.EXPENSE,
+                transactionAmount = -100.0,
+                transactionDate = LocalDateTime.of(2025, 4, 10, 0, 0),
+                transactionCategory = Category(3, "Penalty")
+            )
+        ),
+        false
+    )
+
+    test(
+        "Description is null → should return false",
+        transactionManager.addTransaction(
+            Transaction(
+                transactionId = null,
+                transactionDescription = null,
+                transactionType = TransactionType.INCOME,
+                transactionAmount = 500.0,
+                transactionDate = LocalDateTime.of(2025, 4, 10, 0, 0),
+                transactionCategory = Category(4, "Freelance")
+            )
+        ),
+        false
+    )
+
+    test(
+        "Description is blank → should return false",
+        transactionManager.addTransaction(
+            Transaction(
+                transactionId = null,
+                transactionDescription = "   ",
+                transactionType = TransactionType.EXPENSE,
+                transactionAmount = 100.0,
+                transactionDate = LocalDateTime.of(2025, 4, 10, 0, 0),
+                transactionCategory = Category(5, "Shopping")
+            )
+        ),
+        false
+    )
+
+    test(
+        "Transaction type is null → should return false",
+        transactionManager.addTransaction(
+            Transaction(
+                transactionId = null,
+                transactionDescription = "Pay",
+                transactionType = null,
+                transactionAmount = 1000.0,
+                transactionDate = LocalDateTime.of(2025, 4, 10, 0, 0),
+                transactionCategory = Category(6, "Payment")
+            )
+        ),
+        false
+    )
+
+    test(
+        "Transaction category is null → should return false",
+        transactionManager.addTransaction(
+            Transaction(
+                transactionId = null,
+                transactionDescription = "Lunch",
+                transactionType = TransactionType.EXPENSE,
+                transactionAmount = 50.0,
+                transactionDate = LocalDateTime.of(2025, 4, 10, 0, 0),
+                transactionCategory = null
+            )
+        ),
+        false
+    )
+
+    test(
+        "Transaction date is null → should return false",
+        transactionManager.addTransaction(
+            Transaction(
+                transactionId = null,
+                transactionDescription = "Dinner",
+                transactionType = TransactionType.EXPENSE,
+                transactionAmount = 75.0,
+                transactionDate = null,
+                transactionCategory = Category(7, "Food")
+            )
+        ),
+        false
+    )
+
+}
+fun runCheckDeleteTransaction() {
+    //region transactionExist
+    run {
+        val transaction = Transaction(
+            transactionId = 1,
+            transactionDescription = "Lunch",
+            transactionType = TransactionType.EXPENSE,
+            transactionAmount = 50.0,
+            transactionDate = LocalDateTime.now(),
+            transactionCategory = Category(1, "Food")
+        )
+        val list = mutableListOf(transaction)
+        val fakeStorage = StorageMock(list)
+        val manager = TransactionManagerImpl(fakeStorage)
+
+        test(
+            name = "Given existing transaction, when deleted, should return true",
+            result = manager.deleteTransaction(1),
+            correctResult = true
+        )
+
+        test(
+            name = "After deletion, getTransactionById should return null",
+            result = manager.getTransactionById(1) ?: "null",
+            correctResult = "null"
+        )
+    }
+    //endregion
+
+    //region transactionnotexist
+    run {
+        val list = mutableListOf<Transaction>()
+        val fakeStorage = StorageMock(list)
+        val manager = TransactionManagerImpl(fakeStorage)
+
+        test(
+            name = "Given non-existent transaction, when deleted, should return false",
+            result = manager.deleteTransaction(99),
+            correctResult = false
+        )
+    }
+//endregion
+
+    //region emptyStorage
+    run {
+        val fakeStorage = StorageMock(mutableListOf())
+        val manager = TransactionManagerImpl(fakeStorage)
+
+        test(
+            name = "Given empty storage, when delete is called, should return false",
+            result = manager.deleteTransaction(1),
+            correctResult = false
+        )
+    }
+//endregion
+
+    //region deleteMultipleTransaction
+    run {
+        val list = mutableListOf(
+            Transaction(1, "T1", TransactionType.EXPENSE, 100.0, LocalDateTime.now(), Category(1, "Cat1")),
+            Transaction(2, "T2", TransactionType.INCOME, 200.0, LocalDateTime.now(), Category(2, "Cat2"))
+        )
+        val fakeStorage = StorageMock(list)
+        val manager = TransactionManagerImpl(fakeStorage)
+
+        test(
+            name = "Given multiple transactions, when one is deleted, should return true",
+            result = manager.deleteTransaction(1),
+            correctResult = true
+        )
+
+        test(
+            name = "After deletion, deleted transaction should not be found",
+            result = manager.getTransactionById(1) ?: "null",
+            correctResult = "null"
+        )
+
+        test(
+            name = "Remaining transaction should still exist",
+            result = manager.getTransactionById(2)?.transactionId ?: "null",
+            correctResult = 2
+        )
+    }
+    //endregion
+    println("----------------------------------------------------------\n")
+
+}
+
+fun runUpdateTransactionTests(){
+    val initialTransaction = Transaction(
+        transactionId = null,
+        transactionDescription = null,
+        transactionType = null,
+        transactionAmount = null,
+        transactionDate = null,
+        transactionCategory = null
+    )
+
+    val list = mutableListOf(initialTransaction)
+    val storageMock: MemoryStorage = StorageMock(list)
     val transactionManager = TransactionManagerMock(storageMock)
 
-    val validTransaction = Transaction(
+
+    test(
+        name = "Given a transaction with all values null, when validating, then it should return false",
+        result = transactionManager.updateTransaction(initialTransaction),
+        correctResult = false
+    )
+
+    val transaction1 = initialTransaction.copy(transactionId = 1)
+    test(
+        name = "Given a transaction with only id is not null, when validating, then it should return false",
+        result = transactionManager.updateTransaction(transaction1),
+        correctResult = false
+    )
+
+    val transaction2 = initialTransaction.copy(
         transactionId = 1,
-        transactionDescription = "old description",
-        transactionType = TransactionType.EXPENSE,
-        transactionAmount = 20.0,
-        transactionDate = LocalDateTime.now(),
-        transactionCategory = Category(1, "Food")
+        transactionAmount = 200.0,
+        transactionType = TransactionType.INCOME,
+        transactionDescription = "new description"
     )
-
-    // region transaction not exists
-    val result1 = transactionManager.updateTransaction(
-        transactionId = "1",
-        transactionDescription = "New description",
-        transactionType = "EXPENSE",
-        transactionAmount = "100.0",
-        transactionDate = "2025-04-09",
-        transactionCategory = "Food"
-    )
-
     test(
-        name = "Given a transaction does not exists, when validating, then return false",
-        result = result1,
-        correctResult = false
-    )
-    // endregion
-
-    // region transaction id
-    val result2 = transactionManager.updateTransaction(
-        transactionId = "",
-        transactionDescription = "New description",
-        transactionType = "EXPENSE",
-        transactionAmount = "-100.0",
-        transactionDate = "2025-04-09",
-        transactionCategory = "Food"
-    )
-
-    test(
-        name = "Given an empty id, when validating, then return false",
-        result = result2,
+        name = "Given a transaction with more than two fields to edit, when validating, then it should return false",
+        result = transactionManager.updateTransaction(transaction2),
         correctResult = false
     )
 
-    val result3 = transactionManager.updateTransaction(
-        transactionId = "a",
-        transactionDescription = "New description",
-        transactionType = "EXPENSE",
-        transactionAmount = "-100.0",
-        transactionDate = "2025-04-09",
-        transactionCategory = "Food"
+    val transaction3 = initialTransaction.copy(
+        transactionId = 1,
+        transactionAmount = -500.0
     )
-
     test(
-        name = "Given id with non-numeric values, when validating, then return false",
-        result = result3,
+        name = "Given a transaction amount with negative number, when validating, then it should return false",
+        result = transactionManager.updateTransaction(transaction3),
         correctResult = false
     )
-    // endregion
 
-    // region transaction amount
-    val result4 = transactionManager.updateTransaction(
-        transactionId = "1",
-        transactionDescription = "New description",
-        transactionType = "EXPENSE",
-        transactionAmount = "aa",
-        transactionDate = "2025-04-09",
-        transactionCategory = "Food"
+    val transaction4 = initialTransaction.copy(
+        transactionId = 1,
+        transactionDescription = ""
     )
-
     test(
-        name = "Given amount with characters, when validating, then return false",
-        result = result4,
+        name = "Given a transaction description with empty string, when validating, then it should return false",
+        result = transactionManager.updateTransaction(transaction4),
         correctResult = false
     )
-    // endregion
 
-    // region transaction type
-    val result5 = transactionManager.updateTransaction(
-        transactionId = "1",
-        transactionDescription = "Description",
-        transactionType = "Food",
-        transactionAmount = "50.0",
-        transactionDate = "2025-04-09",
-        transactionCategory = "Food"
+    val transaction5 = initialTransaction.copy(
+        transactionId = 1,
+        transactionAmount = 500.0
     )
-
     test(
-        name = "Given an invalid type, when validating, then return false",
-        result = result5,
-        correctResult = false
+        name = "Given a valid transaction input, when validating, then it should return true",
+        result = transactionManager.updateTransaction(transaction5),
+        correctResult = true
     )
-    // endregion
-
-    // region transaction date
-
-    // endregion
-
-    // region transaction Category
-
-    // endregion
-
 }
 
 class TransactionManagerMock(
@@ -124,14 +583,7 @@ class TransactionManagerMock(
 
     }
 
-    fun updateTransaction(
-        transactionId: String,
-        transactionDescription: String,
-        transactionType: String,
-        transactionAmount: String,
-        transactionDate: String,
-        transactionCategory: String
-    ): Boolean {
+    fun updateTransaction(transaction: Transaction): Boolean {
         return false
     }
 

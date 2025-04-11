@@ -1,31 +1,201 @@
 package test.storage
 
-import datasource.MemoryStorage
-import datasource.Storage
+import datasource.storage.MemoryStorage
+import datasource.storage.MemoryStorageImp
 import model.Category
 import model.Transaction
 import model.TransactionType
+import test.storage.StorageMock
 import test.util.test
 import java.time.LocalDateTime
 
 
 fun main() {
 
+    runCheckGetTransactions()
+    runCheckAddTransaction()
+    runCheckUpdateTransaction()
+    runCheckDeleteTransaction()
+    runCheckGetTransactionById()
+    runCheckGetAllTransactions()
+
+
+}
+fun runCheckAddTransaction() {
+    val storage = MemoryStorageImp
+
+    // Valid addition
+    test(
+        "Given a valid transaction, when calling addTransaction, Then it should be added to the storage",
+        run {
+            val transaction = Transaction(
+                transactionId = storage.getNewTransactionId(),
+                transactionDescription = "Salary",
+                transactionType = TransactionType.INCOME,
+                transactionAmount = 2000.0,
+                transactionDate =  LocalDateTime.now(),
+                transactionCategory = Category(1, "Salary")
+            )
+            storage.addTransaction(transaction)
+            storage.getTransactionById(transaction.transactionId!!) == transaction
+        },
+        true
+    )
+
+    // Adding transaction with duplicate ID
+    test(
+        "Given a duplicate transaction ID, when calling addTransaction,Then it should throw an exception",
+        runCatching {
+            val transaction = Transaction(
+                transactionId = 1,
+                transactionDescription = "Freelance",
+                transactionType = TransactionType.INCOME,
+                transactionAmount = 500.0,
+                transactionDate = LocalDateTime.now(),
+                transactionCategory = Category(2, "Freelance")
+            )
+            storage.addTransaction(transaction)
+        }.isFailure,
+        true
+    )
+}
+
+fun runCheckUpdateTransaction() {
+    val storage = MemoryStorageImp
+
+    // Update a valid transaction test
+    test(
+        "Given an existing transaction, when calling updateTransaction, Then it should update the transaction details",
+        run {
+            val transaction = Transaction(
+                transactionId = 1,
+                transactionDescription = "Updated Salary",
+                transactionType = TransactionType.INCOME,
+                transactionAmount = 3000.0,
+                transactionDate = LocalDateTime.now(),
+                transactionCategory = Category(1, "Updated Salary")
+            )
+            storage.updateTransaction(transaction)
+        },
+        true
+    )
+
+    // Update non-existent transaction test
+    test(
+        "Given a non-existent transaction, when calling updateTransaction, Then it should return false",
+        storage.updateTransaction(
+            Transaction(
+                transactionId = 999,
+                transactionDescription = "Non-existent",
+                transactionType = TransactionType.INCOME,
+                transactionAmount = 3000.0,
+                transactionDate = LocalDateTime.now(),
+                transactionCategory = Category(3, "None")
+            )
+        ),
+        false
+    )
+}
+
+fun runCheckDeleteTransaction() {
+    val storage = MemoryStorageImp
+
+    // Valid deletion test
+    test(
+        "Given an existing transaction ID, when calling deleteTransaction, Then it should be removed",
+        run {
+            storage.deleteTransaction(1)
+            storage.getTransactionById(1) == null
+        },
+        true
+    )
+
+    // Invalid deletion (non-existent transaction)
+    test(
+        "Given a non-existent transaction ID, when calling deleteTransaction, Then it should throw an exception",
+        runCatching {
+            storage.deleteTransaction(999)
+        }.isFailure,
+        true
+    )
+}
+
+fun runCheckGetTransactionById() {
+    val storage = MemoryStorageImp
+
+    // Valid ID Test
+    test(
+        "Given an existing transaction ID, when calling getTransactionById, Then it should return the transaction",
+        storage.getTransactionById(1) != null,
+        true
+    )
+
+    // Non-existent ID
+    test(
+        "Given a non-existent transaction ID, when calling getTransactionById,Then it should return null",
+        storage.getTransactionById(999) ?: "null",
+        "null"
+    )
+}
+
+fun runCheckGetAllTransactions() {
+    val storage = MemoryStorageImp
+
+    // Empty list
+    test(
+        "Given an empty transaction list, when calling getAllTransactions,Then it should return an empty list",
+        storage.getAllTransactions().isEmpty(),
+        true
+    )
+
+    // Non-empty list
+    test(
+        "Given a list with transactions, when calling getAllTransactions, it should return all transactions",
+        run {
+            val transaction1 = Transaction(
+                transactionId = 1,
+                transactionDescription = "Salary",
+                transactionType = TransactionType.INCOME,
+                transactionAmount = 2000.0,
+                transactionDate = LocalDateTime.now(),
+                transactionCategory = Category(1, "Salary")
+            )
+
+            val transaction2 = Transaction(
+                transactionId = 2,
+                transactionDescription = "Rent",
+                transactionType = TransactionType.EXPENSE,
+                transactionAmount = 800.0,
+                transactionDate =  LocalDateTime.now(),
+                transactionCategory = Category(2, "Housing")
+            )
+
+            storage.addTransaction(transaction1)
+            storage.addTransaction(transaction2)
+
+            storage.getAllTransactions().size == 2
+        },
+        true
+    )
+}
+
+
+fun runCheckGetTransactions(){
     //region getTransactionById()
     // Empty storage
     run {
-        val storage = MemoryStorage()
-        check(
+        val storage =StorageMock(mutableListOf<Transaction>())
+        test(
             name = "Given an empty list of transactions, when call getTransactionById() it should return null",
             result = storage.getTransactionById(1) ?: "null",
-            expectedResult = "null"
+            correctResult = "null"
         )
     }
 
     // Storage with one transaction with matching ID
     run {
-        val storage = MemoryStorage()
         val list = mutableListOf<Transaction>()
+        val storage =StorageMock(list)
         val transaction = Transaction(
             transactionId = 1,
             transactionDescription = "description",
@@ -36,16 +206,17 @@ fun main() {
         )
         storage.addTransaction(transaction)
 
-        check(
+        test(
             name = "Given a list with one transaction, when call getTransactionById() with matching ID it should return the transaction",
             result = storage.getTransactionById(1) ?: "null",
-            expectedResult = transaction
+            correctResult = transaction
         )
     }
 
     // Storage with one transaction with non-matching ID
     run {
-        val storage = MemoryStorage()
+        val storage =StorageMock(mutableListOf<Transaction>())
+
         val transaction = Transaction(
             transactionId = 1,
             transactionDescription = "description",
@@ -56,17 +227,17 @@ fun main() {
         )
         storage.addTransaction(transaction)
 
-        check(
+        test(
             name = "Given a list with one transaction, when call getTransactionById() with non-matching ID it should return null",
             result = storage.getTransactionById(2) ?: "null",
-            expectedResult = "null"
+            correctResult = "null"
         )
     }
 
 
     // Storage with multiple transactions, one matching
     run {
-        val storage = MemoryStorage()
+        val storage =StorageMock(mutableListOf<Transaction>())
         val transaction1 = Transaction(
             transactionId = 1,
             transactionDescription = "description",
@@ -97,16 +268,16 @@ fun main() {
         storage.addTransaction(transaction2)
         storage.addTransaction(transaction3)
 
-        check(
+        test(
             name = "Given a list with multiple transactions, when call getTransactionById() with matching ID it should return correct transaction",
             result = storage.getTransactionById(2) ?: "null",
-            expectedResult = transaction2
+            correctResult = transaction2
         )
     }
 
     // Storage with multiple transactions, none matching
     run {
-        val storage = MemoryStorage()
+        val storage =StorageMock(mutableListOf<Transaction>())
         val transaction1 = Transaction(
             transactionId = 1,
             transactionDescription = "description",
@@ -137,10 +308,10 @@ fun main() {
         storage.addTransaction(transaction2)
         storage.addTransaction(transaction3)
 
-        check(
+        test(
             name = "Given a list with multiple transactions, when call getTransactionById() with non-matching ID it should return null",
             result = storage.getTransactionById(4) ?: "null",
-            expectedResult = "null"
+            correctResult = "null"
         )
     }
     //endregion
@@ -151,11 +322,11 @@ fun main() {
     // return an empty list
     run {
 
-        val storage = MemoryStorage()
-        check(
+        val storage =StorageMock(mutableListOf<Transaction>())
+        test(
             name = "Given an empty list, when call getAllTransaction then should its size equal to zero",
             result = storage.getAllTransactions().size,
-            expectedResult = 0
+            correctResult = 0
         )
     }
 
@@ -187,62 +358,7 @@ fun main() {
         )
 
 
-        val storage = MemoryStorage()
-
-        storage.addTransaction(transaction1)
-        storage.addTransaction(transaction2)
-        storage.addTransaction(transaction3)
-        check(
-            name = "Given an empty list, when return the list then should return the size of the list",
-            result = storage.getAllTransactions().size,
-            expectedResult = 3
-        )
-    }
-
-    //return a non-empty list
-    //endregion
-
 }
-//package test.storage
-//fun main(){
-//    // valid id test
-//    check(
-//        name = "given valid id , when checked, then should return true",
-//        result = checkID(id : Int),
-//        correctResult = true
-//    )
-//    //empty id test
-//    check(
-//        name = "given empty id , when checked, then should return false",
-//        result =checkID(id :Int),
-//        correctResult = false
-//    )
-//    //out of range id
-//    check(
-//        name = "given out of range id , when checked, then should return false",
-//        result =checkID(id : Int),
-//        correctResult = false
-//    )
-//
-//
-//
-//}
-//fun check(name: String, result:Boolean , correctResult:Boolean) {
-//    if (result == correctResult) {
-//        println("Success - $name")
-//    } else {
-//        println("Failed - $name")
-//    }
-//}
-
-fun check(name: String, result: Any, expectedResult: Any) {
-    if (result == expectedResult) {
-        println("Success - $name")
-    } else {
-        println("Failure - $name")
-    }
-}
-
 
 class TransactionManagerMock(
     private val storage: Storage
