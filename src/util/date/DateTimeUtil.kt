@@ -1,19 +1,28 @@
-package date
+package util.date
 
+import DATE_FORMAT
+import SYSTEM_12_Hours
+import SYSTEM_24_Hours
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
 
-const val AM = "AM"
-const val PM = "PM"
-const val TIME_FORMAT = "%02d:%02d %s"
-const val DATE_FORMAT = "dd-MM-yyyy"
-const val SYSTEM_12_Hours = "hh:mm a"
-const val SYSTEM_24_Hours = "HH:mm"
-const val MAX_YEAR = 2030
-const val MIN_YEAR = 1900
+fun main() {
+    val date = getLocalDate("12-1-2020")
+    val time = getLocalTime("12:10")
+    val dateTime = getLocalDateTime(date, time)
+    println(dateTime?.month)
 
+}
+fun getLocalDateTime(date: LocalDate?, time: LocalTime?): LocalDateTime? {
+    return if (date != null && time != null) {
+        LocalDateTime.of(date, time)
+    } else {
+        null
+    }
+}
 
 fun getLocalDate(date: String): LocalDate? {
     return try {
@@ -25,7 +34,7 @@ fun getLocalDate(date: String): LocalDate? {
     }
 }
 
-fun getLocalTime(time:String): LocalTime? {
+fun getLocalTime(time: String): LocalTime? {
     return try {
         val formatter = DateTimeFormatter.ofPattern(SYSTEM_24_Hours)
         LocalTime.parse(time, formatter)
