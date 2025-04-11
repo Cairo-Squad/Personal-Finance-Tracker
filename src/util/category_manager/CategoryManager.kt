@@ -5,7 +5,7 @@ import model.Category
 object CategoryManager {
 
     fun validateCategorySelection(
-        categories: MutableList<Category>,
+        categories:List<Category>,
         selectedCategoryId: String
     ): Boolean {
         if (selectedCategoryId == "") {
@@ -30,7 +30,7 @@ object CategoryManager {
     }
 
  fun validateNewCategoryName(
-        categories: MutableList<Category>,
+        categories: List<Category>,
         newCategoryName: String
     ): CategoryState {
 
@@ -49,40 +49,15 @@ object CategoryManager {
      // Find the category with the largest match
      val maxCategoryMatching = findLargestMatchOfNameCategory(userNG, categories)
      if (maxCategoryMatching != null) {
-         return CategoryState.PartialMatchExists(maxCategoryMatching.categoryName  , userNG)
+
+         return CategoryState.PartialMatchExists(maxCategoryMatching )
      }
-     // no found . new category added
-     val newId = categories.size + 1
-     val newCategory = Category(newId, newCategoryName)
-     categories.add(newCategory)
-     return CategoryState.NewCategory(userNG)
+
+     return CategoryState.NewCategory
     }
 
-    fun addCategoryDecision(
-        categories: MutableList<Category>,
-        newCategoryName: String,
-        userDecision: UserDecisionOfNewCategory
-    ): Boolean {
-        when (userDecision) {
-            UserDecisionOfNewCategory.EXISTING_CATEGORY -> {
-                // You have chosen to use an existing category.
-               return true
-            }
-            UserDecisionOfNewCategory.NEW_CATEGORY -> {
-                // Add new category
-                if (newCategoryName.isNotEmpty()) {
-                    val newId = categories.size + 1
-                    categories.add(Category(newId, newCategoryName))
-                }
-               return true
-            }
-            else -> {
-                // Invalid choice
-               return false
-            }
-        }
-    }
-    private fun findLargestMatchOfNameCategory(newNameCategory: String, categories: MutableList<Category>): Category? {
+
+    private fun findLargestMatchOfNameCategory(newNameCategory: String, categories: List<Category>): Category? {
         return categories.maxByOrNull { category ->
             category.categoryName.zip(newNameCategory).count { it.first == it.second }>1
         }

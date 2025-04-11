@@ -1,7 +1,6 @@
 package test.util.category_manager
 
 import model.Category
-import util.category_manager.CategoryManager.addCategoryDecision
 import util.category_manager.CategoryManager.validateCategorySelection
 import util.category_manager.CategoryManager.validateNewCategoryName
 import util.category_manager.CategoryState
@@ -62,21 +61,7 @@ fun main(){
 //        correctResult = true
 //    )
 
-    // Test case 6: 'other' with partial match
-    val isValid2:String ="Sa";
-    check(
-        name = "given input 'other' and new category $isValid2, when checked, then should show partial match with it and user decision,user want new category",
-        result = addCategoryDecision(categories, isValid2, UserDecisionOfNewCategory.NEW_CATEGORY),
-        correctResult = true
-    )
 
-    // Test case 7: 'other' with no match
-    val isValid3:String ="play";
-    check(
-        name = "given input 'other' and new category $isValid3 not match with any list of categories, when checked, then should add new category,user decision new category",
-        result = addCategoryDecision(categories, isValid3, UserDecisionOfNewCategory.NEW_CATEGORY),
-        correctResult =true
-    )
 
 
     // Test case 8: 'other' match(copy) with one list of category
