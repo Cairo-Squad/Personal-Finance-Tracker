@@ -7,12 +7,12 @@ import model.TransactionType
 import java.time.LocalDateTime
 
 class TransactionManagerMock : TransactionManager {
-    override fun addTransaction(transaction: Transaction) {
-
+    override fun addTransaction(transaction: Transaction): Boolean {
+        return true
     }
 
-    override fun updateTransaction(transaction: Transaction) {
-
+    override fun updateTransaction(transaction: Transaction): Boolean {
+        return true
     }
 
     override fun deleteTransaction(transactionId: Int) {
