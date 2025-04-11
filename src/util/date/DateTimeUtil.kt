@@ -7,6 +7,7 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
+import java.util.*
 
 fun getLocalDateTime(date: LocalDate?, time: LocalTime?): LocalDateTime? {
     return if (date != null && time != null) {
@@ -25,22 +26,17 @@ fun getLocalDate(date: String): LocalDate? {
     }
 }
 
-fun getLocalTime(time: String): LocalTime? {
+fun getLocalTime(time: String, formatter: String = SYSTEM_12_Hours): LocalTime? {
     return try {
-        val formatter = DateTimeFormatter.ofPattern(SYSTEM_12_Hours)
+        val formatter = DateTimeFormatter.ofPattern(formatter)
         LocalTime.parse(time, formatter)
     } catch (e: Exception) {
         return null
     }
 }
 
-fun showTime12Hours(time: LocalTime?): String? {
-    val displayFormatter = DateTimeFormatter.ofPattern(SYSTEM_12_Hours)
+fun showTimeSystem(time: LocalTime?, formatter: String = SYSTEM_24_Hours): String? {
+    val displayFormatter = DateTimeFormatter.ofPattern(formatter)
     return time?.format(displayFormatter)
 
-}
-
-fun showTime24Hours(time: LocalTime?): String? {
-    val displayFormatter = DateTimeFormatter.ofPattern(SYSTEM_24_Hours)
-    return time?.format(displayFormatter)
 }
