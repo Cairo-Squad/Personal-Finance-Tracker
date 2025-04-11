@@ -6,7 +6,7 @@ import MAX_YEAR
 import MIN_YEAR
 import MONTH_DATE_FORMAT
 import MONTH_DATE_FORMAT_EXAMPLE
-import SYSTEM_12_Hours
+import TIME_12H_FORMAT
 import TIME_FORMAT_EXAMPLE
 
 object CLIConstants {
@@ -37,7 +37,7 @@ object CLIConstants {
     const val ENTER_DATE_MESSAGE =
         "Enter the date using format ($DATE_FORMAT) between $MIN_YEAR and $MAX_YEAR, e.g. $DATE_FORMAT_EXAMPLE >>> "
     const val ENTER_VALID_DATE_MESSAGE = "Please enter a valid date >>> "
-    const val ENTER_TIME_MESSAGE = "Enter the time using format ($SYSTEM_12_Hours), e.g. $TIME_FORMAT_EXAMPLE >>> "
+    const val ENTER_TIME_MESSAGE = "Enter the time using format ($TIME_12H_FORMAT), e.g. $TIME_FORMAT_EXAMPLE >>> "
     const val ENTER_VALID_TIME_MESSAGE = "Please enter a valid time >>> "
     const val ENTER_MONTH_DATE_MESSAGE =
         "Enter the date using format $MONTH_DATE_FORMAT, e.g. $MONTH_DATE_FORMAT_EXAMPLE >>> "
