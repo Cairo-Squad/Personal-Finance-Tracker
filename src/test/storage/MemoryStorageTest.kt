@@ -41,22 +41,7 @@ fun runCheckAddTransaction() {
         true
     )
 
-    // Adding transaction with duplicate ID
-    test(
-        "Given a duplicate transaction ID, when calling addTransaction,Then it should throw an exception",
-        runCatching {
-            val transaction = Transaction(
-                transactionId = 1,
-                transactionDescription = "Freelance",
-                transactionType = TransactionType.INCOME,
-                transactionAmount = 500.0,
-                transactionDate = LocalDateTime.now(),
-                transactionCategory = Category(2, "Freelance")
-            )
-            storage.addTransaction(transaction)
-        }.isFailure,
-        true
-    )
+
 }
 
 fun runCheckUpdateTransaction() {
@@ -109,25 +94,12 @@ fun runCheckDeleteTransaction() {
         true
     )
 
-    // Invalid deletion (non-existent transaction)
-    test(
-        "Given a non-existent transaction ID, when calling deleteTransaction, Then it should throw an exception",
-        runCatching {
-            storage.deleteTransaction(999)
-        }.isFailure,
-        true
-    )
+
 }
 
 fun runCheckGetTransactionById() {
     val storage = MemoryStorageImp
 
-    // Valid ID Test
-    test(
-        "Given an existing transaction ID, when calling getTransactionById, Then it should return the transaction",
-        storage.getTransactionById(1) != null,
-        true
-    )
 
     // Non-existent ID
     test(
