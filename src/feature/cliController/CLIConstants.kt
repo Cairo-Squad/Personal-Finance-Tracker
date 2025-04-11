@@ -20,6 +20,10 @@ object CLIConstants {
     const val INVALID_OPTION_MESSAGE = "Please enter a valid option number >>> "
     const val COMMON_ERROR_MESSAGE = "An error happened, please try again."
 
+    const val ADD_TRANSACTION_SUCCESS_MESSAGE = "Your transaction is added successfully"
+    const val DELETE_TRANSACTION_SUCCESS_MESSAGE = "Your transaction is deleted successfully"
+    const val EDIT_TRANSACTION_SUCCESS_MESSAGE = "Your transaction is edited successfully"
+
 
 
     val USER_MENU = """

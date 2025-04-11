@@ -16,6 +16,7 @@ class CLIDispatcherImpl(
     private val ioController: IOController
 ) : CLIDispatcher {
 
+    // TODO: Make these constants!!!!
     private val commands = mapOf<Int, () -> Unit>(
         1 to ::addTransaction,
         2 to ::viewTransaction,
@@ -54,18 +55,21 @@ class CLIDispatcherImpl(
 //        val isTransactionAdded = transactionManager.addTransaction(transaction)
         val isTransactionAdded = true
         if (isTransactionAdded) {
-            ioController.writeWithNewLine("Your transaction is added successfully")
+            ioController.writeWithNewLine(CLIConstants.ADD_TRANSACTION_SUCCESS_MESSAGE)
         } else {
             ioController.writeWithNewLine(CLIConstants.COMMON_ERROR_MESSAGE)
         }
     }
 
     private fun viewTransaction() {
-        // Inputs:-
-        // ID
-        // TODO: Complete!!
-        val transaction = transactionManager.getTransactionById(1)
-        ioController.writeWithNewLine(transaction.toString())
+        val transactionID = getIDInput()
+        val transaction = transactionManager.getTransactionById(transactionID)
+        if (transaction == null) {
+            ioController.writeWithNewLine(CLIConstants.COMMON_ERROR_MESSAGE)
+        } else {
+            // TODO: Format this!!
+            ioController.writeWithNewLine(transaction.toString())
+        }
     }
 
     private fun updateTransaction() {
@@ -78,19 +82,27 @@ class CLIDispatcherImpl(
         // Date & Time
         // TODO: Complete!!
         transactionManager.updateTransaction(Transaction())
+        ioController.writeWithNewLine(CLIConstants.EDIT_TRANSACTION_SUCCESS_MESSAGE)
     }
 
     private fun deleteTransaction() {
-        // Inputs:-
-        // ID
-        // TODO: Complete!!
-
+        val transactionID = getIDInput()
+        // TODO: Refactor this after merging the code!!
+//        val isTransactionDeleted = transactionManager.deleteTransaction(transactionID)
+        val isTransactionDeleted = true
+        if (isTransactionDeleted) {
+            ioController.writeWithNewLine(CLIConstants.DELETE_TRANSACTION_SUCCESS_MESSAGE)
+        } else {
+            ioController.writeWithNewLine(CLIConstants.COMMON_ERROR_MESSAGE)
+        }
     }
 
     private fun getMonthlyReport() {
-        // Inputs:-
-        // Date & Time
-        // TODO: Complete!!
+        // TODO: Refactor this after merging the code!!
+//        val transactionDate = getDateInput()
+//        val transactionDateTime = LocalDateTime.of(transactionDate, LocalTime.now())
+//        val monthlyReport = transactionManager.getReportByMonth(transactionDateTime)
+//        ioController.writeWithNewLine(monthlyReport.toString())
     }
     // endregion
 
