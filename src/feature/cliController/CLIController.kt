@@ -39,8 +39,8 @@ class CLIController(
             val userInput = ioController.read()
             val parsedNumber = userInput?.toIntOrNull()
 
-            if (parsedNumber == null || parsedNumber !in 1..CLIConstants.EXIT_OPTION) {
-                ioController.write(CLIConstants.INVALID_OPTION_MESSAGE)
+            if (parsedNumber == null || cliDispatcher.validateOption(parsedNumber)) {
+                ioController.write(CLIConstants.ENTER_VALID_OPTION_MESSAGE)
             } else {
                 return parsedNumber
             }

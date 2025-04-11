@@ -34,6 +34,8 @@ class CLIDispatcherImpl(
         }
     }
 
+    override fun validateOption(option: Int): Boolean = option in commands.keys
+
     // region Use Transaction Manager
     private fun addTransaction() {
         val transactionAmount = getAmountInput()
@@ -112,7 +114,7 @@ class CLIDispatcherImpl(
             val userInput = ioController.read()
             val parsedTransactionTypeNumber = userInput?.toIntOrNull()
             if (parsedTransactionTypeNumber == null || parsedTransactionTypeNumber !in 1..TransactionType.entries.size) {
-                ioController.write(CLIConstants.INVALID_OPTION_MESSAGE)
+                ioController.write(CLIConstants.ENTER_VALID_OPTION_MESSAGE)
             } else {
                 return TransactionType.entries[parsedTransactionTypeNumber - 1]
             }

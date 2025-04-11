@@ -16,8 +16,8 @@ object CLIConstants {
     const val ENTER_DESCRIPTION_MESSAGE = "Enter the description >>> "
     const val ENTER_ID_MESSAGE = "Enter the ID >>> "
     const val ENTER_VALID_ID_MESSAGE = "Please enter a valid ID >>> "
+    const val ENTER_VALID_OPTION_MESSAGE = "Please enter a valid option number >>> "
 
-    const val INVALID_OPTION_MESSAGE = "Please enter a valid option number >>> "
     const val COMMON_ERROR_MESSAGE = "An error happened, please try again."
 
     const val ADD_TRANSACTION_SUCCESS_MESSAGE = "Your transaction is added successfully"
