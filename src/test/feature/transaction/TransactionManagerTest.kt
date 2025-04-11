@@ -3,6 +3,8 @@ package test.feature.transaction
 
 import datasource.storage.MemoryStorage
 import datasource.storage.MemoryStorageImp
+import datasource.Storage
+import datasource.MemoryStorage
 import feature.transaction.TransactionManagerImpl
 import model.Category
 import model.Transaction
@@ -329,108 +331,158 @@ fun runCheckGetTransactions(){
 
 
 fun runCheckAddTransaction() {
+    val storageMock: Storage = MemoryStorage()
+    val transactionManager = TransactionManagerImpl(storageMock)
+
 
     test(
-        "Valid transaction should return true",
-        addTransaction(
-            "Salary",
-            TransactionType.INCOME,
-            Category(1, "Salary"),
-            2000.0,
-            "2025",
-            "04",
-            "09"
+        "Amount is null should return false",
+        transactionManager.addTransaction(
+            Transaction(
+                null,
+                "Bonus",
+                TransactionType.INCOME,
+                null,
+                LocalDateTime.now(),
+                Category(1, "Salary")
+            )
+        ),
+        false
+    )
+    test(
+        "Valid transaction → should return true",
+        transactionManager.addTransaction(
+            Transaction(
+                transactionId = null,
+                transactionDescription = "Salary",
+                transactionType = TransactionType.INCOME,
+                transactionAmount = 3000.0,
+                transactionDate = LocalDateTime.of(2025, 4, 10, 0, 0),
+                transactionCategory = Category(1, "Income")
+            )
         ),
         true
     )
 
     test(
-        "Invalid year less than 1900 should return false",
-        addTransaction(
-            "Freelance",
-            TransactionType.INCOME,
-            Category(2, "Freelance"),
-            500.0,
-            "1800",
-            "04",
-            "09"
+        "Amount is null → should return false",
+        transactionManager.addTransaction(
+            Transaction(
+                transactionId = null,
+                transactionDescription = "Bonus",
+                transactionType = TransactionType.INCOME,
+                transactionAmount = null,
+                transactionDate = LocalDateTime.of(2025, 4, 10, 0, 0),
+                transactionCategory = Category(1, "Salary")
+            )
         ),
         false
     )
 
     test(
-        "Invalid year less than 1900 should return false",
-        addTransaction(
-            "Freelance",
-            TransactionType.INCOME,
-            Category(2, "Freelance"),
-            500.0,
-            "1800",
-            "04",
-            "09"
+        "Amount is zero → should return false",
+        transactionManager.addTransaction(
+            Transaction(
+                transactionId = null,
+                transactionDescription = "Refund",
+                transactionType = TransactionType.EXPENSE,
+                transactionAmount = 0.0,
+                transactionDate = LocalDateTime.of(2025, 4, 10, 0, 0),
+                transactionCategory = Category(2, "Other")
+            )
         ),
         false
     )
 
     test(
-        "Invalid month should return false",
-        addTransaction(
-            "Shopping",
-            TransactionType.EXPENSE,
-            Category(3, "Shopping"),
-            100.0,
-            "2025",
-            "13",
-            "09"
+        "Amount is negative → should return false",
+        transactionManager.addTransaction(
+            Transaction(
+                transactionId = null,
+                transactionDescription = "Fine",
+                transactionType = TransactionType.EXPENSE,
+                transactionAmount = -100.0,
+                transactionDate = LocalDateTime.of(2025, 4, 10, 0, 0),
+                transactionCategory = Category(3, "Penalty")
+            )
         ),
         false
     )
 
     test(
-        "Invalid day should return false",
-        addTransaction(
-            "Rent",
-            TransactionType.EXPENSE,
-            Category(4, "Rent"),
-            800.0,
-            "2025",
-            "04",
-            "31"
+        "Description is null → should return false",
+        transactionManager.addTransaction(
+            Transaction(
+                transactionId = null,
+                transactionDescription = null,
+                transactionType = TransactionType.INCOME,
+                transactionAmount = 500.0,
+                transactionDate = LocalDateTime.of(2025, 4, 10, 0, 0),
+                transactionCategory = Category(4, "Freelance")
+            )
         ),
         false
     )
 
     test(
-        "Negative amount should return false",
-        addTransaction(
-            "Grocery",
-            TransactionType.EXPENSE,
-            Category(5, "Grocery"),
-            -50.0,
-            "2025",
-            "04",
-            "09"
+        "Description is blank → should return false",
+        transactionManager.addTransaction(
+            Transaction(
+                transactionId = null,
+                transactionDescription = "   ",
+                transactionType = TransactionType.EXPENSE,
+                transactionAmount = 100.0,
+                transactionDate = LocalDateTime.of(2025, 4, 10, 0, 0),
+                transactionCategory = Category(5, "Shopping")
+            )
         ),
         false
     )
 
+    test(
+        "Transaction type is null → should return false",
+        transactionManager.addTransaction(
+            Transaction(
+                transactionId = null,
+                transactionDescription = "Pay",
+                transactionType = null,
+                transactionAmount = 1000.0,
+                transactionDate = LocalDateTime.of(2025, 4, 10, 0, 0),
+                transactionCategory = Category(6, "Payment")
+            )
+        ),
+        false
+    )
 
     test(
-        "Empty description should return false",
-        addTransaction(
-            "",
-            TransactionType.INCOME,
-            Category(8, "Other"),
-            150.0,
-            "2025",
-            "04",
-            "09"
+        "Transaction category is null → should return false",
+        transactionManager.addTransaction(
+            Transaction(
+                transactionId = null,
+                transactionDescription = "Lunch",
+                transactionType = TransactionType.EXPENSE,
+                transactionAmount = 50.0,
+                transactionDate = LocalDateTime.of(2025, 4, 10, 0, 0),
+                transactionCategory = null
+            )
+        ),
+        false
+    )
+
+    test(
+        "Transaction date is null → should return false",
+        transactionManager.addTransaction(
+            Transaction(
+                transactionId = null,
+                transactionDescription = "Dinner",
+                transactionType = TransactionType.EXPENSE,
+                transactionAmount = 75.0,
+                transactionDate = null,
+                transactionCategory = Category(7, "Food")
+            )
         ),
         false
     )
 
 }
 
-fun addTransaction(s: String, income: Any, category: Any, d: Double, s1: String, s2: String, s3: String): Boolean {
-    return true
-}
