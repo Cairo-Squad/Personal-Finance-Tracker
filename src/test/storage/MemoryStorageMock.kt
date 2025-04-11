@@ -1,9 +1,9 @@
 package test.storage
 
-import datasource.Storage
+import datasource.MemoryStorage
 import model.Transaction
 
-class StorageMock(private val transactionList: MutableList<Transaction>): Storage {
+class MemoryStorageMock(private val transactionList: MutableList<Transaction>): MemoryStorage {
     override fun addTransaction(transaction: Transaction) {
         TODO("Not yet implemented")
     }

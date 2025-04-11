@@ -1,7 +1,7 @@
 package test.storage
 
+import datasource.MemoryMemoryStorageImpl
 import datasource.MemoryStorage
-import datasource.Storage
 import model.Category
 import model.Transaction
 import model.TransactionType
@@ -20,7 +20,7 @@ fun runCheckGetTransactions(){
     //region getTransactionById()
     // Empty storage
     run {
-        val storage = MemoryStorage()
+        val storage = MemoryMemoryStorageImpl()
         test(
             name = "Given an empty list of transactions, when call getTransactionById() it should return null",
             result = storage.getTransactionById(1) ?: "null",
@@ -30,7 +30,7 @@ fun runCheckGetTransactions(){
 
     // Storage with one transaction with matching ID
     run {
-        val storage = MemoryStorage()
+        val storage = MemoryMemoryStorageImpl()
         val list = mutableListOf<Transaction>()
         val transaction = Transaction(
             transactionId = 1,
@@ -51,7 +51,7 @@ fun runCheckGetTransactions(){
 
     // Storage with one transaction with non-matching ID
     run {
-        val storage = MemoryStorage()
+        val storage = MemoryMemoryStorageImpl()
         val transaction = Transaction(
             transactionId = 1,
             transactionDescription = "description",
@@ -72,7 +72,7 @@ fun runCheckGetTransactions(){
 
     // Storage with multiple transactions, one matching
     run {
-        val storage = MemoryStorage()
+        val storage = MemoryMemoryStorageImpl()
         val transaction1 = Transaction(
             transactionId = 1,
             transactionDescription = "description",
@@ -112,7 +112,7 @@ fun runCheckGetTransactions(){
 
     // Storage with multiple transactions, none matching
     run {
-        val storage = MemoryStorage()
+        val storage = MemoryMemoryStorageImpl()
         val transaction1 = Transaction(
             transactionId = 1,
             transactionDescription = "description",
@@ -157,7 +157,7 @@ fun runCheckGetTransactions(){
     // return an empty list
     run {
 
-        val storage = MemoryStorage()
+        val storage = MemoryMemoryStorageImpl()
         test(
             name = "Given an empty list, when call getAllTransaction then should its size equal to zero",
             result = storage.getAllTransactions().size,
@@ -193,7 +193,7 @@ fun runCheckGetTransactions(){
         )
 
 
-        val storage = MemoryStorage()
+        val storage = MemoryMemoryStorageImpl()
 
         storage.addTransaction(transaction1)
         storage.addTransaction(transaction2)
@@ -210,7 +210,7 @@ fun runCheckGetTransactions(){
 }
 
 class TransactionManagerMock(
-    private val storage: Storage
+    private val memoryStorage: MemoryStorage
 ) {
 
     fun addTransaction(transaction: Transaction) {

@@ -1,11 +1,11 @@
 package test.feature.transaction
 
-import datasource.Storage
+import datasource.MemoryStorage
 import feature.transaction.TransactionManagerImpl
 import model.Category
 import model.Transaction
 import model.TransactionType
-import test.storage.StorageMock
+import test.storage.MemoryStorageMock
 import test.util.test
 import java.time.LocalDateTime
 
@@ -22,8 +22,8 @@ fun main() {
     )
 
     val list = mutableListOf(initialTransaction)
-    val storageMock: Storage = StorageMock(list)
-    val transactionManager = TransactionManagerMock(storageMock)
+    val memoryStorageMock: MemoryStorage = MemoryStorageMock(list)
+    val transactionManager = TransactionManagerMock(memoryStorageMock)
 
 
     test(
@@ -86,7 +86,7 @@ fun main() {
 }
 
 class TransactionManagerMock(
-    private val storage: Storage
+    private val memoryStorage: MemoryStorage
 ) {
 
     fun addTransaction(transaction: Transaction) {
@@ -102,11 +102,11 @@ class TransactionManagerMock(
     }
 
     fun getTransactionById(transactionId: Int): Transaction? {
-        return storage.getAllTransactions().find { it.transactionId == transactionId }
+        return memoryStorage.getAllTransactions().find { it.transactionId == transactionId }
     }
 
     fun getAllTransactions(): List<Transaction> {
-        return storage.getAllTransactions()
+        return memoryStorage.getAllTransactions()
     }
 
     fun getReportByMonth(month: String): List<Transaction> {
@@ -119,7 +119,7 @@ fun runCheckGetTransactions(){
     // region getTransactionById()
     run {
         val emptyList = mutableListOf<Transaction>()
-        val fakeMemoryStorage = StorageMock(emptyList)
+        val fakeMemoryStorage = MemoryStorageMock(emptyList)
         val transactionManager = TransactionManagerImpl(fakeMemoryStorage)
         test(
             name = "Given an empty list of transactions, when call getTransactionById() it should return null",
@@ -141,7 +141,7 @@ fun runCheckGetTransactions(){
 
         val list = mutableListOf(transaction)
 
-        val fakeMemoryStorage = StorageMock(list)
+        val fakeMemoryStorage = MemoryStorageMock(list)
         val transactionManager = TransactionManagerImpl(fakeMemoryStorage)
 
         test(
@@ -163,7 +163,7 @@ fun runCheckGetTransactions(){
                 transactionCategory = Category(1,"food")
             ),
         )
-        val fakeMemoryStorage = StorageMock(list)
+        val fakeMemoryStorage = MemoryStorageMock(list)
         val transactionManager = TransactionManagerImpl(fakeMemoryStorage)
 
         test(
@@ -203,7 +203,7 @@ fun runCheckGetTransactions(){
             )
         )
 
-        val fakeMemoryStorage = StorageMock(list)
+        val fakeMemoryStorage = MemoryStorageMock(list)
         val transactionManager = TransactionManagerImpl(fakeMemoryStorage)
 
         test(
@@ -249,7 +249,7 @@ fun runCheckGetTransactions(){
             )
         )
 
-        val fakeMemoryStorage = StorageMock(list)
+        val fakeMemoryStorage = MemoryStorageMock(list)
         val transactionManager = TransactionManagerImpl(fakeMemoryStorage)
 
         test(
@@ -266,7 +266,7 @@ fun runCheckGetTransactions(){
     // return an empty list
     run {
         val emptyList = mutableListOf<Transaction>()
-        val fakeMemoryStorage = StorageMock(emptyList)
+        val fakeMemoryStorage = MemoryStorageMock(emptyList)
         val transactionManager = TransactionManagerImpl(fakeMemoryStorage)
         test(
             name = "Given an empty list, when call getAllTransaction then should its size equal to zero",
@@ -307,7 +307,7 @@ fun runCheckGetTransactions(){
 
         val list = mutableListOf(transaction1, transaction2, transaction3)
 
-        val fakeMemoryStorage = StorageMock(list)
+        val fakeMemoryStorage = MemoryStorageMock(list)
         val transactionManager = TransactionManagerImpl(fakeMemoryStorage)
 
         list.add(transaction1)
