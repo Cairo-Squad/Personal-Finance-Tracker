@@ -52,11 +52,11 @@ class TransactionManagerImpl(
     }
 
     override fun getTransactionById(transactionId: Int): Transaction? {
-        TODO("Not yet implemented")
+        return storage.getTransactionById(transactionId)
     }
 
     override fun getAllTransactions(): List<Transaction> {
-        TODO("Not yet implemented")
+        return storage.getAllTransactions()
     }
 
     override fun getReportByMonth(dateTime: LocalDateTime): List<Any> {

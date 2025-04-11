@@ -3,12 +3,12 @@ package test.storage
 import datasource.Storage
 import model.Transaction
 
-class StorageMock: Storage {
+class StorageMock(private val transactionList: MutableList<Transaction>): Storage {
     override fun addTransaction(transaction: Transaction) {
         TODO("Not yet implemented")
     }
 
-    override fun updateTransaction(transaction: Transaction): Boolean {
+    override fun updateTransaction(transaction: Transaction):Boolean {
         TODO("Not yet implemented")
     }
 
@@ -17,11 +17,11 @@ class StorageMock: Storage {
     }
 
     override fun getTransactionById(transactionId: Int): Transaction? {
-        TODO("Not yet implemented")
+        return transactionList.find { it.transactionId == transactionId }
     }
 
     override fun getAllTransactions(): List<Transaction> {
-        TODO("Not yet implemented")
+        return transactionList
     }
 
     override fun getReportByMonth(month: String): List<Transaction> {
