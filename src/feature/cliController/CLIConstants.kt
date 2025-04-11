@@ -18,20 +18,22 @@ object CLIConstants {
     const val ENTER_VALID_ID_MESSAGE = "Please enter a valid ID >>> "
     const val ENTER_VALID_OPTION_MESSAGE = "Please enter a valid option number >>> "
 
-    const val COMMON_ERROR_MESSAGE = "An error happened, please try again."
+    const val COMMON_ERROR_MESSAGE = "An error happened, please try again!"
+    const val EMPTY_TRANSACTIONS_LIST_MESSAGE = "You don't have any transactions!"
 
-    const val ADD_TRANSACTION_SUCCESS_MESSAGE = "Your transaction is added successfully"
-    const val DELETE_TRANSACTION_SUCCESS_MESSAGE = "Your transaction is deleted successfully"
-    const val EDIT_TRANSACTION_SUCCESS_MESSAGE = "Your transaction is edited successfully"
+    const val ADD_TRANSACTION_SUCCESS_MESSAGE = "Your transaction is added successfully."
+    const val DELETE_TRANSACTION_SUCCESS_MESSAGE = "Your transaction is deleted successfully."
+    const val EDIT_TRANSACTION_SUCCESS_MESSAGE = "Your transaction is edited successfully."
 
     val USER_MENU = """
             Available Options:-
             1. Add new transaction
-            2. View a transaction details
-            3. Edit a transaction data
-            4. Delete a transaction
-            5. View monthly report
-            6. Exit
+            2. View all transactions details
+            3. View a single transaction details
+            4. Edit a transaction data
+            5. Delete a transaction
+            6. View monthly report
+            7. Exit
             
         """.trimIndent()
 
@@ -39,11 +41,12 @@ object CLIConstants {
 
     // region Command Codes
     const val ADD_COMMAND_CODE = 1
-    const val VIEW_COMMAND_CODE = 2
-    const val UPDATE_COMMAND_CODE = 3
-    const val DELETE_COMMAND_CODE = 4
-    const val MONTHLY_REPORT_COMMAND_CODE = 5
-    const val EXIT_OPTION = 6
+    const val VIEW_ALL_COMMAND_CODE = 2
+    const val VIEW_SINGLE_TRANSACTION_COMMAND_CODE = 3
+    const val UPDATE_COMMAND_CODE = 4
+    const val DELETE_COMMAND_CODE = 5
+    const val MONTHLY_REPORT_COMMAND_CODE = 6
+    const val EXIT_COMMAND_CODE = 7
 
     // endregion
 

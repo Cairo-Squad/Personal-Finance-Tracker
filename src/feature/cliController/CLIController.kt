@@ -17,7 +17,7 @@ class CLIController(
             showMainMenu()
 
             val input = takeUserInput()
-            if (input == CLIConstants.EXIT_OPTION) {
+            if (input == CLIConstants.EXIT_COMMAND_CODE) {
                 break
             }
 
@@ -39,7 +39,7 @@ class CLIController(
             val userInput = ioController.read()
             val parsedNumber = userInput?.toIntOrNull()
 
-            if (parsedNumber == null || cliDispatcher.validateOption(parsedNumber)) {
+            if (parsedNumber == null || !cliDispatcher.validateOption(parsedNumber)) {
                 ioController.write(CLIConstants.ENTER_VALID_OPTION_MESSAGE)
             } else {
                 return parsedNumber

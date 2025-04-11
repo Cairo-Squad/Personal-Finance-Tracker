@@ -19,7 +19,8 @@ class CLIDispatcherImpl(
     // TODO: Add option to view all the transactions!!!
     private val commands = mapOf<Int, () -> Unit>(
         CLIConstants.ADD_COMMAND_CODE to ::addTransaction,
-        CLIConstants.VIEW_COMMAND_CODE to ::viewTransaction,
+        CLIConstants.VIEW_ALL_COMMAND_CODE to ::viewALLTransactions,
+        CLIConstants.VIEW_SINGLE_TRANSACTION_COMMAND_CODE to ::viewTransaction,
         CLIConstants.UPDATE_COMMAND_CODE to ::updateTransaction,
         CLIConstants.DELETE_COMMAND_CODE to ::deleteTransaction,
         CLIConstants.MONTHLY_REPORT_COMMAND_CODE to ::getMonthlyReport
@@ -34,7 +35,9 @@ class CLIDispatcherImpl(
         }
     }
 
-    override fun validateOption(option: Int): Boolean = option in commands.keys
+    override fun validateOption(option: Int): Boolean {
+        return option == CLIConstants.EXIT_COMMAND_CODE || option in commands.keys
+    }
 
     // region Use Transaction Manager
     private fun addTransaction() {
@@ -67,6 +70,19 @@ class CLIDispatcherImpl(
             ioController.writeWithNewLine(CLIConstants.COMMON_ERROR_MESSAGE)
         } else {
             ioController.writeWithNewLine(transaction.toString())
+        }
+    }
+
+    private fun viewALLTransactions() {
+        val transactions = transactionManager.getAllTransactions()
+        if (transactions.isEmpty()) {
+            ioController.writeWithNewLine(CLIConstants.EMPTY_TRANSACTIONS_LIST_MESSAGE)
+            return
+        }
+
+        transactions.forEach { transaction ->
+            ioController.writeWithNewLine(transaction.toString())
+            ioController.write("\n")
         }
     }
 
