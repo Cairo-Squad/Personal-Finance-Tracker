@@ -9,10 +9,11 @@ import model.TransactionType
 import model.convertToString
 import util.category_manager.CategoryManager
 import util.category_manager.CategoryState
+import util.date.getLocalDate
+import util.date.getLocalTime
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
-import java.time.format.DateTimeFormatter
 
 object UserInputHandler {
 
@@ -128,63 +129,48 @@ object UserInputHandler {
     }
 
     private fun getDateInput(ioController: IOController): LocalDate {
-        // TODO: Check the validation functions with Galal to use it!!!
-        val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-        var date: LocalDate? = null
+        ioController.write(CLIConstants.ENTER_DATE_MESSAGE)
 
-        ioController.write("Enter the date using format (yyyy-MM-dd), e.g. 2002-12-09 >>> ")
-
-        while (date == null) {
+        while (true) {
             val dateInput = ioController.read() ?: ""
+            val parsedDate = getLocalDate(dateInput)
 
-            try {
-                date = LocalDate.parse(dateInput, dateFormatter)
-            } catch (e: Exception) {
-                ioController.write("Please enter a valid date >>> ")
+            if (parsedDate == null) {
+                ioController.write(CLIConstants.ENTER_VALID_DATE_MESSAGE)
+            } else {
+                return parsedDate
             }
         }
-
-        return date
     }
 
     private fun getTimeInput(ioController: IOController): LocalTime {
-        // TODO: Check the validation functions with Galal to use it!!!
-        val timeFormatter = DateTimeFormatter.ofPattern("hh:mm a")
-        var time: LocalTime? = null
+        ioController.write(CLIConstants.ENTER_TIME_MESSAGE)
 
-        ioController.write("Enter the time using format (hh:mm a), e.g. 01:33 PM >>> ")
-
-        while (time == null) {
+        while (true) {
             val timeInput = ioController.read() ?: ""
+            val parsedTime = getLocalTime(timeInput)
 
-            try {
-                time = LocalTime.parse(timeInput, timeFormatter)
-            } catch (e: Exception) {
-                ioController.write("Please enter a valid time >>> ")
+            if (parsedTime == null) {
+                ioController.write(CLIConstants.ENTER_VALID_TIME_MESSAGE)
+            } else {
+                return parsedTime
             }
         }
-
-        return time
     }
 
     fun getReportDateInput(ioController: IOController): LocalDateTime {
-        // TODO: Check the validation functions with Galal to use it!!!
-        val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-        var date: LocalDate? = null
+        ioController.write(CLIConstants.ENTER_MONTH_DATE_MESSAGE)
 
-        ioController.write("Enter the date using format (yyyy-MM), e.g. 2002-12 >>> ")
-
-        while (date == null) {
+        while (true) {
             val dateInput = ioController.read() ?: ""
+            val parsedDate = getLocalDate("01-$dateInput")
 
-            try {
-                date = LocalDate.parse("$dateInput-01", dateFormatter)
-            } catch (e: Exception) {
-                ioController.write("Please enter a valid date >>> ")
+            if (parsedDate == null) {
+                ioController.write(CLIConstants.ENTER_VALID_MONTH_DATE_MESSAGE)
+            } else {
+                return LocalDateTime.of(parsedDate, LocalTime.now())
             }
         }
-
-        return LocalDateTime.of(date, LocalTime.now())
     }
 
     fun getIDInput(ioController: IOController): Int {
