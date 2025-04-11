@@ -2,6 +2,7 @@ package feature.transaction
 
 import datasource.storage.MemoryStorage
 import model.Transaction
+import model.notNullValues
 import java.time.LocalDateTime
 
 class TransactionManagerImpl(
@@ -23,17 +24,11 @@ class TransactionManagerImpl(
     }
 
     override fun updateTransaction(transaction: Transaction): Boolean {
-        val transactionId = transaction.transactionId ?: return false
+        transaction.transactionId ?: return false
 
-        val notNullValuesList = listOf(
-            transaction.transactionAmount,
-            transaction.transactionDescription,
-            transaction.transactionCategory,
-            transaction.transactionType,
-            transaction.transactionDate,
-        ).filterNotNull()
+        val notNullValues = transaction.notNullValues()
 
-        if(notNullValuesList.isEmpty() || notNullValuesList.size > 1) return false
+        if(notNullValues.isEmpty() || notNullValues.size > 2) return false
 
         if(transaction.transactionAmount != null && transaction.transactionAmount < 0 ) return false
 
