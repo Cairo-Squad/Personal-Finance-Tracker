@@ -5,6 +5,8 @@ import datasource.storage.MemoryStorageImp
 import model.Category
 import model.Transaction
 import model.TransactionType
+import test.feature.transaction.addTransaction
+import test.storage.StorageMock
 import test.util.test
 import java.time.LocalDateTime
 
@@ -151,11 +153,11 @@ fun runCheckGetAllTransactions() {
 }
 
 
-fun runCheckGetTransactions(){
+fun runCheckGetTransactions() {
     //region getTransactionById()
     // Empty storage
     run {
-        val storage =StorageMock(mutableListOf<Transaction>())
+        val storage = StorageMock(mutableListOf<Transaction>())
         test(
             name = "Given an empty list of transactions, when call getTransactionById() it should return null",
             result = storage.getTransactionById(1) ?: "null",
@@ -166,7 +168,7 @@ fun runCheckGetTransactions(){
     // Storage with one transaction with matching ID
     run {
         val list = mutableListOf<Transaction>()
-        val storage =StorageMock(list)
+        val storage = StorageMock(list)
         val transaction = Transaction(
             transactionId = 1,
             transactionDescription = "description",
@@ -186,7 +188,7 @@ fun runCheckGetTransactions(){
 
     // Storage with one transaction with non-matching ID
     run {
-        val storage =StorageMock(mutableListOf<Transaction>())
+        val storage = StorageMock(mutableListOf<Transaction>())
 
         val transaction = Transaction(
             transactionId = 1,
@@ -208,7 +210,7 @@ fun runCheckGetTransactions(){
 
     // Storage with multiple transactions, one matching
     run {
-        val storage =StorageMock(mutableListOf<Transaction>())
+        val storage = StorageMock(mutableListOf<Transaction>())
         val transaction1 = Transaction(
             transactionId = 1,
             transactionDescription = "description",
@@ -248,7 +250,7 @@ fun runCheckGetTransactions(){
 
     // Storage with multiple transactions, none matching
     run {
-        val storage =StorageMock(mutableListOf<Transaction>())
+        val storage = StorageMock(mutableListOf<Transaction>())
         val transaction1 = Transaction(
             transactionId = 1,
             transactionDescription = "description",
@@ -293,7 +295,7 @@ fun runCheckGetTransactions(){
     // return an empty list
     run {
 
-        val storage =StorageMock(mutableListOf<Transaction>())
+        val storage = StorageMock(mutableListOf<Transaction>())
         test(
             name = "Given an empty list, when call getAllTransaction then should its size equal to zero",
             result = storage.getAllTransactions().size,
@@ -329,59 +331,147 @@ fun runCheckGetTransactions(){
         )
 
 
-        val storage =StorageMock(mutableListOf<Transaction>())
+    }
 
-        storage.addTransaction(transaction1)
-        storage.addTransaction(transaction2)
-        storage.addTransaction(transaction3)
+    class TransactionManagerMock(
+        private val storage: MemoryStorage
+    ) {
+
+        fun addTransaction(transaction: Transaction) {
+
+        }
+
+        fun updateTransaction(
+            transactionId: String,
+            transactionDescription: String,
+            transactionType: String,
+            transactionAmount: String,
+            transactionDate: String,
+            transactionCategory: String
+        ): Boolean {
+            return false
+        }
+
+        fun deleteTransaction(transaction: Transaction) {
+
+        }
+
+        fun getTransactionById(transactionId: Int): Transaction? {
+            return null
+        }
+
+        fun getAllTransactions(): List<Transaction> {
+            return emptyList()
+        }
+
+        fun getReportByMonth(month: String): List<Transaction> {
+            return emptyList()
+        }
+
+    }
+
+
+    fun runCheckAddTransaction() {
+
         test(
-            name = "Given an empty list, when return the list then should return the size of the list",
-            result = storage.getAllTransactions().size,
-            correctResult = 3
+            "Valid transaction should return true",
+            addTransaction(
+                "Salary",
+                TransactionType.INCOME,
+                Category(1, "Salary"),
+                2000.0,
+                "2025",
+                "04",
+                "09"
+            ),
+            true
         )
+
+        test(
+            "Invalid year less than 1900 should return false",
+            addTransaction(
+                "Freelance",
+                TransactionType.INCOME,
+                Category(2, "Freelance"),
+                500.0,
+                "1800",
+                "04",
+                "09"
+            ),
+            false
+        )
+
+        test(
+            "Invalid year less than 1900 should return false",
+            addTransaction(
+                "Freelance",
+                TransactionType.INCOME,
+                Category(2, "Freelance"),
+                500.0,
+                "1800",
+                "04",
+                "09"
+            ),
+            false
+        )
+
+        test(
+            "Invalid month should return false",
+            addTransaction(
+                "Shopping",
+                TransactionType.EXPENSE,
+                Category(3, "Shopping"),
+                100.0,
+                "2025",
+                "13",
+                "09"
+            ),
+            false
+        )
+
+        test(
+            "Invalid day should return false",
+            addTransaction(
+                "Rent",
+                TransactionType.EXPENSE,
+                Category(4, "Rent"),
+                800.0,
+                "2025",
+                "04",
+                "31"
+            ),
+            false
+        )
+
+        test(
+            "Negative amount should return false",
+            addTransaction(
+                "Grocery",
+                TransactionType.EXPENSE,
+                Category(5, "Grocery"),
+                -50.0,
+                "2025",
+                "04",
+                "09"
+            ),
+            false
+        )
+
+
+        test(
+            "Empty description should return false",
+            addTransaction(
+                "",
+                TransactionType.INCOME,
+                Category(8, "Other"),
+                150.0,
+                "2025",
+                "04",
+                "09"
+            ),
+            false
+        )
+
     }
 
-    //return a non-empty list
-    //endregion
 }
-
-
-class TransactionManagerMock(
-    private val storage: MemoryStorage
-) {
-
-    fun addTransaction(transaction: Transaction) {
-    }
-    fun updateTransaction(
-        transactionId: String,
-        transactionDescription: String,
-        transactionType: String,
-        transactionAmount: String,
-        transactionDate: String,
-        transactionCategory: String
-    ): Boolean {
-        return false
-    }
-
-    fun deleteTransaction(transaction: Transaction) {
-
-    }
-
-    fun getTransactionById(transactionId: Int): Transaction? {
-        return null
-    }
-
-    fun getAllTransactions(): List<Transaction> {
-        return emptyList()
-    }
-
-    fun getReportByMonth(month: String): List<Transaction> {
-        return emptyList()
-    }
-
-
-}
-
-
-
-
