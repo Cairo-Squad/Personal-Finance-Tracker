@@ -16,13 +16,12 @@ class CLIDispatcherImpl(
     private val ioController: IOController
 ) : CLIDispatcher {
 
-    // TODO: Make these constants!!!!
     private val commands = mapOf<Int, () -> Unit>(
-        1 to ::addTransaction,
-        2 to ::viewTransaction,
-        3 to ::updateTransaction,
-        4 to ::deleteTransaction,
-        5 to ::getMonthlyReport
+        CLIConstants.ADD_COMMAND_CODE to ::addTransaction,
+        CLIConstants.VIEW_COMMAND_CODE to ::viewTransaction,
+        CLIConstants.UPDATE_COMMAND_CODE to ::updateTransaction,
+        CLIConstants.DELETE_COMMAND_CODE to ::deleteTransaction,
+        CLIConstants.MONTHLY_REPORT_COMMAND_CODE to ::getMonthlyReport
     )
 
     override fun dispatch(userInput: Int) {
@@ -35,7 +34,6 @@ class CLIDispatcherImpl(
     }
 
     // region Use Transaction Manager
-    // TODO: Call others functions!!
     private fun addTransaction() {
         val transactionAmount = getAmountInput()
         val transactionDescription = getDescriptionInput()
@@ -81,8 +79,8 @@ class CLIDispatcherImpl(
         // Description
         // Date & Time
         // TODO: Complete!!
-        transactionManager.updateTransaction(Transaction())
-        ioController.writeWithNewLine(CLIConstants.EDIT_TRANSACTION_SUCCESS_MESSAGE)
+//        transactionManager.updateTransaction(Transaction())
+//        ioController.writeWithNewLine(CLIConstants.EDIT_TRANSACTION_SUCCESS_MESSAGE)
     }
 
     private fun deleteTransaction() {
@@ -99,9 +97,8 @@ class CLIDispatcherImpl(
 
     private fun getMonthlyReport() {
         // TODO: Refactor this after merging the code!!
-//        val transactionDate = getDateInput()
-//        val transactionDateTime = LocalDateTime.of(transactionDate, LocalTime.now())
-//        val monthlyReport = transactionManager.getReportByMonth(transactionDateTime)
+        val reportDate = getReportDateInput()
+//        val monthlyReport = transactionManager.getReportByMonth(reportDate)
 //        ioController.writeWithNewLine(monthlyReport.toString())
     }
     // endregion
@@ -201,6 +198,26 @@ class CLIDispatcherImpl(
         }
 
         return time
+    }
+
+    private fun getReportDateInput(): LocalDateTime {
+        // TODO: Check the validation functions with Galal to use it!!!
+        val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        var date: LocalDate? = null
+
+        ioController.write("Enter the date using format (yyyy-MM), e.g. 2002-12 >>> ")
+
+        while (date == null) {
+            val dateInput = ioController.read() ?: ""
+
+            try {
+                date = LocalDate.parse("$dateInput-01", dateFormatter)
+            } catch (e: Exception) {
+                ioController.write("Please enter a valid date >>> ")
+            }
+        }
+
+        return LocalDateTime.of(date, LocalTime.now())
     }
 
     private fun getIDInput(): Int {

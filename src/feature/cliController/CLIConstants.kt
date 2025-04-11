@@ -24,8 +24,6 @@ object CLIConstants {
     const val DELETE_TRANSACTION_SUCCESS_MESSAGE = "Your transaction is deleted successfully"
     const val EDIT_TRANSACTION_SUCCESS_MESSAGE = "Your transaction is edited successfully"
 
-
-
     val USER_MENU = """
             Available Options:-
             1. Add new transaction
@@ -39,6 +37,14 @@ object CLIConstants {
 
     // endregion
 
+    // region Command Codes
+    const val ADD_COMMAND_CODE = 1
+    const val VIEW_COMMAND_CODE = 2
+    const val UPDATE_COMMAND_CODE = 3
+    const val DELETE_COMMAND_CODE = 4
+    const val MONTHLY_REPORT_COMMAND_CODE = 5
     const val EXIT_OPTION = 6
+
+    // endregion
 
 }
