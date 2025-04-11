@@ -401,7 +401,7 @@ fun runCheckAddTransaction() {
     )
 
     test(
-        "Transaction date is null → should return false",
+        "Transaction util.date is null → should return false",
         transactionManager.addTransaction(
             Transaction(
                 transactionId = null,
