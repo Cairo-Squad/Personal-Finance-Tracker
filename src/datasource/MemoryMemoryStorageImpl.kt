@@ -1,13 +1,16 @@
 package datasource
 
+import datasource.storage.MemoryStorage
 import model.Transaction
+import java.time.LocalDate
 
 class MemoryMemoryStorageImpl : MemoryStorage {
 
     private val transactionsList = mutableListOf<Transaction>()
 
-    override fun addTransaction(transaction: Transaction) {
+    override fun addTransaction(transaction: Transaction): Boolean {
         transactionsList.add(transaction)
+        return true
     }
 
     override fun updateTransaction(transaction: Transaction): Boolean {
@@ -33,7 +36,7 @@ class MemoryMemoryStorageImpl : MemoryStorage {
         return transactionsList
     }
 
-    override fun getReportByMonth(month: String): List<Transaction> {
+    override fun getReportByMonth(localDate: LocalDate): List<Transaction> {
 //        val newList=transactionsList.filter { transaction ->
 //            val parts = transaction.transactionDate.split("/") // dd/mm/yy ask them
 //            if (parts.size == 3) {
