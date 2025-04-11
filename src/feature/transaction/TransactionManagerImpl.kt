@@ -1,7 +1,6 @@
 package feature.transaction
 
-import data_source.MemoryStorage
-import datasource.MemoryStorage
+import datasource.storage.MemoryStorage
 import model.Transaction
 import java.time.LocalDateTime
 

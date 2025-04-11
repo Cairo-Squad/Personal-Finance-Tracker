@@ -15,8 +15,8 @@ class TransactionManagerMock : TransactionManager {
         return true
     }
 
-    override fun deleteTransaction(transactionId: Int) {
-
+    override fun deleteTransaction(transactionId: Int): Boolean {
+        return true
     }
 
     override fun getTransactionById(transactionId: Int): Transaction? {
