@@ -65,10 +65,10 @@ object CLIConstants {
 
     val UPDATE_OPTIONS = """
         Available Options:-
-        1. Amount
-        2. Description
-        3. Type & Category
-        4. Date
+        1. Edit Amount
+        2. Edit Description
+        3. Edit Type & Category
+        4. Edit Date
         5. Exit  
     """.trimIndent()
 
