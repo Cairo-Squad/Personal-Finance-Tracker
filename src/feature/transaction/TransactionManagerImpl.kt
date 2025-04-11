@@ -42,8 +42,13 @@ class TransactionManagerImpl(
         return storage.updateTransaction(transaction)
     }
 
-    override fun deleteTransaction(transactionId: Int) {
-        TODO("Not yet implemented")
+    override fun deleteTransaction(transactionId: Int): Boolean {
+        val deletedTransaction = storage.getTransactionById(transactionId)
+        if (deletedTransaction != null) {
+            storage.deleteTransaction(transactionId)
+            return true
+        }
+        return false
     }
 
     override fun getTransactionById(transactionId: Int): Transaction? {

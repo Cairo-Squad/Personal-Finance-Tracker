@@ -12,6 +12,7 @@ import test.util.test
 import java.time.LocalDateTime
 
 fun main() {
+    runCheckDeleteTransaction()
 
 
     val initialTransaction = Transaction(
@@ -481,6 +482,93 @@ fun runCheckAddTransaction() {
         ),
         false
     )
+
+}
+fun runCheckDeleteTransaction() {
+    //region transactionExist
+    run {
+        val transaction = Transaction(
+            transactionId = 1,
+            transactionDescription = "Lunch",
+            transactionType = TransactionType.EXPENSE,
+            transactionAmount = 50.0,
+            transactionDate = LocalDateTime.now(),
+            transactionCategory = Category(1, "Food")
+        )
+        val list = mutableListOf(transaction)
+        val fakeStorage = StorageMock(list)
+        val manager = TransactionManagerImpl(fakeStorage)
+
+        test(
+            name = "Given existing transaction, when deleted, should return true",
+            result = manager.deleteTransaction(1),
+            correctResult = true
+        )
+
+        test(
+            name = "After deletion, getTransactionById should return null",
+            result = manager.getTransactionById(1) ?: "null",
+            correctResult = "null"
+        )
+    }
+    //endregion
+
+    //region transactionnotexist
+    run {
+        val list = mutableListOf<Transaction>()
+        val fakeStorage = StorageMock(list)
+        val manager = TransactionManagerImpl(fakeStorage)
+
+        test(
+            name = "Given non-existent transaction, when deleted, should return false",
+            result = manager.deleteTransaction(99),
+            correctResult = false
+        )
+    }
+//endregion
+
+    //region emptyStorage
+    run {
+        val fakeStorage = StorageMock(mutableListOf())
+        val manager = TransactionManagerImpl(fakeStorage)
+
+        test(
+            name = "Given empty storage, when delete is called, should return false",
+            result = manager.deleteTransaction(1),
+            correctResult = false
+        )
+    }
+//endregion
+
+    //region deleteMultipleTransaction
+    run {
+        val list = mutableListOf(
+            Transaction(1, "T1", TransactionType.EXPENSE, 100.0, LocalDateTime.now(), Category(1, "Cat1")),
+            Transaction(2, "T2", TransactionType.INCOME, 200.0, LocalDateTime.now(), Category(2, "Cat2"))
+        )
+        val fakeStorage = StorageMock(list)
+        val manager = TransactionManagerImpl(fakeStorage)
+
+        test(
+            name = "Given multiple transactions, when one is deleted, should return true",
+            result = manager.deleteTransaction(1),
+            correctResult = true
+        )
+
+        test(
+            name = "After deletion, deleted transaction should not be found",
+            result = manager.getTransactionById(1) ?: "null",
+            correctResult = "null"
+        )
+
+        test(
+            name = "Remaining transaction should still exist",
+            result = manager.getTransactionById(2)?.transactionId ?: "null",
+            correctResult = 2
+        )
+    }
+    //endregion
+    println("----------------------------------------------------------\n")
 
 }
 
