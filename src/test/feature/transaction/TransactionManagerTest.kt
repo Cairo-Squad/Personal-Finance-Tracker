@@ -535,10 +535,11 @@ fun runUpdateTransactionTests(){
     val transaction2 = initialTransaction.copy(
         transactionId = 1,
         transactionAmount = 200.0,
+        transactionType = TransactionType.INCOME,
         transactionDescription = "new description"
     )
     test(
-        name = "Given a transaction with more than one field to edit, when validating, then it should return false",
+        name = "Given a transaction with more than two fields to edit, when validating, then it should return false",
         result = transactionManager.updateTransaction(transaction2),
         correctResult = false
     )
