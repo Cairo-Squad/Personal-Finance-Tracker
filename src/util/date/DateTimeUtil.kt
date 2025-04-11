@@ -1,8 +1,7 @@
 package util.date
 
 import DATE_FORMAT
-import SYSTEM_12_Hours
-import SYSTEM_24_Hours
+import TIME_24H_FORMAT
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
@@ -26,17 +25,16 @@ fun getLocalDate(date: String): LocalDate? {
     }
 }
 
-fun getLocalTime(time: String, formatter: String = SYSTEM_12_Hours): LocalTime? {
+fun getLocalTime(time: String, formatter: String = TIME_24H_FORMAT): LocalTime? {
     return try {
-        val formatter = DateTimeFormatter.ofPattern(formatter)
+        val formatter = DateTimeFormatter.ofPattern(formatter, Locale.ENGLISH)
         LocalTime.parse(time, formatter)
     } catch (e: Exception) {
         return null
     }
 }
 
-fun showTimeSystem(time: LocalTime?, formatter: String = SYSTEM_24_Hours): String? {
-    val displayFormatter = DateTimeFormatter.ofPattern(formatter)
+fun showTimeSystem(time: LocalTime?, formatter: String = TIME_24H_FORMAT): String? {
+    val displayFormatter = DateTimeFormatter.ofPattern(formatter, Locale.ENGLISH)
     return time?.format(displayFormatter)
-
 }
