@@ -16,6 +16,7 @@ class CLIDispatcherImpl(
     private val ioController: IOController
 ) : CLIDispatcher {
 
+    // TODO: Add option to view all the transactions!!!
     private val commands = mapOf<Int, () -> Unit>(
         CLIConstants.ADD_COMMAND_CODE to ::addTransaction,
         CLIConstants.VIEW_COMMAND_CODE to ::viewTransaction,
@@ -49,9 +50,7 @@ class CLIDispatcherImpl(
             transactionCategory = transactionCategory
         )
 
-        // TODO: refactor this after merging the code!!
-//        val isTransactionAdded = transactionManager.addTransaction(transaction)
-        val isTransactionAdded = true
+        val isTransactionAdded = transactionManager.addTransaction(transaction)
         if (isTransactionAdded) {
             ioController.writeWithNewLine(CLIConstants.ADD_TRANSACTION_SUCCESS_MESSAGE)
         } else {
@@ -65,7 +64,6 @@ class CLIDispatcherImpl(
         if (transaction == null) {
             ioController.writeWithNewLine(CLIConstants.COMMON_ERROR_MESSAGE)
         } else {
-            // TODO: Format this!!
             ioController.writeWithNewLine(transaction.toString())
         }
     }
