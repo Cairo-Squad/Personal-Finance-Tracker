@@ -119,11 +119,12 @@ class TransactionManagerMock(
 }
 
 fun runCheckGetTransactions(){
+    val monthlyReporter = MonthlyReporterMock()
     // region getTransactionById()
     run {
         val emptyList = mutableListOf<Transaction>()
         val fakeMemoryStorage = StorageMock(emptyList)
-        val transactionManager = TransactionManagerImpl(fakeMemoryStorage)
+        val transactionManager = TransactionManagerImpl(fakeMemoryStorage, monthlyReporter)
         test(
             name = "Given an empty list of transactions, when call getTransactionById() it should return null",
             result = transactionManager.getTransactionById(1) ?: "null",
@@ -145,7 +146,7 @@ fun runCheckGetTransactions(){
         val list = mutableListOf(transaction)
 
         val fakeMemoryStorage = StorageMock(list)
-        val transactionManager = TransactionManagerImpl(fakeMemoryStorage)
+        val transactionManager = TransactionManagerImpl(fakeMemoryStorage, monthlyReporter)
 
         test(
             name = "Given a list with one transaction, when call getTransactionById() with matching ID it should return the transaction",
@@ -167,7 +168,7 @@ fun runCheckGetTransactions(){
             ),
         )
         val fakeMemoryStorage = StorageMock(list)
-        val transactionManager = TransactionManagerImpl(fakeMemoryStorage)
+        val transactionManager = TransactionManagerImpl(fakeMemoryStorage, monthlyReporter)
 
         test(
             name = "Given a list with one transaction, when call getTransactionById() with non-matching ID it should return null",
@@ -207,7 +208,7 @@ fun runCheckGetTransactions(){
         )
 
         val fakeMemoryStorage = StorageMock(list)
-        val transactionManager = TransactionManagerImpl(fakeMemoryStorage)
+        val transactionManager = TransactionManagerImpl(fakeMemoryStorage, monthlyReporter)
 
         test(
             name = "Given a list with multiple transactions, when call getTransactionById() with matching ID it should return correct transaction",
@@ -253,7 +254,7 @@ fun runCheckGetTransactions(){
         )
 
         val fakeMemoryStorage = StorageMock(list)
-        val transactionManager = TransactionManagerImpl(fakeMemoryStorage)
+        val transactionManager = TransactionManagerImpl(fakeMemoryStorage, monthlyReporter)
 
         test(
             name = "Given a list with multiple transactions, when call getTransactionById() with non-matching ID it should return null",
@@ -270,7 +271,7 @@ fun runCheckGetTransactions(){
     run {
         val emptyList = mutableListOf<Transaction>()
         val fakeMemoryStorage = StorageMock(emptyList)
-        val transactionManager = TransactionManagerImpl(fakeMemoryStorage)
+        val transactionManager = TransactionManagerImpl(fakeMemoryStorage, monthlyReporter)
         test(
             name = "Given an empty list, when call getAllTransaction then should its size equal to zero",
             result = transactionManager.getAllTransactions().size,
@@ -311,7 +312,7 @@ fun runCheckGetTransactions(){
         val list = mutableListOf(transaction1, transaction2, transaction3)
 
         val fakeMemoryStorage = StorageMock(list)
-        val transactionManager = TransactionManagerImpl(fakeMemoryStorage)
+        val transactionManager = TransactionManagerImpl(fakeMemoryStorage, monthlyReporter)
 
         list.add(transaction1)
         list.add(transaction2)
@@ -331,7 +332,8 @@ fun runCheckGetTransactions(){
 
 fun runCheckAddTransaction() {
     val storageMock: MemoryStorage = MemoryStorageImp
-    val transactionManager = TransactionManagerImpl(storageMock)
+    val monthlyReporter = MonthlyReporterMock()
+    val transactionManager = TransactionManagerImpl(storageMock, monthlyReporter)
 
 
     test(
@@ -485,6 +487,8 @@ fun runCheckAddTransaction() {
 
 }
 fun runCheckDeleteTransaction() {
+    val monthlyReporter = MonthlyReporterMock()
+
     //region transactionExist
     run {
         val transaction = Transaction(
@@ -497,7 +501,7 @@ fun runCheckDeleteTransaction() {
         )
         val list = mutableListOf(transaction)
         val fakeStorage = StorageMock(list)
-        val manager = TransactionManagerImpl(fakeStorage)
+        val manager = TransactionManagerImpl(fakeStorage, monthlyReporter)
 
         test(
             name = "Given existing transaction, when deleted, should return true",
@@ -517,7 +521,7 @@ fun runCheckDeleteTransaction() {
     run {
         val list = mutableListOf<Transaction>()
         val fakeStorage = StorageMock(list)
-        val manager = TransactionManagerImpl(fakeStorage)
+        val manager = TransactionManagerImpl(fakeStorage, monthlyReporter)
 
         test(
             name = "Given non-existent transaction, when deleted, should return false",
@@ -530,7 +534,7 @@ fun runCheckDeleteTransaction() {
     //region emptyStorage
     run {
         val fakeStorage = StorageMock(mutableListOf())
-        val manager = TransactionManagerImpl(fakeStorage)
+        val manager = TransactionManagerImpl(fakeStorage, monthlyReporter)
 
         test(
             name = "Given empty storage, when delete is called, should return false",
@@ -547,7 +551,7 @@ fun runCheckDeleteTransaction() {
             Transaction(2, "T2", TransactionType.INCOME, 200.0, LocalDateTime.now(), Category(2, "Cat2"))
         )
         val fakeStorage = StorageMock(list)
-        val manager = TransactionManagerImpl(fakeStorage)
+        val manager = TransactionManagerImpl(fakeStorage, monthlyReporter)
 
         test(
             name = "Given multiple transactions, when one is deleted, should return true",

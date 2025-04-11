@@ -1,5 +1,6 @@
 package feature.transaction
 
+import feature.financeReport.data.MonthReport
 import model.Transaction
 import java.time.LocalDateTime
 
@@ -15,5 +16,5 @@ interface TransactionManager {
 
     fun getAllTransactions(): List<Transaction>
 
-    fun getReportByMonth(dateTime: LocalDateTime): List<Any>
+    fun getReportByMonth(dateTime: LocalDateTime): MonthReport
 }

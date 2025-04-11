@@ -1,5 +1,6 @@
 package test.feature.cliController
 
+import feature.financeReport.data.MonthReport
 import feature.transaction.TransactionManager
 import model.Category
 import model.Transaction
@@ -51,7 +52,12 @@ class TransactionManagerMock : TransactionManager {
         )
     }
 
-    override fun getReportByMonth(dateTime: LocalDateTime): List<Any> {
-        return emptyList()
+    override fun getReportByMonth(dateTime: LocalDateTime): MonthReport {
+        return MonthReport(
+            date = LocalDateTime.now(),
+            income = 0.0,
+            expenses = 0.0,
+            netBalance = 0.0
+        )
     }
 }

@@ -1,12 +1,15 @@
 package feature.transaction
 
 import datasource.storage.MemoryStorage
+import feature.financeReport.MonthlyFinanceReporter
+import feature.financeReport.data.MonthReport
 import model.Transaction
 import java.time.LocalDateTime
 
 
 class TransactionManagerImpl(
-    private val storage: MemoryStorage
+    private val storage: MemoryStorage,
+    private val monthlyReporter: MonthlyFinanceReporter
 ) : TransactionManager {
 
 
@@ -60,8 +63,8 @@ class TransactionManagerImpl(
         return storage.getAllTransactions()
     }
 
-    override fun getReportByMonth(dateTime: LocalDateTime): List<Any> {
-        TODO("Not yet implemented")
+    override fun getReportByMonth(dateTime: LocalDateTime): MonthReport {
+        return monthlyReporter.getMonthReport(storage.getAllTransactions(), dateTime)
     }
 
 }
