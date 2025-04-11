@@ -1,6 +1,6 @@
-package test.util
+package feature.cliController
 
-object Constants {
+object CLIConstants {
 
     // region User Messages
     const val WELCOME_MESSAGE = "👋🏻 Welcome to your Personal Finance Tracker!"
@@ -11,6 +11,11 @@ object Constants {
     const val OPTION_INPUT_MESSAGE = "Please enter the number of the option you need >>> "
     const val TRANSACTION_TYPE_INPUT_MESSAGE = "Please choose your transaction type:"
     const val ENTER_TRANSACTION_TYPE_INPUT_MESSAGE = "Enter transaction type number >>> "
+    const val ENTER_AMOUNT_MESSAGE = "Enter the amount >>> "
+    const val ENTER_VALID_AMOUNT_MESSAGE = "Please enter a valid amount >>> "
+    const val ENTER_DESCRIPTION_MESSAGE = "Enter the description >>> "
+    const val ENTER_ID_MESSAGE = "Enter the ID >>> "
+    const val ENTER_VALID_ID_MESSAGE = "Please enter a valid ID >>> "
 
     const val INVALID_OPTION_MESSAGE = "Please enter a valid option number >>> "
     const val INVALID_COMMAND_MESSAGE = "An error happened, please try again."
