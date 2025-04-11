@@ -7,8 +7,9 @@ object MemoryStorageImp : MemoryStorage {
 
     private val transactionList = mutableListOf<Transaction>()
 
-    override fun addTransaction(transaction: Transaction) {
+    override fun addTransaction(transaction: Transaction) :Boolean{
         transactionList.add(transaction)
+        return true
     }
 
     override fun updateTransaction(transaction: Transaction) :Boolean{

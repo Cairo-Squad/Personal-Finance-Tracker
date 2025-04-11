@@ -3,8 +3,6 @@ package test.feature.transaction
 
 import datasource.storage.MemoryStorage
 import datasource.storage.MemoryStorageImp
-import datasource.Storage
-import datasource.MemoryStorage
 import feature.transaction.TransactionManagerImpl
 import model.Category
 import model.Transaction
@@ -331,7 +329,7 @@ fun runCheckGetTransactions(){
 
 
 fun runCheckAddTransaction() {
-    val storageMock: Storage = MemoryStorage()
+    val storageMock: MemoryStorage = MemoryStorageImp
     val transactionManager = TransactionManagerImpl(storageMock)
 
 
